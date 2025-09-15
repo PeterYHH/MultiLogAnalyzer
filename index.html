@@ -278,6 +278,78 @@
       background: #c53030;
     }
     
+    /* 匯出控制樣式 */
+    .export-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      padding: 15px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e2e8f0;
+    }
+    
+    .export-btn {
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .export-btn:hover {
+      background: linear-gradient(135deg, #5a67d8, #6b46c1);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+    
+    .export-btn:active {
+      transform: translateY(0);
+    }
+    
+    .export-btn:disabled {
+      background: #e2e8f0;
+      color: #a0aec0;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    .line-number-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #4a5568;
+      cursor: pointer;
+      user-select: none;
+      margin-left: 10px;
+      padding: 8px 12px;
+      background: #f7fafc;
+      border-radius: 6px;
+      transition: background 0.2s ease;
+    }
+    
+    .line-number-toggle:hover {
+      background: #edf2f7;
+    }
+    
+    .line-number-toggle input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #667eea;
+      cursor: pointer;
+    }
+    
     /* 進階篩選樣式 */
     .advanced-filters {
       margin-bottom: 25px;
@@ -508,6 +580,37 @@
       .merged-log-item:nth-child(even) .log-source {
         background: #f093fb;
         color: #333;
+      }
+      
+      /* 行號樣式 */
+      .line-numbers {
+        counter-reset: line-counter;
+      }
+      
+      .line-numbers .log-line {
+        counter-increment: line-counter;
+        position: relative;
+        padding-left: 4em;
+        line-height: 1.5;
+      }
+      
+      .line-numbers .log-line:before {
+        content: counter(line-counter);
+        position: absolute;
+        left: 0;
+        width: 3em;
+        text-align: right;
+        color: #a0aec0;
+        font-size: 12px;
+        border-right: 1px solid #e2e8f0;
+        padding-right: 10px;
+        margin-right: 10px;
+        user-select: none;
+      }
+      
+      .line-numbers .log-line:hover:before {
+        color: #667eea;
+        border-right-color: #667eea;
       }    /* 響應式設計 */
     @media (max-width: 768px) {
       body {
@@ -584,6 +687,23 @@
       
       .filter-group {
         margin-bottom: 15px;
+      }
+      
+      /* 匯出控制響應式 */
+      .export-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      
+      .export-btn {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .line-number-toggle {
+        margin-left: 0;
+        justify-content: center;
       }
     }
     
@@ -700,6 +820,15 @@
       <input type="file" id="logFiles" multiple accept=".log,.txt" placeholder="選擇 Log 檔案">
       <input type="text" id="search" placeholder="🔍 搜尋關鍵字...">
       <button class="clear-all-btn" id="clearAllBtn" style="display: none;">🗑️ 清除全部</button>
+      
+      <!-- 匯出功能按鈕 -->
+      <div class="export-controls" id="exportControls" style="display: none;">
+        <button class="export-btn" id="exportFilteredBtn" title="匯出過濾後的搜尋結果">💾 匯出搜尋結果</button>
+        <button class="export-btn" id="exportMergedBtn" title="匯出合併的時間排序結果">🔄 匯出合併檔案</button>
+        <label class="line-number-toggle">
+          <input type="checkbox" id="showLineNumbers"> 顯示行號
+        </label>
+      </div>
     </div>
     
     <!-- 進階篩選控制區 -->
@@ -810,6 +939,12 @@
     const multiKeywordsInput = document.getElementById('multiKeywords');
     const searchLogicRadios = document.querySelectorAll('input[name="searchLogic"]');
     
+    // 新增匯出和行號控制元素
+    const exportControls = document.getElementById('exportControls');
+    const exportFilteredBtn = document.getElementById('exportFilteredBtn');
+    const exportMergedBtn = document.getElementById('exportMergedBtn');
+    const showLineNumbersCb = document.getElementById('showLineNumbers');
+    
     let logContents = [];
 
     // 拖拉上傳功能
@@ -874,6 +1009,7 @@
         traceLevelCb.checked = true;
         regexSearchCb.checked = false;
         caseSensitiveCb.checked = false;
+        showLineNumbersCb.checked = false;
         document.querySelector('input[name="searchLogic"][value="and"]').checked = true;
       }
     });
@@ -914,11 +1050,13 @@
       if (logContents.length === 0) {
         fileList.style.display = 'none';
         clearAllBtn.style.display = 'none';
+        exportControls.style.display = 'none';
         return;
       }
 
       fileList.style.display = 'block';
       clearAllBtn.style.display = 'inline-block';
+      exportControls.style.display = 'flex';
       
       fileItems.innerHTML = logContents.map(log => `
         <div class="file-item">
@@ -1113,9 +1251,141 @@
       };
     }
 
+    // 檔案下載功能
+    function downloadFile(content, filename, contentType = 'text/plain') {
+      const blob = new Blob([content], { type: contentType });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    }
+
+    // 格式化日期用於檔案名稱
+    function formatDateForFilename(date = new Date()) {
+      return date.toISOString().replace(/[:.]/g, '-').slice(0, 19);
+    }
+
+    // 移除 HTML 標籤
+    function stripHtmlTags(str) {
+      return str.replace(/<[^>]*>/g, '');
+    }
+
+    // 匯出過濾後的搜尋結果
+    function exportFilteredResults() {
+      const options = getFilterOptions();
+      let exportContent = '';
+      let totalLines = 0;
+      
+      // 生成檔案標頭
+      const timestamp = new Date().toLocaleString('zh-TW');
+      exportContent += `# 過濾搜尋結果匯出\n`;
+      exportContent += `# 匯出時間: ${timestamp}\n`;
+      exportContent += `# 原始檔案數量: ${logContents.length}\n`;
+      
+      // 添加篩選條件資訊
+      if (options.searchText || options.multiKeywords) {
+        exportContent += `# 搜尋條件: ${options.multiKeywords || options.searchText}\n`;
+      }
+      if (options.startDate || options.endDate) {
+        exportContent += `# 日期範圍: ${options.startDate ? options.startDate.toLocaleDateString('zh-TW') : '不限'} 至 ${options.endDate ? options.endDate.toLocaleDateString('zh-TW') : '不限'}\n`;
+      }
+      exportContent += `\n`;
+      
+      logContents.forEach((log, logIndex) => {
+        let lines = log.content.split('\n').filter(line => line.trim() !== '');
+        let filteredLines = lines.filter(line => filterLogLine(line, options));
+        
+        if (filteredLines.length > 0) {
+          exportContent += `========== 檔案: ${log.name} (${filteredLines.length}/${lines.length} 行) ==========\n`;
+          filteredLines.forEach((line, lineIndex) => {
+            totalLines++;
+            const cleanLine = stripHtmlTags(line);
+            exportContent += `${cleanLine}\n`;
+          });
+          exportContent += `\n`;
+        }
+      });
+      
+      exportContent += `\n# 總匯出行數: ${totalLines}\n`;
+      
+      if (totalLines === 0) {
+        alert('沒有符合篩選條件的記錄可匯出！');
+        return;
+      }
+      
+      const filename = `filtered_logs_${formatDateForFilename()}.log`;
+      downloadFile(exportContent, filename);
+      
+      alert(`已成功匯出 ${totalLines} 行記錄至 ${filename}`);
+    }
+
+    // 匯出合併檔案
+    function exportMergedLogs() {
+      const options = getFilterOptions();
+      let allLines = [];
+      
+      logContents.forEach(log => {
+        log.content.split('\n').forEach(line => {
+          if (line.trim() === '') return;
+          if (!filterLogLine(line, options)) return;
+          
+          const logDate = parseLogDate(line);
+          allLines.push({ 
+            time: logDate ? logDate.getTime() : 0, 
+            line: stripHtmlTags(line), 
+            file: log.name,
+            dateString: logDate ? logDate.toISOString() : null
+          });
+        });
+      });
+      
+      // 依時間排序
+      allLines.sort((a, b) => {
+        if (a.time === 0 && b.time === 0) return 0;
+        if (a.time === 0) return 1;
+        if (b.time === 0) return -1;
+        return a.time - b.time;
+      });
+      
+      if (allLines.length === 0) {
+        alert('沒有符合篩選條件的記錄可匯出！');
+        return;
+      }
+      
+      // 生成匯出內容
+      const timestamp = new Date().toLocaleString('zh-TW');
+      let exportContent = `# 合併時間排序結果匯出\n`;
+      exportContent += `# 匯出時間: ${timestamp}\n`;
+      exportContent += `# 合併檔案數量: ${logContents.length}\n`;
+      exportContent += `# 檔案列表: ${logContents.map(log => log.name).join(', ')}\n`;
+      
+      // 添加篩選條件資訊
+      if (options.searchText || options.multiKeywords) {
+        exportContent += `# 搜尋條件: ${options.multiKeywords || options.searchText}\n`;
+      }
+      if (options.startDate || options.endDate) {
+        exportContent += `# 日期範圍: ${options.startDate ? options.startDate.toLocaleDateString('zh-TW') : '不限'} 至 ${options.endDate ? options.endDate.toLocaleDateString('zh-TW') : '不限'}\n`;
+      }
+      exportContent += `# 總行數: ${allLines.length}\n\n`;
+      
+      allLines.forEach((item, index) => {
+        exportContent += `[${item.file}] ${item.line}\n`;
+      });
+      
+      const filename = `merged_logs_${formatDateForFilename()}.log`;
+      downloadFile(exportContent, filename);
+      
+      alert(`已成功匯出 ${allLines.length} 行合併記錄至 ${filename}`);
+    }
+
     function displayLogs() {
       const options = getFilterOptions();
       const displayKeyword = options.multiKeywords || options.searchText;
+      const showLineNumbers = showLineNumbersCb.checked;
       
       if (logContents.length === 0) {
         logsDiv.innerHTML = `
@@ -1143,12 +1413,25 @@
           `📄 ${log.name} (${filteredLines.length}/${lines.length} 行)` :
           `📄 ${log.name} (${lines.length} 行)`;
         
+        let contentHTML = '';
+        if (filteredLines.length > 0) {
+          if (showLineNumbers) {
+            contentHTML = filteredLines
+              .map(line => `<div class="log-line">${highlightKeyword(line, displayKeyword)}</div>`)
+              .join('');
+            contentHTML = `<div class="line-numbers">${contentHTML}</div>`;
+          } else {
+            contentHTML = filteredLines
+              .map(line => highlightKeyword(line, displayKeyword))
+              .join('\n');
+          }
+        } else {
+          contentHTML = '<div style="color: #999; font-style: italic;">沒有符合篩選條件的記錄</div>';
+        }
+        
         logBlock.innerHTML = `
           <div class="sticky-header">${headerContent}</div>
-          <pre style="padding: 15px;">${filteredLines.length > 0 ? 
-            filteredLines.map(line => highlightKeyword(line, displayKeyword)).join('\n') :
-            '<div style="color: #999; font-style: italic;">沒有符合篩選條件的記錄</div>'
-          }</pre>
+          <pre style="padding: 15px;">${contentHTML}</pre>
         `;
         logsDiv.appendChild(logBlock);
       });
@@ -1168,6 +1451,7 @@
     function displayMergedLogs() {
       const options = getFilterOptions();
       const displayKeyword = options.multiKeywords || options.searchText;
+      const showLineNumbers = showLineNumbersCb.checked;
       
       if (logContents.length === 0) {
         mergedLogsDiv.innerHTML = `
@@ -1214,10 +1498,19 @@
         return;
       }
       
-      const mergedContent = allLines.map(l => {
-        const sourceTag = `<span class="merged-log-item"><span class="log-source">${l.file}</span></span>`;
-        return `${sourceTag} ${highlightKeyword(l.line, displayKeyword)}`;
-      }).join('\n');
+      let mergedContent = '';
+      if (showLineNumbers) {
+        mergedContent = allLines.map(l => {
+          const sourceTag = `<span class="merged-log-item"><span class="log-source">${l.file}</span></span>`;
+          return `<div class="log-line">${sourceTag} ${highlightKeyword(l.line, displayKeyword)}</div>`;
+        }).join('');
+        mergedContent = `<div class="line-numbers">${mergedContent}</div>`;
+      } else {
+        mergedContent = allLines.map(l => {
+          const sourceTag = `<span class="merged-log-item"><span class="log-source">${l.file}</span></span>`;
+          return `${sourceTag} ${highlightKeyword(l.line, displayKeyword)}`;
+        }).join('\n');
+      }
       
       mergedLogsDiv.innerHTML = `
         <div class="sticky-header">📊 合併結果 (${allLines.length} 行)</div>
@@ -1281,6 +1574,16 @@
           displayMergedLogs();
         });
       });
+      
+      // 行號顯示切換
+      showLineNumbersCb.addEventListener('change', () => {
+        displayLogs();
+        displayMergedLogs();
+      });
+      
+      // 匯出按鈕事件
+      exportFilteredBtn.addEventListener('click', exportFilteredResults);
+      exportMergedBtn.addEventListener('click', exportMergedLogs);
     }
 
     // 更新原有的搜尋事件監聽器
