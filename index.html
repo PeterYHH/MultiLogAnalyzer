@@ -278,7 +278,237 @@
       background: #c53030;
     }
     
-    /* 響應式設計 */
+    /* 進階篩選樣式 */
+    .advanced-filters {
+      margin-bottom: 25px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0;
+    }
+    
+    .filter-section {
+      border: none;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    
+    .filter-header {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 15px 20px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.3s ease;
+    }
+    
+    .filter-header:hover {
+      background: linear-gradient(135deg, #5a67d8, #6b46c1);
+    }
+    
+    .filter-content {
+      padding: 20px;
+    }
+    
+    .filter-group {
+      margin-bottom: 20px;
+    }
+    
+    .filter-group:last-child {
+      margin-bottom: 0;
+    }
+    
+    .filter-label {
+      display: block;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    
+    /* 日期範圍樣式 */
+    .date-range {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .date-input {
+      padding: 8px 12px;
+      border: 2px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 14px;
+      background: white;
+      transition: border-color 0.3s ease;
+      flex: 1;
+      min-width: 140px;
+    }
+    
+    .date-input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .date-separator {
+      color: #718096;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    
+    .clear-date-btn {
+      padding: 8px 16px;
+      background: #f7fafc;
+      color: #4a5568;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    
+    .clear-date-btn:hover {
+      background: #edf2f7;
+      border-color: #cbd5e0;
+    }
+    
+    /* Log 等級過濾樣式 */
+    .level-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .level-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #4a5568;
+      font-weight: 500;
+      user-select: none;
+      transition: color 0.2s ease;
+    }
+    
+    .level-checkbox:hover {
+      color: #2d3748;
+    }
+    
+    .level-checkbox input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #667eea;
+      cursor: pointer;
+    }
+    
+    /* 搜尋選項樣式 */
+    .search-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    .search-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #4a5568;
+      font-weight: 500;
+      user-select: none;
+      transition: color 0.2s ease;
+    }
+    
+    .search-option:hover {
+      color: #2d3748;
+    }
+    
+    .search-option input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #667eea;
+      cursor: pointer;
+    }
+    
+    /* 多關鍵字搜尋樣式 */
+    .multi-keyword {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .multi-keyword-input {
+      padding: 10px 15px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px;
+      background: white;
+      transition: border-color 0.3s ease;
+    }
+    
+    .multi-keyword-input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .logic-options {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .logic-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #4a5568;
+      font-weight: 500;
+      user-select: none;
+      transition: color 0.2s ease;
+    }
+    
+    .logic-option:hover {
+      color: #2d3748;
+    }
+    
+      .logic-option input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #667eea;
+        cursor: pointer;
+      }
+      
+      /* 合併日誌樣式 */
+      .merged-log-item .log-source {
+        background: #667eea;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-right: 8px;
+        display: inline-block;
+      }
+      
+      .merged-log-item:nth-child(odd) .log-source {
+        background: #764ba2;
+      }
+      
+      .merged-log-item:nth-child(even) .log-source {
+        background: #f093fb;
+        color: #333;
+      }    /* 響應式設計 */
     @media (max-width: 768px) {
       body {
         padding: 10px;
@@ -320,6 +550,40 @@
       .sticky-header {
         padding: 10px 15px;
         font-size: 14px;
+      }
+      
+      /* 進階篩選響應式 */
+      .filter-content {
+        padding: 15px;
+      }
+      
+      .date-range {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .date-separator {
+        text-align: center;
+        margin: 5px 0;
+      }
+      
+      .level-filters {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .search-options {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .logic-options {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .filter-group {
+        margin-bottom: 15px;
       }
     }
     
@@ -438,6 +702,66 @@
       <button class="clear-all-btn" id="clearAllBtn" style="display: none;">🗑️ 清除全部</button>
     </div>
     
+    <!-- 進階篩選控制區 -->
+    <div class="advanced-filters">
+      <details class="filter-section">
+        <summary class="filter-header">🔍 進階篩選選項</summary>
+        <div class="filter-content">
+          <!-- 日期範圍過濾 -->
+          <div class="filter-group">
+            <label class="filter-label">📅 日期範圍</label>
+            <div class="date-range">
+              <input type="date" id="startDate" class="date-input" placeholder="開始日期">
+              <span class="date-separator">至</span>
+              <input type="date" id="endDate" class="date-input" placeholder="結束日期">
+              <button class="clear-date-btn" id="clearDateBtn">清除</button>
+            </div>
+          </div>
+          
+          <!-- Log 等級過濾 -->
+          <div class="filter-group">
+            <label class="filter-label">📊 Log 等級</label>
+            <div class="level-filters">
+              <label class="level-checkbox"><input type="checkbox" id="errorLevel" checked> ERROR</label>
+              <label class="level-checkbox"><input type="checkbox" id="warnLevel" checked> WARN</label>
+              <label class="level-checkbox"><input type="checkbox" id="infoLevel" checked> INFO</label>
+              <label class="level-checkbox"><input type="checkbox" id="debugLevel" checked> DEBUG</label>
+              <label class="level-checkbox"><input type="checkbox" id="traceLevel" checked> TRACE</label>
+            </div>
+          </div>
+          
+          <!-- 搜尋選項 -->
+          <div class="filter-group">
+            <label class="filter-label">🔍 搜尋選項</label>
+            <div class="search-options">
+              <label class="search-option">
+                <input type="checkbox" id="regexSearch"> 正則表達式
+              </label>
+              <label class="search-option">
+                <input type="checkbox" id="caseSensitive"> 大小寫敏感
+              </label>
+            </div>
+          </div>
+          
+          <!-- 多關鍵字搜尋 -->
+          <div class="filter-group">
+            <label class="filter-label">🔗 多關鍵字搜尋</label>
+            <div class="multi-keyword">
+              <input type="text" id="multiKeywords" placeholder="關鍵字1,關鍵字2 或 關鍵字1|關鍵字2" class="multi-keyword-input">
+              <div class="logic-options">
+                <label class="logic-option">
+                  <input type="radio" name="searchLogic" value="and" checked> AND (,)
+                </label>
+                <label class="logic-option">
+                  <input type="radio" name="searchLogic" value="or"> OR (|)
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+    
     <!-- 檔案列表 -->
     <div class="file-list" id="fileList" style="display: none;">
       <h3 style="margin-top: 0; color: #4a5568;">📋 已載入的檔案</h3>
@@ -471,6 +795,21 @@
     const fileList = document.getElementById('fileList');
     const fileItems = document.getElementById('fileItems');
     const clearAllBtn = document.getElementById('clearAllBtn');
+    
+    // 新增篩選控制元素
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+    const clearDateBtn = document.getElementById('clearDateBtn');
+    const errorLevelCb = document.getElementById('errorLevel');
+    const warnLevelCb = document.getElementById('warnLevel');
+    const infoLevelCb = document.getElementById('infoLevel');
+    const debugLevelCb = document.getElementById('debugLevel');
+    const traceLevelCb = document.getElementById('traceLevel');
+    const regexSearchCb = document.getElementById('regexSearch');
+    const caseSensitiveCb = document.getElementById('caseSensitive');
+    const multiKeywordsInput = document.getElementById('multiKeywords');
+    const searchLogicRadios = document.querySelectorAll('input[name="searchLogic"]');
+    
     let logContents = [];
 
     // 拖拉上傳功能
@@ -522,6 +861,20 @@
         displayLogs();
         displayMergedLogs();
         logFilesInput.value = '';
+        
+        // 清除所有篩選條件
+        searchInput.value = '';
+        multiKeywordsInput.value = '';
+        startDateInput.value = '';
+        endDateInput.value = '';
+        errorLevelCb.checked = true;
+        warnLevelCb.checked = true;
+        infoLevelCb.checked = true;
+        debugLevelCb.checked = true;
+        traceLevelCb.checked = true;
+        regexSearchCb.checked = false;
+        caseSensitiveCb.checked = false;
+        document.querySelector('input[name="searchLogic"][value="and"]').checked = true;
       }
     });
 
@@ -602,8 +955,167 @@
       return safeText.replace(new RegExp(keyword, 'gi'), match => `<span class="highlight">${match}</span>`);
     }
 
+    // 解析日期函數 - 支援多種格式
+    function parseLogDate(line) {
+      // 常見的日期格式
+      const datePatterns = [
+        /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3})/,  // 2024-01-15 10:30:45,123
+        /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})/,  // 2024-01-15 10:30:45.123
+        /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})/,         // 2024-01-15 10:30:45
+        /(\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2})/,       // 2024/01/15 10:30:45
+        /(\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2})/,       // 15/01/2024 10:30:45
+      ];
+      
+      for (const pattern of datePatterns) {
+        const match = line.match(pattern);
+        if (match) {
+          return new Date(match[1].replace(',', '.'));
+        }
+      }
+      return null;
+    }
+
+    // 檢查日期是否在指定範圍內
+    function isDateInRange(logDate, startDate, endDate) {
+      if (!logDate) return !startDate && !endDate;
+      
+      const logTime = logDate.getTime();
+      
+      if (startDate && logTime < startDate.getTime()) return false;
+      if (endDate && logTime > endDate.getTime() + 86400000) return false; // 加一天，包含結束日期整天
+      
+      return true;
+    }
+
+    // 檢查 log 等級
+    function getLogLevel(line) {
+      const levelPatterns = {
+        'ERROR': /ERROR|FATAL|SEVERE/i,
+        'WARN': /WARN|WARNING/i,
+        'INFO': /INFO/i,
+        'DEBUG': /DEBUG/i,
+        'TRACE': /TRACE|VERBOSE/i
+      };
+      
+      for (const [level, pattern] of Object.entries(levelPatterns)) {
+        if (pattern.test(line)) return level;
+      }
+      return 'INFO'; // 預設等級
+    }
+
+    // 檢查 log 等級是否被選中
+    function isLevelSelected(level) {
+      switch (level) {
+        case 'ERROR': return errorLevelCb.checked;
+        case 'WARN': return warnLevelCb.checked;
+        case 'INFO': return infoLevelCb.checked;
+        case 'DEBUG': return debugLevelCb.checked;
+        case 'TRACE': return traceLevelCb.checked;
+        default: return true;
+      }
+    }
+
+    // 執行搜尋匹配
+    function matchesSearch(line, searchText, useRegex, caseSensitive) {
+      if (!searchText) return true;
+      
+      try {
+        if (useRegex) {
+          const flags = caseSensitive ? 'g' : 'gi';
+          const regex = new RegExp(searchText, flags);
+          return regex.test(line);
+        } else {
+          const text = caseSensitive ? line : line.toLowerCase();
+          const search = caseSensitive ? searchText : searchText.toLowerCase();
+          return text.includes(search);
+        }
+      } catch (e) {
+        // 如果正則表達式無效，回退到普通搜尋
+        const text = caseSensitive ? line : line.toLowerCase();
+        const search = caseSensitive ? searchText : searchText.toLowerCase();
+        return text.includes(search);
+      }
+    }
+
+    // 多關鍵字搜尋
+    function matchesMultiKeywords(line, keywords, logic, useRegex, caseSensitive) {
+      if (!keywords) return true;
+      
+      const keywordList = logic === 'and' ? 
+        keywords.split(',').map(k => k.trim()).filter(k => k) :
+        keywords.split('|').map(k => k.trim()).filter(k => k);
+      
+      if (keywordList.length === 0) return true;
+      
+      if (logic === 'and') {
+        return keywordList.every(keyword => 
+          matchesSearch(line, keyword, useRegex, caseSensitive)
+        );
+      } else {
+        return keywordList.some(keyword => 
+          matchesSearch(line, keyword, useRegex, caseSensitive)
+        );
+      }
+    }
+
+    // 篩選單行 log
+    function filterLogLine(line, options) {
+      const {
+        searchText,
+        multiKeywords,
+        searchLogic,
+        useRegex,
+        caseSensitive,
+        startDate,
+        endDate
+      } = options;
+      
+      // 日期過濾
+      const logDate = parseLogDate(line);
+      if (!isDateInRange(logDate, startDate, endDate)) {
+        return false;
+      }
+      
+      // Log 等級過濾
+      const level = getLogLevel(line);
+      if (!isLevelSelected(level)) {
+        return false;
+      }
+      
+      // 搜尋過濾
+      if (multiKeywords) {
+        if (!matchesMultiKeywords(line, multiKeywords, searchLogic, useRegex, caseSensitive)) {
+          return false;
+        }
+      } else if (searchText) {
+        if (!matchesSearch(line, searchText, useRegex, caseSensitive)) {
+          return false;
+        }
+      }
+      
+      return true;
+    }
+
+    // 獲取當前篩選選項
+    function getFilterOptions() {
+      const startDate = startDateInput.value ? new Date(startDateInput.value) : null;
+      const endDate = endDateInput.value ? new Date(endDateInput.value) : null;
+      const searchLogic = document.querySelector('input[name="searchLogic"]:checked').value;
+      
+      return {
+        searchText: searchInput.value.trim(),
+        multiKeywords: multiKeywordsInput.value.trim(),
+        searchLogic,
+        useRegex: regexSearchCb.checked,
+        caseSensitive: caseSensitiveCb.checked,
+        startDate,
+        endDate
+      };
+    }
+
     function displayLogs() {
-      const keyword = searchInput.value.trim().toLowerCase();
+      const options = getFilterOptions();
+      const displayKeyword = options.multiKeywords || options.searchText;
       
       if (logContents.length === 0) {
         logsDiv.innerHTML = `
@@ -616,23 +1128,46 @@
       }
       
       logsDiv.innerHTML = '';
+      let totalFilteredLines = 0;
+      
       logContents.forEach(log => {
-        let lines = log.content.split('\n');
-        if (keyword) {
-          lines = lines.filter(line => line.toLowerCase().includes(keyword));
-        }
+        let lines = log.content.split('\n').filter(line => line.trim() !== '');
+        let filteredLines = lines.filter(line => filterLogLine(line, options));
+        
+        totalFilteredLines += filteredLines.length;
+        
         const logBlock = document.createElement('div');
         logBlock.className = 'log-block';
+        
+        const headerContent = filteredLines.length !== lines.length ? 
+          `📄 ${log.name} (${filteredLines.length}/${lines.length} 行)` :
+          `📄 ${log.name} (${lines.length} 行)`;
+        
         logBlock.innerHTML = `
-          <div class="sticky-header">📄 ${log.name}</div>
-          <pre style="padding: 15px;">${lines.map(line => highlightKeyword(line, keyword)).join('\n')}</pre>
+          <div class="sticky-header">${headerContent}</div>
+          <pre style="padding: 15px;">${filteredLines.length > 0 ? 
+            filteredLines.map(line => highlightKeyword(line, displayKeyword)).join('\n') :
+            '<div style="color: #999; font-style: italic;">沒有符合篩選條件的記錄</div>'
+          }</pre>
         `;
         logsDiv.appendChild(logBlock);
       });
+      
+      // 如果沒有任何符合條件的記錄
+      if (totalFilteredLines === 0) {
+        logsDiv.innerHTML = `
+          <div class="empty-state">
+            <div style="font-size: 3rem; margin-bottom: 15px;">🔍</div>
+            <p>沒有找到符合篩選條件的記錄</p>
+            <p style="font-size: 0.9em; color: #666;">請嘗試調整篩選條件</p>
+          </div>
+        `;
+      }
     }
 
     function displayMergedLogs() {
-      const keyword = searchInput.value.trim().toLowerCase();
+      const options = getFilterOptions();
+      const displayKeyword = options.multiKeywords || options.searchText;
       
       if (logContents.length === 0) {
         mergedLogsDiv.innerHTML = `
@@ -648,34 +1183,122 @@
       logContents.forEach(log => {
         log.content.split('\n').forEach(line => {
           if (line.trim() === '') return;
-          if (keyword && !line.toLowerCase().includes(keyword)) return;
-          const match = line.match(/^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3})/);
-          if (match) {
-            allLines.push({ time: match[1], line, file: log.name });
-          } else {
-            allLines.push({ time: null, line, file: log.name });
-          }
+          if (!filterLogLine(line, options)) return;
+          
+          const logDate = parseLogDate(line);
+          allLines.push({ 
+            time: logDate ? logDate.getTime() : 0, 
+            line, 
+            file: log.name,
+            dateString: logDate ? logDate.toISOString() : null
+          });
         });
       });
+      
+      // 依時間排序
       allLines.sort((a, b) => {
-        if (!a.time && !b.time) return 0;
-        if (!a.time) return 1;
-        if (!b.time) return -1;
-        return a.time.localeCompare(b.time);
+        if (a.time === 0 && b.time === 0) return 0;
+        if (a.time === 0) return 1;
+        if (b.time === 0) return -1;
+        return a.time - b.time;
       });
       
       if (allLines.length === 0) {
         mergedLogsDiv.innerHTML = `
           <div class="empty-state">
             <div style="font-size: 3rem; margin-bottom: 15px;">🔍</div>
-            <p>沒有找到符合搜尋條件的記錄</p>
+            <p>沒有找到符合篩選條件的記錄</p>
+            <p style="font-size: 0.9em; color: #666;">請嘗試調整篩選條件</p>
           </div>
         `;
         return;
       }
       
-      mergedLogsDiv.innerHTML = `<pre style="padding: 15px;">${allLines.map(l => highlightKeyword(`[📄 ${l.file}] ${l.line}`, keyword)).join('\n')}</pre>`;
+      const mergedContent = allLines.map(l => {
+        const sourceTag = `<span class="merged-log-item"><span class="log-source">${l.file}</span></span>`;
+        return `${sourceTag} ${highlightKeyword(l.line, displayKeyword)}`;
+      }).join('\n');
+      
+      mergedLogsDiv.innerHTML = `
+        <div class="sticky-header">📊 合併結果 (${allLines.length} 行)</div>
+        <pre style="padding: 15px;">${mergedContent}</pre>
+      `;
     }
+
+    // 進階篩選事件監聽器
+    function addFilterEventListeners() {
+      // 日期範圍篩選
+      startDateInput.addEventListener('change', () => {
+        displayLogs();
+        displayMergedLogs();
+      });
+      
+      endDateInput.addEventListener('change', () => {
+        displayLogs();
+        displayMergedLogs();
+      });
+      
+      // 清除日期按鈕
+      clearDateBtn.addEventListener('click', () => {
+        startDateInput.value = '';
+        endDateInput.value = '';
+        displayLogs();
+        displayMergedLogs();
+      });
+      
+      // Log 等級篩選
+      [errorLevelCb, warnLevelCb, infoLevelCb, debugLevelCb, traceLevelCb].forEach(cb => {
+        cb.addEventListener('change', () => {
+          displayLogs();
+          displayMergedLogs();
+        });
+      });
+      
+      // 搜尋選項
+      regexSearchCb.addEventListener('change', () => {
+        displayLogs();
+        displayMergedLogs();
+      });
+      
+      caseSensitiveCb.addEventListener('change', () => {
+        displayLogs();
+        displayMergedLogs();
+      });
+      
+      // 多關鍵字搜尋
+      multiKeywordsInput.addEventListener('input', () => {
+        if (multiKeywordsInput.value.trim()) {
+          searchInput.value = ''; // 清除單一搜尋框
+        }
+        displayLogs();
+        displayMergedLogs();
+      });
+      
+      // 搜尋邏輯選項
+      searchLogicRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+          displayLogs();
+          displayMergedLogs();
+        });
+      });
+    }
+
+    // 更新原有的搜尋事件監聽器
+    searchInput.removeEventListener('input', () => {
+      displayLogs();
+      displayMergedLogs();
+    });
+    
+    searchInput.addEventListener('input', () => {
+      if (searchInput.value.trim()) {
+        multiKeywordsInput.value = ''; // 清除多關鍵字搜尋框
+      }
+      displayLogs();
+      displayMergedLogs();
+    });
+
+    // 初始化事件監聽器
+    addFilterEventListeners();
   </script>
 </body>
 </html>
