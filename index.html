@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log 檔案瀏覽器</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    
+    h1 {
+      text-align: center;
+      color: #4a5568;
+      margin-bottom: 30px;
+      font-size: 2.5rem;
+      font-weight: 300;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    h2 {
+      color: #2d3748;
+      margin: 30px 0 15px 0;
+      font-size: 1.5rem;
+      border-left: 4px solid #667eea;
+      padding-left: 15px;
+    }
+    
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 25px;
+      align-items: center;
+    }
+    
+    input[type="file"] {
+      flex: 1;
+      min-width: 200px;
+      padding: 12px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      background: white;
+      font-size: 14px;
+      transition: border-color 0.3s ease;
+    }
+    
+    input[type="file"]:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    #search {
+      flex: 1;
+      min-width: 200px;
+      padding: 12px 15px;
+      border: 2px solid #e2e8f0;
+      border-radius: 25px;
+      font-size: 14px;
+      background: white;
+      transition: all 0.3s ease;
+    }
+    
+    #search:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    #logs, #mergedLogs {
+      max-height: 500px;
+      overflow: auto;
+      border: none;
+      padding: 20px;
+      background: #f8fafc;
+      margin-bottom: 25px;
+      border-radius: 12px;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+      border-left: 4px solid #667eea;
+    }
+    
+    #logs::-webkit-scrollbar,
+    #mergedLogs::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    #logs::-webkit-scrollbar-track,
+    #mergedLogs::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+    
+    #logs::-webkit-scrollbar-thumb,
+    #mergedLogs::-webkit-scrollbar-thumb {
+      background: #667eea;
+      border-radius: 4px;
+    }
+    
+    #logs::-webkit-scrollbar-thumb:hover,
+    #mergedLogs::-webkit-scrollbar-thumb:hover {
+      background: #5a67d8;
+    }
+    
+    pre {
+      white-space: pre-wrap;
+      word-break: break-all;
+      margin: 0;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #2d3748;
+    }
+    
+    .log-block {
+      margin-bottom: 20px;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0;
+    }
+    
+    .highlight {
+      background: linear-gradient(120deg, #ffd700, #ffed4e);
+      padding: 2px 4px;
+      border-radius: 3px;
+      color: #2d3748;
+      font-weight: 500;
+    }
+    
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 12px 20px;
+      z-index: 1;
+      font-weight: 600;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .divider {
+      border: none;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #667eea, transparent);
+      margin: 40px 0;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #718096;
+    }
+    
+    .empty-state i {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      color: #cbd5e0;
+    }
+    
+    /* 拖拉上傳區域 */
+    .drop-zone {
+      border: 2px dashed #cbd5e0;
+      border-radius: 12px;
+      padding: 40px 20px;
+      text-align: center;
+      margin-bottom: 20px;
+      background: #f8fafc;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .drop-zone.dragover {
+      border-color: #667eea;
+      background: #e6fffa;
+      transform: scale(1.02);
+    }
+    
+    .drop-zone-text {
+      color: #718096;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    
+    .drop-zone-icon {
+      font-size: 3rem;
+      color: #cbd5e0;
+      margin-bottom: 15px;
+    }
+    
+    /* 檔案列表 */
+    .file-list {
+      background: white;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0;
+    }
+    
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    
+    .file-item:last-child {
+      border-bottom: none;
+    }
+    
+    .file-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .file-name {
+      font-weight: 500;
+      color: #2d3748;
+    }
+    
+    .file-size {
+      font-size: 12px;
+      color: #718096;
+    }
+    
+    .delete-btn {
+      background: #fed7d7;
+      color: #c53030;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .delete-btn:hover {
+      background: #fc8181;
+      color: white;
+    }
+    
+    .clear-all-btn {
+      background: #e53e3e;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-left: 10px;
+    }
+    
+    .clear-all-btn:hover {
+      background: #c53030;
+    }
+    
+    /* 響應式設計 */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      
+      .container {
+        padding: 20px;
+        border-radius: 10px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+      }
+      
+      h2 {
+        font-size: 1.3rem;
+      }
+      
+      .controls {
+        flex-direction: column;
+      }
+      
+      input[type="file"],
+      #search {
+        width: 100%;
+        min-width: auto;
+      }
+      
+      #logs, #mergedLogs {
+        max-height: 300px;
+        padding: 15px;
+      }
+      
+      pre {
+        font-size: 12px;
+      }
+      
+      .sticky-header {
+        padding: 10px 15px;
+        font-size: 14px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      body {
+        padding: 5px;
+      }
+      
+      .container {
+        padding: 15px;
+        border-radius: 8px;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      h2 {
+        font-size: 1.2rem;
+        padding-left: 10px;
+      }
+      
+      #logs, #mergedLogs {
+        max-height: 250px;
+        padding: 10px;
+      }
+      
+      pre {
+        font-size: 11px;
+      }
+    }
+    
+    /* 動畫效果 */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .log-block {
+      animation: fadeIn 0.3s ease-out;
+    }
+    
+    /* 深色模式支援 */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+      }
+      
+      .container {
+        background: rgba(45, 55, 72, 0.95);
+        color: #e2e8f0;
+      }
+      
+      h1, h2 {
+        color: #e2e8f0;
+      }
+      
+      input[type="file"],
+      #search {
+        background: #2d3748;
+        border-color: #4a5568;
+        color: #e2e8f0;
+      }
+      
+      .drop-zone {
+        background: #2d3748;
+        border-color: #4a5568;
+      }
+      
+      .drop-zone.dragover {
+        border-color: #667eea;
+        background: #1a202c;
+      }
+      
+      .file-list {
+        background: #2d3748;
+        border-color: #4a5568;
+      }
+      
+      .file-name {
+        color: #e2e8f0;
+      }
+      
+      #logs, #mergedLogs {
+        background: #2d3748;
+        color: #e2e8f0;
+      }
+      
+      .log-block {
+        background: #2d3748;
+        border-color: #4a5568;
+      }
+      
+      pre {
+        color: #e2e8f0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📊 Log 檔案瀏覽器</h1>
+    
+    <!-- 拖拉上傳區域 -->
+    <div class="drop-zone" id="dropZone">
+      <div class="drop-zone-icon">📁</div>
+      <div class="drop-zone-text">
+        <strong>拖拉檔案到此處</strong><br>
+        或點擊下方按鈕選擇檔案
+      </div>
+    </div>
+    
+    <div class="controls">
+      <input type="file" id="logFiles" multiple accept=".log,.txt" placeholder="選擇 Log 檔案">
+      <input type="text" id="search" placeholder="🔍 搜尋關鍵字...">
+      <button class="clear-all-btn" id="clearAllBtn" style="display: none;">🗑️ 清除全部</button>
+    </div>
+    
+    <!-- 檔案列表 -->
+    <div class="file-list" id="fileList" style="display: none;">
+      <h3 style="margin-top: 0; color: #4a5568;">📋 已載入的檔案</h3>
+      <div id="fileItems"></div>
+    </div>
+    
+    <div id="logs">
+      <div class="empty-state">
+        <div style="font-size: 4rem; margin-bottom: 20px;">📁</div>
+        <p>請選擇一個或多個 Log 檔案開始瀏覽</p>
+      </div>
+    </div>
+    
+    <hr class="divider">
+    
+    <h2>⏰ 合併依時間排序顯示</h2>
+    <div id="mergedLogs">
+      <div class="empty-state">
+        <div style="font-size: 4rem; margin-bottom: 20px;">⏱️</div>
+        <p>載入檔案後，這裡會顯示按時間排序的合併結果</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const logFilesInput = document.getElementById('logFiles');
+    const logsDiv = document.getElementById('logs');
+    const mergedLogsDiv = document.getElementById('mergedLogs');
+    const searchInput = document.getElementById('search');
+    const dropZone = document.getElementById('dropZone');
+    const fileList = document.getElementById('fileList');
+    const fileItems = document.getElementById('fileItems');
+    const clearAllBtn = document.getElementById('clearAllBtn');
+    let logContents = [];
+
+    // 拖拉上傳功能
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      const files = Array.from(e.dataTransfer.files).filter(file => 
+        file.name.endsWith('.log') || file.name.endsWith('.txt')
+      );
+      if (files.length > 0) {
+        processFiles(files);
+      }
+    });
+
+    // 點擊拖拉區域觸發檔案選擇
+    dropZone.addEventListener('click', () => {
+      logFilesInput.click();
+    });
+
+    // 檔案選擇事件
+    logFilesInput.addEventListener('change', function(event) {
+      const files = Array.from(event.target.files);
+      if (files.length > 0) {
+        processFiles(files);
+      }
+    });
+
+    // 搜尋功能
+    searchInput.addEventListener('input', () => {
+      displayLogs();
+      displayMergedLogs();
+    });
+
+    // 清除全部按鈕
+    clearAllBtn.addEventListener('click', () => {
+      if (confirm('確定要清除所有檔案嗎？')) {
+        logContents = [];
+        updateFileList();
+        displayLogs();
+        displayMergedLogs();
+        logFilesInput.value = '';
+      }
+    });
+
+    // 處理檔案
+    function processFiles(files) {
+      files.forEach(file => {
+        // 檢查是否已存在相同檔案名
+        const existingIndex = logContents.findIndex(log => log.name === file.name);
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const logData = {
+            name: file.name,
+            content: e.target.result,
+            size: file.size,
+            id: Date.now() + Math.random() // 唯一ID
+          };
+          
+          if (existingIndex >= 0) {
+            // 替換現有檔案
+            logContents[existingIndex] = logData;
+          } else {
+            // 新增檔案
+            logContents.push(logData);
+          }
+          
+          updateFileList();
+          displayLogs();
+          displayMergedLogs();
+        };
+        reader.readAsText(file);
+      });
+    }
+
+    // 更新檔案列表
+    function updateFileList() {
+      if (logContents.length === 0) {
+        fileList.style.display = 'none';
+        clearAllBtn.style.display = 'none';
+        return;
+      }
+
+      fileList.style.display = 'block';
+      clearAllBtn.style.display = 'inline-block';
+      
+      fileItems.innerHTML = logContents.map(log => `
+        <div class="file-item">
+          <div class="file-info">
+            <span class="file-name">📄 ${log.name}</span>
+            <span class="file-size">(${formatFileSize(log.size)})</span>
+          </div>
+          <button class="delete-btn" onclick="removeFile('${log.id}')">🗑️ 刪除</button>
+        </div>
+      `).join('');
+    }
+
+    // 刪除單一檔案
+    function removeFile(fileId) {
+      logContents = logContents.filter(log => log.id != fileId);
+      updateFileList();
+      displayLogs();
+      displayMergedLogs();
+    }
+
+    // 格式化檔案大小
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    function highlightKeyword(text, keyword) {
+      if (!keyword) return text;
+      // 避免 XSS
+      const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      return safeText.replace(new RegExp(keyword, 'gi'), match => `<span class="highlight">${match}</span>`);
+    }
+
+    function displayLogs() {
+      const keyword = searchInput.value.trim().toLowerCase();
+      
+      if (logContents.length === 0) {
+        logsDiv.innerHTML = `
+          <div class="empty-state">
+            <div style="font-size: 4rem; margin-bottom: 20px;">📁</div>
+            <p>請選擇一個或多個 Log 檔案開始瀏覽</p>
+          </div>
+        `;
+        return;
+      }
+      
+      logsDiv.innerHTML = '';
+      logContents.forEach(log => {
+        let lines = log.content.split('\n');
+        if (keyword) {
+          lines = lines.filter(line => line.toLowerCase().includes(keyword));
+        }
+        const logBlock = document.createElement('div');
+        logBlock.className = 'log-block';
+        logBlock.innerHTML = `
+          <div class="sticky-header">📄 ${log.name}</div>
+          <pre style="padding: 15px;">${lines.map(line => highlightKeyword(line, keyword)).join('\n')}</pre>
+        `;
+        logsDiv.appendChild(logBlock);
+      });
+    }
+
+    function displayMergedLogs() {
+      const keyword = searchInput.value.trim().toLowerCase();
+      
+      if (logContents.length === 0) {
+        mergedLogsDiv.innerHTML = `
+          <div class="empty-state">
+            <div style="font-size: 4rem; margin-bottom: 20px;">⏱️</div>
+            <p>載入檔案後，這裡會顯示按時間排序的合併結果</p>
+          </div>
+        `;
+        return;
+      }
+      
+      let allLines = [];
+      logContents.forEach(log => {
+        log.content.split('\n').forEach(line => {
+          if (line.trim() === '') return;
+          if (keyword && !line.toLowerCase().includes(keyword)) return;
+          const match = line.match(/^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3})/);
+          if (match) {
+            allLines.push({ time: match[1], line, file: log.name });
+          } else {
+            allLines.push({ time: null, line, file: log.name });
+          }
+        });
+      });
+      allLines.sort((a, b) => {
+        if (!a.time && !b.time) return 0;
+        if (!a.time) return 1;
+        if (!b.time) return -1;
+        return a.time.localeCompare(b.time);
+      });
+      
+      if (allLines.length === 0) {
+        mergedLogsDiv.innerHTML = `
+          <div class="empty-state">
+            <div style="font-size: 3rem; margin-bottom: 15px;">🔍</div>
+            <p>沒有找到符合搜尋條件的記錄</p>
+          </div>
+        `;
+        return;
+      }
+      
+      mergedLogsDiv.innerHTML = `<pre style="padding: 15px;">${allLines.map(l => highlightKeyword(`[📄 ${l.file}] ${l.line}`, keyword)).join('\n')}</pre>`;
+    }
+  </script>
+</body>
+</html>
