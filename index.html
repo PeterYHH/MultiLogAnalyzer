@@ -153,10 +153,85 @@
       top: 0;
       background: linear-gradient(135deg, #667eea, #764ba2);
       color: white;
-      padding: 12px 20px;
-      z-index: 1;
+      padding: 15px 20px;
+      z-index: 10;
       font-weight: 600;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      border-radius: 8px 8px 0 0;
+      border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 16px;
+    }
+    
+    .sticky-header .header-main {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .sticky-header .header-stats {
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    
+    .log-content-area {
+      /* background: white; */
+      border-radius: 0 0 8px 8px;
+      border: 1px solid #e2e8f0;
+      border-top: none;
+      padding: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+      position: relative;
+    }
+    
+    .log-content-area::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .log-content-area::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+    
+    .log-content-area::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 4px;
+    }
+    
+    .log-content-area::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
+    }
+    
+    /* 摺疊展開功能 */
+    .collapse-toggle {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+    
+    .collapse-toggle:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .collapsed .log-content-area {
+      display: none;
+    }
+    
+    .collapsed .sticky-header {
+      border-radius: 8px;
+      border-bottom: none;
     }
     
     .divider {
@@ -1467,9 +1542,6 @@
         logBlock.className = 'log-block';
         
         const colorIndex = getFileColorIndex(log.name);
-        const headerContent = filteredLines.length !== lines.length ? 
-          `<span class="log-source file-color-${colorIndex}">${log.name}</span> (${filteredLines.length}/${lines.length} 行)` :
-          `<span class="log-source file-color-${colorIndex}">${log.name}</span> (${lines.length} 行)`;
         
         let contentHTML = '';
         if (filteredLines.length > 0) {
@@ -1488,9 +1560,22 @@
         }
         
         logBlock.innerHTML = `
-          <div class="sticky-header">📄 ${headerContent}</div>
-          <div style="padding: 15px;">${contentHTML}</div>
+          <div class="sticky-header">
+            <div class="header-main">
+              <span>📄</span>
+              <span class="log-source file-color-${colorIndex}">${log.name}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div class="header-stats">${filteredLines.length}${filteredLines.length !== lines.length ? `/${lines.length}` : ''} 行</div>
+              <button class="collapse-toggle" onclick="toggleCollapse('log-${colorIndex}-${Date.now()}')" title="摺疊/展開">
+                📋
+              </button>
+            </div>
+          </div>
+          <div class="log-content-area" id="log-${colorIndex}-${Date.now()}-content">${contentHTML}</div>
         `;
+        
+        logBlock.id = `log-${colorIndex}-${Date.now()}`;
         logsDiv.appendChild(logBlock);
       });
       
@@ -1573,8 +1658,18 @@
       }
       
       mergedLogsDiv.innerHTML = `
-        <div class="sticky-header">📊 合併結果 (${allLines.length} 行)</div>
-        <div style="padding: 15px;">${mergedContent}</div>
+        <div class="sticky-header">
+          <div class="header-main">
+            <span>📊 合併結果</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="header-stats">${allLines.length} 行</div>
+            <button class="collapse-toggle" onclick="toggleCollapse('mergedLogs')" title="摺疊/展開">
+              📋
+            </button>
+          </div>
+        </div>
+        <div class="log-content-area">${mergedContent}</div>
       `;
     }
 
@@ -1662,6 +1757,24 @@
 
     // 初始化事件監聽器
     addFilterEventListeners();
+
+    // 摺疊/展開功能
+    function toggleCollapse(elementId) {
+      const element = elementId === 'mergedLogs' ? mergedLogsDiv : document.getElementById(elementId);
+      if (element) {
+        element.classList.toggle('collapsed');
+        
+        // 更新按鈕圖示
+        const button = element.querySelector('.collapse-toggle');
+        if (button) {
+          button.textContent = element.classList.contains('collapsed') ? '📄' : '📋';
+          button.title = element.classList.contains('collapsed') ? '展開' : '摺疊';
+        }
+      }
+    }
+
+    // 全域函數，讓 onclick 可以存取
+    window.toggleCollapse = toggleCollapse;
   </script>
 </body>
 </html>
