@@ -611,6 +611,40 @@
       .line-numbers .log-line:hover:before {
         color: #667eea;
         border-right-color: #667eea;
+      }
+      
+      /* 檔案固定顏色樣式 */
+      .file-color-0 .log-source { background: #3498db !important; color: white !important; }
+      .file-color-1 .log-source { background: #e74c3c !important; color: white !important; }
+      .file-color-2 .log-source { background: #2ecc71 !important; color: white !important; }
+      .file-color-3 .log-source { background: #f39c12 !important; color: white !important; }
+      .file-color-4 .log-source { background: #9b59b6 !important; color: white !important; }
+      .file-color-5 .log-source { background: #1abc9c !important; color: white !important; }
+      .file-color-6 .log-source { background: #e67e22 !important; color: white !important; }
+      .file-color-7 .log-source { background: #34495e !important; color: white !important; }
+      
+      /* 檔案顏色邊框和背景 */
+      .file-color-0 { border-left: 4px solid #3498db; background-color: rgba(52, 152, 219, 0.05); }
+      .file-color-1 { border-left: 4px solid #e74c3c; background-color: rgba(231, 76, 60, 0.05); }
+      .file-color-2 { border-left: 4px solid #2ecc71; background-color: rgba(46, 204, 113, 0.05); }
+      .file-color-3 { border-left: 4px solid #f39c12; background-color: rgba(243, 156, 18, 0.05); }
+      .file-color-4 { border-left: 4px solid #9b59b6; background-color: rgba(155, 89, 182, 0.05); }
+      .file-color-5 { border-left: 4px solid #1abc9c; background-color: rgba(26, 188, 156, 0.05); }
+      .file-color-6 { border-left: 4px solid #e67e22; background-color: rgba(230, 126, 34, 0.05); }
+      .file-color-7 { border-left: 4px solid #34495e; background-color: rgba(52, 73, 94, 0.05); }
+      
+      /* log block 檔案顏色適配 */
+      .log-block.file-color-0,
+      .log-block.file-color-1,
+      .log-block.file-color-2,
+      .log-block.file-color-3,
+      .log-block.file-color-4,
+      .log-block.file-color-5,
+      .log-block.file-color-6,
+      .log-block.file-color-7 {
+        margin-bottom: 2px;
+        padding: 10px;
+        border-radius: 6px;
       }    /* 響應式設計 */
     @media (max-width: 768px) {
       body {
@@ -945,6 +979,10 @@
     const exportMergedBtn = document.getElementById('exportMergedBtn');
     const showLineNumbersCb = document.getElementById('showLineNumbers');
     
+    // 檔案顏色映射系統
+    let fileColorMap = new Map();
+    let colorIndex = 0;
+    
     let logContents = [];
 
     // 拖拉上傳功能
@@ -992,6 +1030,8 @@
     clearAllBtn.addEventListener('click', () => {
       if (confirm('確定要清除所有檔案嗎？')) {
         logContents = [];
+        fileColorMap.clear();
+        colorIndex = 0;
         updateFileList();
         displayLogs();
         displayMergedLogs();
@@ -1072,6 +1112,14 @@
     // 刪除單一檔案
     function removeFile(fileId) {
       logContents = logContents.filter(log => log.id != fileId);
+      
+      // 重新計算顏色映射
+      fileColorMap.clear();
+      colorIndex = 0;
+      logContents.forEach(log => {
+        getFileColorIndex(log.name); // 重新分配顏色
+      });
+      
       updateFileList();
       displayLogs();
       displayMergedLogs();
@@ -1264,6 +1312,15 @@
       window.URL.revokeObjectURL(url);
     }
 
+    // 獲取檔案顏色索引
+    function getFileColorIndex(fileName) {
+      if (!fileColorMap.has(fileName)) {
+        fileColorMap.set(fileName, colorIndex % 8);
+        colorIndex++;
+      }
+      return fileColorMap.get(fileName);
+    }
+
     // 格式化日期用於檔案名稱
     function formatDateForFilename(date = new Date()) {
       return date.toISOString().replace(/[:.]/g, '-').slice(0, 19);
@@ -1409,29 +1466,30 @@
         const logBlock = document.createElement('div');
         logBlock.className = 'log-block';
         
+        const colorIndex = getFileColorIndex(log.name);
         const headerContent = filteredLines.length !== lines.length ? 
-          `📄 ${log.name} (${filteredLines.length}/${lines.length} 行)` :
-          `📄 ${log.name} (${lines.length} 行)`;
+          `<span class="log-source file-color-${colorIndex}">${log.name}</span> (${filteredLines.length}/${lines.length} 行)` :
+          `<span class="log-source file-color-${colorIndex}">${log.name}</span> (${lines.length} 行)`;
         
         let contentHTML = '';
         if (filteredLines.length > 0) {
           if (showLineNumbers) {
             contentHTML = filteredLines
-              .map(line => `<div class="log-line">${highlightKeyword(line, displayKeyword)}</div>`)
+              .map(line => `<div class="log-line file-color-${colorIndex}">${highlightKeyword(line, displayKeyword)}</div>`)
               .join('');
             contentHTML = `<div class="line-numbers">${contentHTML}</div>`;
           } else {
             contentHTML = filteredLines
-              .map(line => highlightKeyword(line, displayKeyword))
-              .join('\n');
+              .map(line => `<div class="file-color-${colorIndex}" style="margin-bottom: 1px; padding: 2px 0;">${highlightKeyword(line, displayKeyword)}</div>`)
+              .join('');
           }
         } else {
           contentHTML = '<div style="color: #999; font-style: italic;">沒有符合篩選條件的記錄</div>';
         }
         
         logBlock.innerHTML = `
-          <div class="sticky-header">${headerContent}</div>
-          <pre style="padding: 15px;">${contentHTML}</pre>
+          <div class="sticky-header">📄 ${headerContent}</div>
+          <div style="padding: 15px;">${contentHTML}</div>
         `;
         logsDiv.appendChild(logBlock);
       });
@@ -1500,21 +1558,23 @@
       
       let mergedContent = '';
       if (showLineNumbers) {
-        mergedContent = allLines.map(l => {
-          const sourceTag = `<span class="merged-log-item"><span class="log-source">${l.file}</span></span>`;
-          return `<div class="log-line">${sourceTag} ${highlightKeyword(l.line, displayKeyword)}</div>`;
+        mergedContent = allLines.map((l, index) => {
+          const colorIndex = getFileColorIndex(l.file);
+          const sourceTag = `<span class="merged-log-item file-color-${colorIndex}"><span class="log-source">${l.file}</span></span>`;
+          return `<div class="log-line file-color-${colorIndex}">${sourceTag} ${highlightKeyword(l.line, displayKeyword)}</div>`;
         }).join('');
         mergedContent = `<div class="line-numbers">${mergedContent}</div>`;
       } else {
         mergedContent = allLines.map(l => {
-          const sourceTag = `<span class="merged-log-item"><span class="log-source">${l.file}</span></span>`;
-          return `${sourceTag} ${highlightKeyword(l.line, displayKeyword)}`;
-        }).join('\n');
+          const colorIndex = getFileColorIndex(l.file);
+          const sourceTag = `<span class="merged-log-item file-color-${colorIndex}"><span class="log-source">${l.file}</span></span>`;
+          return `<div class="file-color-${colorIndex}" style="margin-bottom: 1px; padding: 2px 0;">${sourceTag} ${highlightKeyword(l.line, displayKeyword)}</div>`;
+        }).join('');
       }
       
       mergedLogsDiv.innerHTML = `
         <div class="sticky-header">📊 合併結果 (${allLines.length} 行)</div>
-        <pre style="padding: 15px;">${mergedContent}</pre>
+        <div style="padding: 15px;">${mergedContent}</div>
       `;
     }
 
