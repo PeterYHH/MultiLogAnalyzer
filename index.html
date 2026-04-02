@@ -42,30 +42,20 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    .container {
-      max-width: 1320px;
-      margin: 0 auto;
-    }
+    .container { max-width: 1320px; margin: 0 auto; }
 
     /* ── App Header ── */
-    .app-header {
-      text-align: center;
-      margin-bottom: 32px;
-    }
+    .app-header { text-align: center; margin-bottom: 20px; }
 
     h1 {
-      font-size: 2rem;
+      font-size: 1.625rem;
       font-weight: 700;
       color: var(--text-1);
       letter-spacing: -0.03em;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
-    .app-subtitle {
-      font-size: 0.875rem;
-      color: var(--text-3);
-      font-weight: 400;
-    }
+    .app-subtitle { font-size: 0.8125rem; color: var(--text-3); font-weight: 400; }
 
     h2 {
       font-size: 0.9375rem;
@@ -80,42 +70,28 @@
     /* ── Drop Zone ── */
     .drop-zone {
       border: 2px dashed var(--border-strong);
-      border-radius: var(--radius-lg);
-      padding: 40px 20px;
-      text-align: center;
+      border-radius: var(--radius);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
       background: var(--surface);
-      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+      transition: border-color 0.2s, background 0.2s;
       cursor: pointer;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
-    .drop-zone:hover {
-      border-color: var(--accent);
-      background: var(--accent-light);
-    }
+    .drop-zone:hover { border-color: var(--accent); background: var(--accent-light); }
 
     .drop-zone.dragover {
       border-color: var(--accent);
       background: var(--accent-light);
-      transform: scale(1.01);
     }
 
-    .drop-zone-icon {
-      font-size: 2.25rem;
-      margin-bottom: 10px;
-      opacity: 0.6;
-    }
+    .drop-zone-icon { font-size: 1.5rem; opacity: 0.55; flex-shrink: 0; line-height: 1; }
 
-    .drop-zone-text {
-      color: var(--text-2);
-      font-size: 0.9375rem;
-      line-height: 1.7;
-    }
-
-    .drop-zone-text strong {
-      color: var(--text-1);
-      font-weight: 600;
-    }
+    .drop-zone-text { color: var(--text-2); font-size: 0.875rem; line-height: 1.5; }
+    .drop-zone-text strong { color: var(--text-1); font-weight: 600; }
 
     /* ── Controls Row ── */
     .controls {
@@ -140,10 +116,7 @@
       transition: border-color 0.2s;
     }
 
-    input[type="file"]:focus {
-      outline: none;
-      border-color: var(--accent);
-    }
+    input[type="file"]:focus { outline: none; border-color: var(--accent); }
 
     #search {
       flex: 1.5;
@@ -234,6 +207,25 @@
 
     .clear-date-btn:hover { background: var(--border); }
 
+    /* ── Load More Button ── */
+    .load-more-btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      background: var(--surface-2);
+      color: var(--text-2);
+      border: 1.5px dashed var(--border-strong);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .load-more-btn:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+
     /* ── Export Controls ── */
     .export-controls {
       display: flex;
@@ -300,10 +292,7 @@
     .filter-header::-webkit-details-marker { display: none; }
     .filter-header::marker { display: none; }
     .filter-header:hover { background: var(--surface-2); }
-
-    details[open] .filter-header {
-      border-bottom: 1.5px solid var(--border);
-    }
+    details[open] .filter-header { border-bottom: 1.5px solid var(--border); }
 
     .filter-header::after {
       content: '▾';
@@ -313,9 +302,7 @@
       transition: transform 0.2s;
     }
 
-    details[open] .filter-header::after {
-      transform: rotate(180deg);
-    }
+    details[open] .filter-header::after { transform: rotate(180deg); }
 
     .filter-content {
       padding: 18px 20px;
@@ -335,12 +322,7 @@
     }
 
     /* ── Date Range ── */
-    .date-range {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+    .date-range { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
     .date-input {
       padding: 7px 11px;
@@ -361,19 +343,10 @@
       box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
     }
 
-    .date-separator {
-      color: var(--text-3);
-      font-size: 12px;
-      font-weight: 500;
-      white-space: nowrap;
-    }
+    .date-separator { color: var(--text-3); font-size: 12px; font-weight: 500; white-space: nowrap; }
 
     /* ── Log Level Checkboxes ── */
-    .level-filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-    }
+    .level-filters { display: flex; flex-wrap: wrap; gap: 7px; }
 
     .level-checkbox {
       display: inline-flex;
@@ -406,11 +379,7 @@
     }
 
     /* ── Search Options ── */
-    .search-options, .logic-options {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
+    .search-options, .logic-options { display: flex; flex-wrap: wrap; gap: 12px; }
 
     .search-option, .logic-option {
       display: flex;
@@ -434,11 +403,7 @@
     }
 
     /* ── Multi-keyword ── */
-    .multi-keyword {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+    .multi-keyword { display: flex; flex-direction: column; gap: 10px; }
 
     .multi-keyword-input {
       padding: 8px 12px;
@@ -488,24 +453,11 @@
 
     .file-item:last-child { border-bottom: none; }
 
-    .file-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .file-info { display: flex; align-items: center; gap: 10px; }
 
-    .file-color-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
+    .file-color-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 
-    .file-name {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-1);
-    }
+    .file-name { font-size: 14px; font-weight: 500; color: var(--text-1); }
 
     .file-size {
       font-size: 11px;
@@ -514,11 +466,6 @@
       padding: 2px 8px;
       border-radius: 50px;
       font-weight: 500;
-    }
-
-    /* ── Log Containers ── */
-    #logs, #mergedLogs {
-      margin-bottom: 8px;
     }
 
     /* ── Log Block ── */
@@ -540,6 +487,9 @@
     .log-block.file-color-5 { border-left: 3px solid #06b6d4; }
     .log-block.file-color-6 { border-left: 3px solid #f97316; }
     .log-block.file-color-7 { border-left: 3px solid #64748b; }
+
+    /* Merged log block */
+    .log-block.merged-block { border-left: 3px solid var(--accent); margin-bottom: 0; }
 
     /* ── Sticky Header ── */
     .sticky-header {
@@ -564,15 +514,9 @@
     .log-block.file-color-5 .sticky-header { background: linear-gradient(100deg, #0891b2, #06b6d4); }
     .log-block.file-color-6 .sticky-header { background: linear-gradient(100deg, #ea580c, #f97316); }
     .log-block.file-color-7 .sticky-header { background: linear-gradient(100deg, #475569, #64748b); }
+    .log-block.merged-block .sticky-header { background: linear-gradient(100deg, var(--accent-hover), var(--accent)); }
 
-    /* Merged header uses accent */
-    #mergedLogs .sticky-header { background: linear-gradient(100deg, var(--accent-hover), var(--accent)); }
-
-    .sticky-header .header-main {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-    }
+    .sticky-header .header-main { display: flex; align-items: center; gap: 9px; }
 
     .sticky-header .header-stats {
       font-size: 11px;
@@ -599,7 +543,7 @@
     .collapse-toggle:hover { background: rgba(255,255,255,0.28); }
 
     .collapsed .log-content-area { display: none; }
-    .collapsed .sticky-header { border-radius: var(--radius-lg); }
+    .collapsed .sticky-header { border-radius: calc(var(--radius-lg) - 1.5px); }
 
     /* ── Log Source Badge ── */
     .log-source {
@@ -613,7 +557,6 @@
       letter-spacing: 0.02em;
     }
 
-    /* Source badge colors in merged view */
     .file-color-0 .log-source { background: #3b82f6; color: white; }
     .file-color-1 .log-source { background: #ef4444; color: white; }
     .file-color-2 .log-source { background: #10b981; color: white; }
@@ -634,10 +577,7 @@
 
     .log-content-area::-webkit-scrollbar { width: 5px; }
     .log-content-area::-webkit-scrollbar-track { background: transparent; }
-    .log-content-area::-webkit-scrollbar-thumb {
-      background: var(--border-strong);
-      border-radius: 3px;
-    }
+    .log-content-area::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
     .log-content-area::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
 
     /* ── Log Lines ── */
@@ -648,12 +588,10 @@
       padding: 1px 6px;
       border-radius: 3px;
       border-left: 2px solid transparent;
-      transition: background 0.08s;
     }
 
     .log-line:hover { background: var(--surface-2); }
 
-    /* Log level colors — these take priority */
     .log-line.level-error {
       background: rgba(239,68,68,0.06);
       border-left-color: #ef4444;
@@ -668,20 +606,10 @@
     }
     .log-line.level-warn:hover { background: rgba(245,158,11,0.1); }
 
-    .log-line.level-info {
-      border-left-color: transparent;
-    }
+    .log-line.level-debug { color: var(--text-3); }
+    .log-line.level-trace { color: var(--text-3); opacity: 0.65; }
 
-    .log-line.level-debug {
-      color: var(--text-3);
-    }
-
-    .log-line.level-trace {
-      color: var(--text-3);
-      opacity: 0.65;
-    }
-
-    /* Subtle file-color tint on merged view lines */
+    /* Merged view: subtle file-color tint (level colors override below) */
     .log-line.file-color-0 { background: rgba(59,130,246,0.03); }
     .log-line.file-color-1 { background: rgba(239,68,68,0.03); }
     .log-line.file-color-2 { background: rgba(16,185,129,0.03); }
@@ -691,28 +619,11 @@
     .log-line.file-color-6 { background: rgba(249,115,22,0.03); }
     .log-line.file-color-7 { background: rgba(100,116,139,0.03); }
 
-    /* Level overrides file-color tint */
-    .log-line.level-error.file-color-0,
-    .log-line.level-error.file-color-1,
-    .log-line.level-error.file-color-2,
-    .log-line.level-error.file-color-3,
-    .log-line.level-error.file-color-4,
-    .log-line.level-error.file-color-5,
-    .log-line.level-error.file-color-6,
-    .log-line.level-error.file-color-7 {
-      background: rgba(239,68,68,0.06);
-    }
-
-    .log-line.level-warn.file-color-0,
-    .log-line.level-warn.file-color-1,
-    .log-line.level-warn.file-color-2,
-    .log-line.level-warn.file-color-3,
-    .log-line.level-warn.file-color-4,
-    .log-line.level-warn.file-color-5,
-    .log-line.level-warn.file-color-6,
-    .log-line.level-warn.file-color-7 {
-      background: rgba(245,158,11,0.06);
-    }
+    /* Level overrides file tint */
+    .log-line.level-error[class*="file-color-"] { background: rgba(239,68,68,0.06); }
+    .log-line.level-error[class*="file-color-"]:hover { background: rgba(239,68,68,0.1); }
+    .log-line.level-warn[class*="file-color-"]  { background: rgba(245,158,11,0.06); }
+    .log-line.level-warn[class*="file-color-"]:hover  { background: rgba(245,158,11,0.1); }
 
     /* ── Keyword Highlight ── */
     .highlight {
@@ -746,18 +657,10 @@
       font-family: var(--mono);
     }
 
-    .line-numbers .log-line:hover::before {
-      color: var(--accent);
-      border-right-color: var(--accent);
-    }
+    .line-numbers .log-line:hover::before { color: var(--accent); border-right-color: var(--accent); }
 
     /* ── Divider ── */
-    .divider {
-      border: none;
-      height: 1px;
-      background: var(--border);
-      margin: 32px 0;
-    }
+    .divider { border: none; height: 1px; background: var(--border); margin: 32px 0; }
 
     /* ── Empty State ── */
     .empty-state {
@@ -769,22 +672,9 @@
       border: 1.5px dashed var(--border);
     }
 
-    .empty-state-icon {
-      font-size: 2.5rem;
-      margin-bottom: 14px;
-      opacity: 0.5;
-    }
-
-    .empty-state p {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-3);
-    }
-
-    .empty-state p + p {
-      margin-top: 4px;
-      font-size: 12px;
-    }
+    .empty-state-icon { font-size: 2.5rem; margin-bottom: 14px; opacity: 0.5; }
+    .empty-state p { font-size: 14px; font-weight: 500; color: var(--text-3); }
+    .empty-state p + p { margin-top: 4px; font-size: 12px; }
 
     /* ── Animation ── */
     @keyframes fadeIn {
@@ -852,8 +742,7 @@
     <div class="drop-zone" id="dropZone">
       <div class="drop-zone-icon">📁</div>
       <div class="drop-zone-text">
-        <strong>拖拉檔案到此處</strong><br>
-        或點擊選擇 .log / .txt 檔案
+        <strong>拖拉檔案到此處</strong>，或點擊選擇 .log / .txt 檔案
       </div>
     </div>
 
@@ -957,131 +846,437 @@
   </div>
 
   <script>
-    const logFilesInput = document.getElementById('logFiles');
-    const logsDiv = document.getElementById('logs');
-    const mergedLogsDiv = document.getElementById('mergedLogs');
-    const searchInput = document.getElementById('search');
-    const dropZone = document.getElementById('dropZone');
-    const fileList = document.getElementById('fileList');
-    const fileItems = document.getElementById('fileItems');
-    const clearAllBtn = document.getElementById('clearAllBtn');
+    // ── Constants ──────────────────────────────────────────────
+    const CHUNK_SIZE = 500;   // lines rendered per batch
+    const DEBOUNCE_MS = 200;  // ms to wait before re-rendering after input
 
-    // 新增篩選控制元素
-    const startDateInput = document.getElementById('startDate');
-    const endDateInput = document.getElementById('endDate');
-    const clearDateBtn = document.getElementById('clearDateBtn');
-    const errorLevelCb = document.getElementById('errorLevel');
-    const warnLevelCb = document.getElementById('warnLevel');
-    const infoLevelCb = document.getElementById('infoLevel');
-    const debugLevelCb = document.getElementById('debugLevel');
-    const traceLevelCb = document.getElementById('traceLevel');
-    const regexSearchCb = document.getElementById('regexSearch');
-    const caseSensitiveCb = document.getElementById('caseSensitive');
+    const FILE_COLORS = ['#3b82f6','#ef4444','#10b981','#f59e0b','#8b5cf6','#06b6d4','#f97316','#64748b'];
+
+    // ── DOM refs ───────────────────────────────────────────────
+    const logFilesInput  = document.getElementById('logFiles');
+    const logsDiv        = document.getElementById('logs');
+    const mergedLogsDiv  = document.getElementById('mergedLogs');
+    const searchInput    = document.getElementById('search');
+    const dropZone       = document.getElementById('dropZone');
+    const fileList       = document.getElementById('fileList');
+    const fileItems      = document.getElementById('fileItems');
+    const clearAllBtn    = document.getElementById('clearAllBtn');
+
+    const startDateInput    = document.getElementById('startDate');
+    const endDateInput      = document.getElementById('endDate');
+    const clearDateBtn      = document.getElementById('clearDateBtn');
+    const errorLevelCb      = document.getElementById('errorLevel');
+    const warnLevelCb       = document.getElementById('warnLevel');
+    const infoLevelCb       = document.getElementById('infoLevel');
+    const debugLevelCb      = document.getElementById('debugLevel');
+    const traceLevelCb      = document.getElementById('traceLevel');
+    const regexSearchCb     = document.getElementById('regexSearch');
+    const caseSensitiveCb   = document.getElementById('caseSensitive');
     const multiKeywordsInput = document.getElementById('multiKeywords');
     const searchLogicRadios = document.querySelectorAll('input[name="searchLogic"]');
 
-    // 新增匯出和行號控制元素
-    const exportControls = document.getElementById('exportControls');
+    const exportControls    = document.getElementById('exportControls');
     const exportFilteredBtn = document.getElementById('exportFilteredBtn');
-    const exportMergedBtn = document.getElementById('exportMergedBtn');
+    const exportMergedBtn   = document.getElementById('exportMergedBtn');
     const showLineNumbersCb = document.getElementById('showLineNumbers');
 
-    // 檔案顏色映射系統
-    const FILE_COLORS = ['#3b82f6','#ef4444','#10b981','#f59e0b','#8b5cf6','#06b6d4','#f97316','#64748b'];
+    // ── State ──────────────────────────────────────────────────
+    let logContents  = [];
     let fileColorMap = new Map();
-    let colorIndex = 0;
+    let colorIndex   = 0;
 
-    let logContents = [];
+    // Pending lines for "load more" per block-id
+    // Map<blockId, { lines: string[], keyword: string, showLineNumbers: bool, offset: number }>
+    const pendingChunks = new Map();
 
-    // 拖拉上傳功能
-    dropZone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dropZone.classList.add('dragover');
-    });
+    // ── Utility ────────────────────────────────────────────────
+    function debounce(fn, ms) {
+      let timer;
+      return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), ms); };
+    }
 
-    dropZone.addEventListener('dragleave', (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('dragover');
-    });
+    function escapeRegex(str) {
+      return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
 
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dropZone.classList.remove('dragover');
-      const files = Array.from(e.dataTransfer.files).filter(file =>
-        file.name.endsWith('.log') || file.name.endsWith('.txt')
-      );
-      if (files.length > 0) {
-        processFiles(files);
+    function escapeHtml(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function highlightKeyword(text, keyword, useRegex) {
+      if (!keyword) return escapeHtml(text);
+      const safeText = escapeHtml(text);
+      try {
+        const pattern = useRegex ? keyword : escapeRegex(keyword);
+        return safeText.replace(new RegExp(pattern, 'gi'), m => `<span class="highlight">${m}</span>`);
+      } catch (e) {
+        return safeText; // invalid regex — show plain text
       }
-    });
+    }
 
-    // 點擊拖拉區域觸發檔案選擇
-    dropZone.addEventListener('click', () => {
-      logFilesInput.click();
-    });
-
-    // 檔案選擇事件
-    logFilesInput.addEventListener('change', function(event) {
-      const files = Array.from(event.target.files);
-      if (files.length > 0) {
-        processFiles(files);
+    // ── File color ─────────────────────────────────────────────
+    function getFileColorIndex(fileName) {
+      if (!fileColorMap.has(fileName)) {
+        fileColorMap.set(fileName, colorIndex % 8);
+        colorIndex++;
       }
-    });
+      return fileColorMap.get(fileName);
+    }
 
-    // 搜尋功能
-    searchInput.addEventListener('input', () => {
-      displayLogs();
-      displayMergedLogs();
-    });
-
-    // 清除全部按鈕
-    clearAllBtn.addEventListener('click', () => {
-      if (confirm('確定要清除所有檔案嗎？')) {
-        logContents = [];
-        fileColorMap.clear();
-        colorIndex = 0;
-        updateFileList();
-        displayLogs();
-        displayMergedLogs();
-        logFilesInput.value = '';
-
-        // 清除所有篩選條件
-        searchInput.value = '';
-        multiKeywordsInput.value = '';
-        startDateInput.value = '';
-        endDateInput.value = '';
-        errorLevelCb.checked = true;
-        warnLevelCb.checked = true;
-        infoLevelCb.checked = true;
-        debugLevelCb.checked = true;
-        traceLevelCb.checked = true;
-        regexSearchCb.checked = false;
-        caseSensitiveCb.checked = false;
-        showLineNumbersCb.checked = false;
-        document.querySelector('input[name="searchLogic"][value="and"]').checked = true;
+    // ── Date parsing ───────────────────────────────────────────
+    function parseLogDate(line) {
+      const datePatterns = [
+        /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3})/,
+        /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})/,
+        /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})/,
+        /(\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2})/,
+        /(\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2})/,
+      ];
+      for (const p of datePatterns) {
+        const m = line.match(p);
+        if (m) return new Date(m[1].replace(',', '.'));
       }
-    });
+      return null;
+    }
 
-    // 處理檔案
+    function isDateInRange(logDate, startDate, endDate) {
+      if (!logDate) return !startDate && !endDate;
+      const t = logDate.getTime();
+      if (startDate && t < startDate.getTime()) return false;
+      if (endDate   && t > endDate.getTime() + 86400000) return false;
+      return true;
+    }
+
+    // ── Log level ──────────────────────────────────────────────
+    const LEVEL_PATTERNS = [
+      ['ERROR', /\b(?:ERROR|FATAL|SEVERE)\b/i],
+      ['WARN',  /\b(?:WARN(?:ING)?)\b/i],
+      ['INFO',  /\bINFO\b/i],
+      ['DEBUG', /\bDEBUG\b/i],
+      ['TRACE', /\b(?:TRACE|VERBOSE)\b/i],
+    ];
+
+    function getLogLevel(line) {
+      for (const [level, re] of LEVEL_PATTERNS) {
+        if (re.test(line)) return level;
+      }
+      return 'INFO';
+    }
+
+    function isLevelSelected(level) {
+      switch (level) {
+        case 'ERROR': return errorLevelCb.checked;
+        case 'WARN':  return warnLevelCb.checked;
+        case 'INFO':  return infoLevelCb.checked;
+        case 'DEBUG': return debugLevelCb.checked;
+        case 'TRACE': return traceLevelCb.checked;
+        default: return true;
+      }
+    }
+
+    // ── Search matching ────────────────────────────────────────
+    function matchesSearch(line, searchText, useRegex, caseSensitive) {
+      if (!searchText) return true;
+      try {
+        if (useRegex) {
+          return new RegExp(searchText, caseSensitive ? '' : 'i').test(line);
+        }
+        const a = caseSensitive ? line : line.toLowerCase();
+        const b = caseSensitive ? searchText : searchText.toLowerCase();
+        return a.includes(b);
+      } catch (e) {
+        const a = caseSensitive ? line : line.toLowerCase();
+        const b = caseSensitive ? searchText : searchText.toLowerCase();
+        return a.includes(b);
+      }
+    }
+
+    function matchesMultiKeywords(line, keywords, logic, useRegex, caseSensitive) {
+      if (!keywords) return true;
+      const sep = logic === 'and' ? ',' : '|';
+      const list = keywords.split(sep).map(k => k.trim()).filter(Boolean);
+      if (!list.length) return true;
+      const fn = k => matchesSearch(line, k, useRegex, caseSensitive);
+      return logic === 'and' ? list.every(fn) : list.some(fn);
+    }
+
+    // ── Filter options ─────────────────────────────────────────
+    function getFilterOptions() {
+      return {
+        searchText:    searchInput.value.trim(),
+        multiKeywords: multiKeywordsInput.value.trim(),
+        searchLogic:   document.querySelector('input[name="searchLogic"]:checked').value,
+        useRegex:      regexSearchCb.checked,
+        caseSensitive: caseSensitiveCb.checked,
+        startDate:     startDateInput.value ? new Date(startDateInput.value) : null,
+        endDate:       endDateInput.value   ? new Date(endDateInput.value)   : null,
+      };
+    }
+
+    function filterLogLine(line, opts) {
+      if (!isDateInRange(parseLogDate(line), opts.startDate, opts.endDate)) return false;
+      if (!isLevelSelected(getLogLevel(line))) return false;
+      const kw = opts.multiKeywords;
+      if (kw) return matchesMultiKeywords(line, kw, opts.searchLogic, opts.useRegex, opts.caseSensitive);
+      if (opts.searchText) return matchesSearch(line, opts.searchText, opts.useRegex, opts.caseSensitive);
+      return true;
+    }
+
+    // ── Chunked line renderer ──────────────────────────────────
+    // Renders `lines[offset .. offset+CHUNK_SIZE]` into `container`.
+    // If more remain, appends a "load more" button that continues from the same blockId.
+    function renderLineChunk(container, blockId, lines, offset, keyword, useRegex, showLineNumbers) {
+      const end    = Math.min(offset + CHUNK_SIZE, lines.length);
+      const batch  = lines.slice(offset, end);
+
+      const html = batch.map(line => {
+        const level = getLogLevel(line).toLowerCase();
+        return `<div class="log-line level-${level}">${highlightKeyword(line, keyword, useRegex)}</div>`;
+      }).join('');
+
+      // Target: the .line-numbers wrapper if active, else the container directly
+      let target = container;
+      if (showLineNumbers) {
+        let wrapper = container.querySelector('.line-numbers');
+        if (!wrapper) {
+          wrapper = document.createElement('div');
+          wrapper.className = 'line-numbers';
+          container.appendChild(wrapper);
+        }
+        target = wrapper;
+      }
+
+      target.insertAdjacentHTML('beforeend', html);
+
+      if (end < lines.length) {
+        const remaining = lines.length - end;
+        pendingChunks.set(blockId, { lines, offset: end, keyword, useRegex, showLineNumbers });
+
+        const btn = document.createElement('button');
+        btn.className = 'load-more-btn';
+        btn.textContent = `▼ 顯示更多（已顯示 ${end} / 共 ${lines.length} 行，剩餘 ${remaining} 行）`;
+        btn.onclick = () => { btn.remove(); loadMoreLines(blockId, container); };
+        container.appendChild(btn);
+      } else {
+        pendingChunks.delete(blockId);
+      }
+    }
+
+    function loadMoreLines(blockId, container) {
+      const state = pendingChunks.get(blockId);
+      if (!state) return;
+      renderLineChunk(container, blockId, state.lines, state.offset, state.keyword, state.useRegex, state.showLineNumbers);
+    }
+
+    // Expose for inline onclick (dynamically created buttons find this via window)
+    window.loadMoreLines = loadMoreLines;
+
+    // ── Display logs ───────────────────────────────────────────
+    function displayLogs() {
+      pendingChunks.clear();
+      const opts    = getFilterOptions();
+      const keyword = opts.multiKeywords || opts.searchText;
+      const showLN  = showLineNumbersCb.checked;
+
+      if (logContents.length === 0) {
+        logsDiv.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">📁</div>
+            <p>請選擇一個或多個 Log 檔案開始瀏覽</p>
+          </div>`;
+        return;
+      }
+
+      logsDiv.innerHTML = '';
+      let totalFiltered = 0;
+
+      logContents.forEach(log => {
+        const allLines      = log.lines; // pre-computed at load time
+        const filteredLines = allLines.filter(line => filterLogLine(line, opts));
+        totalFiltered += filteredLines.length;
+
+        const ci      = getFileColorIndex(log.name);
+        const blockId = `lb-${ci}-${log.id}`;
+
+        const logBlock = document.createElement('div');
+        logBlock.className = `log-block file-color-${ci}`;
+        logBlock.id = blockId;
+
+        const stats = filteredLines.length !== allLines.length
+          ? `${filteredLines.length}/${allLines.length} 行`
+          : `${allLines.length} 行`;
+
+        logBlock.innerHTML = `
+          <div class="sticky-header">
+            <div class="header-main">
+              <span>📄</span>
+              <span>${escapeHtml(log.name)}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="header-stats">${stats}</div>
+              <button class="collapse-toggle" onclick="toggleCollapse('${blockId}')" title="摺疊/展開">▼</button>
+            </div>
+          </div>
+          <div class="log-content-area" id="${blockId}-content"></div>`;
+
+        logsDiv.appendChild(logBlock);
+
+        const contentEl = document.getElementById(`${blockId}-content`);
+        if (filteredLines.length > 0) {
+          renderLineChunk(contentEl, blockId, filteredLines, 0, keyword, opts.useRegex, showLN);
+        } else {
+          contentEl.innerHTML = '<div style="color:var(--text-3);font-size:13px;font-style:italic;padding:4px 0;">沒有符合篩選條件的記錄</div>';
+        }
+      });
+
+      if (totalFiltered === 0) {
+        logsDiv.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">🔍</div>
+            <p>沒有找到符合篩選條件的記錄</p>
+            <p>請嘗試調整篩選條件</p>
+          </div>`;
+      }
+    }
+
+    // ── Display merged logs ────────────────────────────────────
+    function displayMergedLogs() {
+      const opts    = getFilterOptions();
+      const keyword = opts.multiKeywords || opts.searchText;
+      const showLN  = showLineNumbersCb.checked;
+
+      if (logContents.length === 0) {
+        mergedLogsDiv.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">⏱️</div>
+            <p>載入檔案後，這裡會顯示按時間排序的合併結果</p>
+          </div>`;
+        return;
+      }
+
+      // Collect & sort
+      const allLines = [];
+      logContents.forEach(log => {
+        log.lines.forEach(line => {
+          if (!filterLogLine(line, opts)) return;
+          const d = parseLogDate(line);
+          allLines.push({ time: d ? d.getTime() : 0, line, file: log.name });
+        });
+      });
+
+      allLines.sort((a, b) => {
+        if (a.time === 0 && b.time === 0) return 0;
+        if (a.time === 0) return 1;
+        if (b.time === 0) return -1;
+        return a.time - b.time;
+      });
+
+      if (allLines.length === 0) {
+        mergedLogsDiv.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon">🔍</div>
+            <p>沒有找到符合篩選條件的記錄</p>
+            <p>請嘗試調整篩選條件</p>
+          </div>`;
+        return;
+      }
+
+      // Build enriched lines for merged rendering (pre-compute source tags)
+      // We keep a parallel array of ready-to-render line strings
+      const renderLines = allLines.map(item => {
+        const ci  = getFileColorIndex(item.file);
+        const src = `<span class="merged-log-item file-color-${ci}"><span class="log-source">${escapeHtml(item.file)}</span></span>`;
+        return { raw: item.line, ci, src };
+      });
+
+      const blockId = 'merged-block';
+      pendingChunks.delete(blockId);
+
+      mergedLogsDiv.innerHTML = `
+        <div class="log-block merged-block" id="${blockId}">
+          <div class="sticky-header">
+            <div class="header-main"><span>📊 合併結果</span></div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="header-stats">${allLines.length} 行</div>
+              <button class="collapse-toggle" onclick="toggleCollapse('${blockId}')" title="摺疊/展開">▼</button>
+            </div>
+          </div>
+          <div class="log-content-area" id="${blockId}-content"></div>
+        </div>`;
+
+      const contentEl = document.getElementById(`${blockId}-content`);
+
+      // Custom chunked renderer for merged (lines include source tag)
+      function renderMergedChunk(offset) {
+        const end   = Math.min(offset + CHUNK_SIZE, renderLines.length);
+        const batch = renderLines.slice(offset, end);
+
+        const html = batch.map(item => {
+          const level = getLogLevel(item.raw).toLowerCase();
+          return `<div class="log-line file-color-${item.ci} level-${level}">${item.src}${highlightKeyword(item.raw, keyword, opts.useRegex)}</div>`;
+        }).join('');
+
+        let target = contentEl;
+        if (showLN) {
+          let wrapper = contentEl.querySelector('.line-numbers');
+          if (!wrapper) {
+            wrapper = document.createElement('div');
+            wrapper.className = 'line-numbers';
+            contentEl.appendChild(wrapper);
+          }
+          target = wrapper;
+        }
+        target.insertAdjacentHTML('beforeend', html);
+
+        if (end < renderLines.length) {
+          const remaining = renderLines.length - end;
+          const btn = document.createElement('button');
+          btn.className = 'load-more-btn';
+          btn.textContent = `▼ 顯示更多（已顯示 ${end} / 共 ${renderLines.length} 行，剩餘 ${remaining} 行）`;
+          btn.onclick = () => { btn.remove(); renderMergedChunk(end); };
+          contentEl.appendChild(btn);
+        }
+      }
+
+      renderMergedChunk(0);
+    }
+
+    // ── Collapse / Expand ──────────────────────────────────────
+    function toggleCollapse(elementId) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      el.classList.toggle('collapsed');
+      const btn = el.querySelector('.collapse-toggle');
+      if (btn) {
+        const collapsed = el.classList.contains('collapsed');
+        btn.textContent = collapsed ? '▶' : '▼';
+        btn.title = collapsed ? '展開' : '摺疊';
+      }
+    }
+
+    window.toggleCollapse = toggleCollapse;
+
+    // ── File processing ────────────────────────────────────────
     function processFiles(files) {
       files.forEach(file => {
-        // 檢查是否已存在相同檔案名
         const existingIndex = logContents.findIndex(log => log.name === file.name);
-
         const reader = new FileReader();
         reader.onload = function(e) {
+          const rawLines = e.target.result
+            .split('\n')
+            .filter(line => line.trim() !== '');
+
           const logData = {
-            name: file.name,
-            content: e.target.result,
-            size: file.size,
-            id: Date.now() + Math.random() // 唯一ID
+            name:    file.name,
+            content: e.target.result, // kept for export
+            lines:   rawLines,         // pre-computed for rendering
+            size:    file.size,
+            id:      Date.now() + Math.random(),
           };
 
           if (existingIndex >= 0) {
-            // 替換現有檔案
             logContents[existingIndex] = logData;
           } else {
-            // 新增檔案
             logContents.push(logData);
           }
 
@@ -1093,614 +1288,219 @@
       });
     }
 
-    // 更新檔案列表
+    // ── File list ──────────────────────────────────────────────
     function updateFileList() {
       if (logContents.length === 0) {
-        fileList.style.display = 'none';
-        clearAllBtn.style.display = 'none';
+        fileList.style.display   = 'none';
+        clearAllBtn.style.display  = 'none';
         exportControls.style.display = 'none';
         return;
       }
 
-      fileList.style.display = 'block';
-      clearAllBtn.style.display = 'inline-block';
+      fileList.style.display   = 'block';
+      clearAllBtn.style.display  = 'inline-block';
       exportControls.style.display = 'flex';
 
       fileItems.innerHTML = logContents.map(log => {
-        const idx = getFileColorIndex(log.name);
-        const dotColor = FILE_COLORS[idx % FILE_COLORS.length];
+        const idx   = getFileColorIndex(log.name);
+        const color = FILE_COLORS[idx % FILE_COLORS.length];
         return `
           <div class="file-item">
             <div class="file-info">
-              <span class="file-color-dot" style="background:${dotColor}"></span>
-              <span class="file-name">${log.name}</span>
+              <span class="file-color-dot" style="background:${color}"></span>
+              <span class="file-name">${escapeHtml(log.name)}</span>
               <span class="file-size">${formatFileSize(log.size)}</span>
             </div>
             <button class="delete-btn" onclick="removeFile('${log.id}')">✕ 刪除</button>
-          </div>
-        `;
+          </div>`;
       }).join('');
     }
 
-    // 刪除單一檔案
     function removeFile(fileId) {
       logContents = logContents.filter(log => log.id != fileId);
-
-      // 重新計算顏色映射
       fileColorMap.clear();
       colorIndex = 0;
-      logContents.forEach(log => {
-        getFileColorIndex(log.name); // 重新分配顏色
-      });
-
+      logContents.forEach(log => getFileColorIndex(log.name));
       updateFileList();
       displayLogs();
       displayMergedLogs();
     }
 
-    // 格式化檔案大小
+    window.removeFile = removeFile;
+
+    // ── Utility ────────────────────────────────────────────────
     function formatFileSize(bytes) {
-      if (bytes === 0) return '0 Bytes';
-      const k = 1024;
-      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      if (bytes === 0) return '0 B';
+      const k = 1024, sizes = ['B','KB','MB','GB'];
       const i = Math.floor(Math.log(bytes) / Math.log(k));
       return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
 
-    function highlightKeyword(text, keyword) {
-      if (!keyword) return text;
-      // 避免 XSS
-      const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-      return safeText.replace(new RegExp(keyword, 'gi'), match => `<span class="highlight">${match}</span>`);
-    }
-
-    // 解析日期函數 - 支援多種格式
-    function parseLogDate(line) {
-      // 常見的日期格式
-      const datePatterns = [
-        /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3})/,  // 2024-01-15 10:30:45,123
-        /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})/,  // 2024-01-15 10:30:45.123
-        /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})/,         // 2024-01-15 10:30:45
-        /(\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2})/,       // 2024/01/15 10:30:45
-        /(\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2})/,       // 15/01/2024 10:30:45
-      ];
-
-      for (const pattern of datePatterns) {
-        const match = line.match(pattern);
-        if (match) {
-          return new Date(match[1].replace(',', '.'));
-        }
-      }
-      return null;
-    }
-
-    // 檢查日期是否在指定範圍內
-    function isDateInRange(logDate, startDate, endDate) {
-      if (!logDate) return !startDate && !endDate;
-
-      const logTime = logDate.getTime();
-
-      if (startDate && logTime < startDate.getTime()) return false;
-      if (endDate && logTime > endDate.getTime() + 86400000) return false; // 加一天，包含結束日期整天
-
-      return true;
-    }
-
-    // 檢查 log 等級
-    function getLogLevel(line) {
-      const levelPatterns = {
-        'ERROR': /ERROR|FATAL|SEVERE/i,
-        'WARN': /WARN|WARNING/i,
-        'INFO': /INFO/i,
-        'DEBUG': /DEBUG/i,
-        'TRACE': /TRACE|VERBOSE/i
-      };
-
-      for (const [level, pattern] of Object.entries(levelPatterns)) {
-        if (pattern.test(line)) return level;
-      }
-      return 'INFO'; // 預設等級
-    }
-
-    // 檢查 log 等級是否被選中
-    function isLevelSelected(level) {
-      switch (level) {
-        case 'ERROR': return errorLevelCb.checked;
-        case 'WARN': return warnLevelCb.checked;
-        case 'INFO': return infoLevelCb.checked;
-        case 'DEBUG': return debugLevelCb.checked;
-        case 'TRACE': return traceLevelCb.checked;
-        default: return true;
-      }
-    }
-
-    // 執行搜尋匹配
-    function matchesSearch(line, searchText, useRegex, caseSensitive) {
-      if (!searchText) return true;
-
-      try {
-        if (useRegex) {
-          const flags = caseSensitive ? 'g' : 'gi';
-          const regex = new RegExp(searchText, flags);
-          return regex.test(line);
-        } else {
-          const text = caseSensitive ? line : line.toLowerCase();
-          const search = caseSensitive ? searchText : searchText.toLowerCase();
-          return text.includes(search);
-        }
-      } catch (e) {
-        // 如果正則表達式無效，回退到普通搜尋
-        const text = caseSensitive ? line : line.toLowerCase();
-        const search = caseSensitive ? searchText : searchText.toLowerCase();
-        return text.includes(search);
-      }
-    }
-
-    // 多關鍵字搜尋
-    function matchesMultiKeywords(line, keywords, logic, useRegex, caseSensitive) {
-      if (!keywords) return true;
-
-      const keywordList = logic === 'and' ?
-        keywords.split(',').map(k => k.trim()).filter(k => k) :
-        keywords.split('|').map(k => k.trim()).filter(k => k);
-
-      if (keywordList.length === 0) return true;
-
-      if (logic === 'and') {
-        return keywordList.every(keyword =>
-          matchesSearch(line, keyword, useRegex, caseSensitive)
-        );
-      } else {
-        return keywordList.some(keyword =>
-          matchesSearch(line, keyword, useRegex, caseSensitive)
-        );
-      }
-    }
-
-    // 篩選單行 log
-    function filterLogLine(line, options) {
-      const {
-        searchText,
-        multiKeywords,
-        searchLogic,
-        useRegex,
-        caseSensitive,
-        startDate,
-        endDate
-      } = options;
-
-      // 日期過濾
-      const logDate = parseLogDate(line);
-      if (!isDateInRange(logDate, startDate, endDate)) {
-        return false;
-      }
-
-      // Log 等級過濾
-      const level = getLogLevel(line);
-      if (!isLevelSelected(level)) {
-        return false;
-      }
-
-      // 搜尋過濾
-      if (multiKeywords) {
-        if (!matchesMultiKeywords(line, multiKeywords, searchLogic, useRegex, caseSensitive)) {
-          return false;
-        }
-      } else if (searchText) {
-        if (!matchesSearch(line, searchText, useRegex, caseSensitive)) {
-          return false;
-        }
-      }
-
-      return true;
-    }
-
-    // 獲取當前篩選選項
-    function getFilterOptions() {
-      const startDate = startDateInput.value ? new Date(startDateInput.value) : null;
-      const endDate = endDateInput.value ? new Date(endDateInput.value) : null;
-      const searchLogic = document.querySelector('input[name="searchLogic"]:checked').value;
-
-      return {
-        searchText: searchInput.value.trim(),
-        multiKeywords: multiKeywordsInput.value.trim(),
-        searchLogic,
-        useRegex: regexSearchCb.checked,
-        caseSensitive: caseSensitiveCb.checked,
-        startDate,
-        endDate
-      };
-    }
-
-    // 檔案下載功能
-    function downloadFile(content, filename, contentType = 'text/plain') {
-      const blob = new Blob([content], { type: contentType });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    }
-
-    // 獲取檔案顏色索引
-    function getFileColorIndex(fileName) {
-      if (!fileColorMap.has(fileName)) {
-        fileColorMap.set(fileName, colorIndex % 8);
-        colorIndex++;
-      }
-      return fileColorMap.get(fileName);
-    }
-
-    // 格式化日期用於檔案名稱
     function formatDateForFilename(date = new Date()) {
       return date.toISOString().replace(/[:.]/g, '-').slice(0, 19);
     }
 
-    // 移除 HTML 標籤
     function stripHtmlTags(str) {
       return str.replace(/<[^>]*>/g, '');
     }
 
-    // 匯出過濾後的搜尋結果
+    // ── Export ─────────────────────────────────────────────────
+    function downloadFile(content, filename) {
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url  = URL.createObjectURL(blob);
+      const a    = Object.assign(document.createElement('a'), { href: url, download: filename });
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
     function exportFilteredResults() {
-      const options = getFilterOptions();
-      let exportContent = '';
-      let totalLines = 0;
+      const opts = getFilterOptions();
+      let out = '', total = 0;
+      const ts = new Date().toLocaleString('zh-TW');
 
-      // 生成檔案標頭
-      const timestamp = new Date().toLocaleString('zh-TW');
-      exportContent += `# 過濾搜尋結果匯出\n`;
-      exportContent += `# 匯出時間: ${timestamp}\n`;
-      exportContent += `# 原始檔案數量: ${logContents.length}\n`;
-
-      // 添加篩選條件資訊
-      if (options.searchText || options.multiKeywords) {
-        exportContent += `# 搜尋條件: ${options.multiKeywords || options.searchText}\n`;
-      }
-      if (options.startDate || options.endDate) {
-        exportContent += `# 日期範圍: ${options.startDate ? options.startDate.toLocaleDateString('zh-TW') : '不限'} 至 ${options.endDate ? options.endDate.toLocaleDateString('zh-TW') : '不限'}\n`;
-      }
-      exportContent += `\n`;
-
-      logContents.forEach((log, logIndex) => {
-        let lines = log.content.split('\n').filter(line => line.trim() !== '');
-        let filteredLines = lines.filter(line => filterLogLine(line, options));
-
-        if (filteredLines.length > 0) {
-          exportContent += `========== 檔案: ${log.name} (${filteredLines.length}/${lines.length} 行) ==========\n`;
-          filteredLines.forEach((line, lineIndex) => {
-            totalLines++;
-            const cleanLine = stripHtmlTags(line);
-            exportContent += `${cleanLine}\n`;
-          });
-          exportContent += `\n`;
-        }
-      });
-
-      exportContent += `\n# 總匯出行數: ${totalLines}\n`;
-
-      if (totalLines === 0) {
-        alert('沒有符合篩選條件的記錄可匯出！');
-        return;
-      }
-
-      const filename = `filtered_logs_${formatDateForFilename()}.log`;
-      downloadFile(exportContent, filename);
-
-      alert(`已成功匯出 ${totalLines} 行記錄至 ${filename}`);
-    }
-
-    // 匯出合併檔案
-    function exportMergedLogs() {
-      const options = getFilterOptions();
-      let allLines = [];
+      out += `# 過濾搜尋結果匯出\n# 匯出時間: ${ts}\n# 原始檔案數量: ${logContents.length}\n`;
+      if (opts.searchText || opts.multiKeywords)
+        out += `# 搜尋條件: ${opts.multiKeywords || opts.searchText}\n`;
+      if (opts.startDate || opts.endDate)
+        out += `# 日期範圍: ${opts.startDate ? opts.startDate.toLocaleDateString('zh-TW') : '不限'} 至 ${opts.endDate ? opts.endDate.toLocaleDateString('zh-TW') : '不限'}\n`;
+      out += '\n';
 
       logContents.forEach(log => {
-        log.content.split('\n').forEach(line => {
-          if (line.trim() === '') return;
-          if (!filterLogLine(line, options)) return;
+        const filtered = log.lines.filter(line => filterLogLine(line, opts));
+        if (!filtered.length) return;
+        out += `========== 檔案: ${log.name} (${filtered.length}/${log.lines.length} 行) ==========\n`;
+        filtered.forEach(line => { total++; out += line + '\n'; });
+        out += '\n';
+      });
 
-          const logDate = parseLogDate(line);
-          allLines.push({
-            time: logDate ? logDate.getTime() : 0,
-            line: stripHtmlTags(line),
-            file: log.name,
-            dateString: logDate ? logDate.toISOString() : null
-          });
+      out += `\n# 總匯出行數: ${total}\n`;
+      if (total === 0) { alert('沒有符合篩選條件的記錄可匯出！'); return; }
+
+      downloadFile(out, `filtered_logs_${formatDateForFilename()}.log`);
+      alert(`已成功匯出 ${total} 行記錄`);
+    }
+
+    function exportMergedResult() {
+      const opts = getFilterOptions();
+      const all  = [];
+
+      logContents.forEach(log => {
+        log.lines.forEach(line => {
+          if (!filterLogLine(line, opts)) return;
+          const d = parseLogDate(line);
+          all.push({ time: d ? d.getTime() : 0, line, file: log.name });
         });
       });
 
-      // 依時間排序
-      allLines.sort((a, b) => {
+      all.sort((a, b) => {
         if (a.time === 0 && b.time === 0) return 0;
         if (a.time === 0) return 1;
         if (b.time === 0) return -1;
         return a.time - b.time;
       });
 
-      if (allLines.length === 0) {
-        alert('沒有符合篩選條件的記錄可匯出！');
-        return;
-      }
+      if (!all.length) { alert('沒有符合篩選條件的記錄可匯出！'); return; }
 
-      // 生成匯出內容
-      const timestamp = new Date().toLocaleString('zh-TW');
-      let exportContent = `# 合併時間排序結果匯出\n`;
-      exportContent += `# 匯出時間: ${timestamp}\n`;
-      exportContent += `# 合併檔案數量: ${logContents.length}\n`;
-      exportContent += `# 檔案列表: ${logContents.map(log => log.name).join(', ')}\n`;
+      const ts = new Date().toLocaleString('zh-TW');
+      let out = `# 合併時間排序結果匯出\n# 匯出時間: ${ts}\n`;
+      out += `# 合併檔案數量: ${logContents.length}\n`;
+      out += `# 檔案列表: ${logContents.map(l => l.name).join(', ')}\n`;
+      if (opts.searchText || opts.multiKeywords)
+        out += `# 搜尋條件: ${opts.multiKeywords || opts.searchText}\n`;
+      if (opts.startDate || opts.endDate)
+        out += `# 日期範圍: ${opts.startDate ? opts.startDate.toLocaleDateString('zh-TW') : '不限'} 至 ${opts.endDate ? opts.endDate.toLocaleDateString('zh-TW') : '不限'}\n`;
+      out += `# 總行數: ${all.length}\n\n`;
 
-      // 添加篩選條件資訊
-      if (options.searchText || options.multiKeywords) {
-        exportContent += `# 搜尋條件: ${options.multiKeywords || options.searchText}\n`;
-      }
-      if (options.startDate || options.endDate) {
-        exportContent += `# 日期範圍: ${options.startDate ? options.startDate.toLocaleDateString('zh-TW') : '不限'} 至 ${options.endDate ? options.endDate.toLocaleDateString('zh-TW') : '不限'}\n`;
-      }
-      exportContent += `# 總行數: ${allLines.length}\n\n`;
+      all.forEach(item => { out += `[${item.file}] ${item.line}\n`; });
 
-      allLines.forEach((item, index) => {
-        exportContent += `[${item.file}] ${item.line}\n`;
-      });
-
-      const filename = `merged_logs_${formatDateForFilename()}.log`;
-      downloadFile(exportContent, filename);
-
-      alert(`已成功匯出 ${allLines.length} 行合併記錄至 ${filename}`);
+      downloadFile(out, `merged_logs_${formatDateForFilename()}.log`);
+      alert(`已成功匯出 ${all.length} 行合併記錄`);
     }
 
-    function displayLogs() {
-      const options = getFilterOptions();
-      const displayKeyword = options.multiKeywords || options.searchText;
-      const showLineNumbers = showLineNumbersCb.checked;
-
-      if (logContents.length === 0) {
-        logsDiv.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-state-icon">📁</div>
-            <p>請選擇一個或多個 Log 檔案開始瀏覽</p>
-          </div>
-        `;
-        return;
-      }
-
-      logsDiv.innerHTML = '';
-      let totalFilteredLines = 0;
-
-      logContents.forEach(log => {
-        let lines = log.content.split('\n').filter(line => line.trim() !== '');
-        let filteredLines = lines.filter(line => filterLogLine(line, options));
-
-        totalFilteredLines += filteredLines.length;
-
-        const logBlock = document.createElement('div');
-        const ci = getFileColorIndex(log.name);
-        logBlock.className = `log-block file-color-${ci}`;
-
-        let contentHTML = '';
-        if (filteredLines.length > 0) {
-          const lineHTML = filteredLines.map(line => {
-            const level = getLogLevel(line).toLowerCase();
-            return `<div class="log-line level-${level}">${highlightKeyword(line, displayKeyword)}</div>`;
-          }).join('');
-          contentHTML = showLineNumbers
-            ? `<div class="line-numbers">${lineHTML}</div>`
-            : lineHTML;
-        } else {
-          contentHTML = '<div style="color:var(--text-3);font-size:13px;font-style:italic;padding:4px 0;">沒有符合篩選條件的記錄</div>';
-        }
-
-        const blockId = `log-block-${ci}-${Date.now()}`;
-        logBlock.id = blockId;
-        logBlock.innerHTML = `
-          <div class="sticky-header">
-            <div class="header-main">
-              <span>📄</span>
-              <span>${log.name}</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div class="header-stats">${filteredLines.length}${filteredLines.length !== lines.length ? `/${lines.length}` : ''} 行</div>
-              <button class="collapse-toggle" onclick="toggleCollapse('${blockId}')" title="摺疊/展開">▼</button>
-            </div>
-          </div>
-          <div class="log-content-area" id="${blockId}-content">${contentHTML}</div>
-        `;
-
-        logsDiv.appendChild(logBlock);
-      });
-
-      // 如果沒有任何符合條件的記錄
-      if (totalFilteredLines === 0) {
-        logsDiv.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-state-icon">🔍</div>
-            <p>沒有找到符合篩選條件的記錄</p>
-            <p>請嘗試調整篩選條件</p>
-          </div>
-        `;
-      }
-    }
-
-    function displayMergedLogs() {
-      const options = getFilterOptions();
-      const displayKeyword = options.multiKeywords || options.searchText;
-      const showLineNumbers = showLineNumbersCb.checked;
-
-      if (logContents.length === 0) {
-        mergedLogsDiv.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-state-icon">⏱️</div>
-            <p>載入檔案後，這裡會顯示按時間排序的合併結果</p>
-          </div>
-        `;
-        return;
-      }
-
-      let allLines = [];
-      logContents.forEach(log => {
-        log.content.split('\n').forEach(line => {
-          if (line.trim() === '') return;
-          if (!filterLogLine(line, options)) return;
-
-          const logDate = parseLogDate(line);
-          allLines.push({
-            time: logDate ? logDate.getTime() : 0,
-            line,
-            file: log.name,
-            dateString: logDate ? logDate.toISOString() : null
-          });
-        });
-      });
-
-      // 依時間排序
-      allLines.sort((a, b) => {
-        if (a.time === 0 && b.time === 0) return 0;
-        if (a.time === 0) return 1;
-        if (b.time === 0) return -1;
-        return a.time - b.time;
-      });
-
-      if (allLines.length === 0) {
-        mergedLogsDiv.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-state-icon">🔍</div>
-            <p>沒有找到符合篩選條件的記錄</p>
-            <p>請嘗試調整篩選條件</p>
-          </div>
-        `;
-        return;
-      }
-
-      const lineHTML = allLines.map(l => {
-        const ci = getFileColorIndex(l.file);
-        const level = getLogLevel(l.line).toLowerCase();
-        const sourceTag = `<span class="merged-log-item file-color-${ci}"><span class="log-source">${l.file}</span></span>`;
-        return `<div class="log-line file-color-${ci} level-${level}">${sourceTag}${highlightKeyword(l.line, displayKeyword)}</div>`;
-      }).join('');
-
-      const mergedContent = showLineNumbers
-        ? `<div class="line-numbers">${lineHTML}</div>`
-        : lineHTML;
-
-      mergedLogsDiv.innerHTML = `
-        <div class="sticky-header">
-          <div class="header-main">
-            <span>📊 合併結果</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <div class="header-stats">${allLines.length} 行</div>
-            <button class="collapse-toggle" onclick="toggleCollapse('mergedLogs')" title="摺疊/展開">▼</button>
-          </div>
-        </div>
-        <div class="log-content-area">${mergedContent}</div>
-      `;
-    }
-
-    // 進階篩選事件監聽器
-    function addFilterEventListeners() {
-      // 日期範圍篩選
-      startDateInput.addEventListener('change', () => {
-        displayLogs();
-        displayMergedLogs();
-      });
-
-      endDateInput.addEventListener('change', () => {
-        displayLogs();
-        displayMergedLogs();
-      });
-
-      // 清除日期按鈕
-      clearDateBtn.addEventListener('click', () => {
-        startDateInput.value = '';
-        endDateInput.value = '';
-        displayLogs();
-        displayMergedLogs();
-      });
-
-      // Log 等級篩選
-      [errorLevelCb, warnLevelCb, infoLevelCb, debugLevelCb, traceLevelCb].forEach(cb => {
-        cb.addEventListener('change', () => {
-          displayLogs();
-          displayMergedLogs();
-        });
-      });
-
-      // 搜尋選項
-      regexSearchCb.addEventListener('change', () => {
-        displayLogs();
-        displayMergedLogs();
-      });
-
-      caseSensitiveCb.addEventListener('change', () => {
-        displayLogs();
-        displayMergedLogs();
-      });
-
-      // 多關鍵字搜尋
-      multiKeywordsInput.addEventListener('input', () => {
-        if (multiKeywordsInput.value.trim()) {
-          searchInput.value = ''; // 清除單一搜尋框
-        }
-        displayLogs();
-        displayMergedLogs();
-      });
-
-      // 搜尋邏輯選項
-      searchLogicRadios.forEach(radio => {
-        radio.addEventListener('change', () => {
-          displayLogs();
-          displayMergedLogs();
-        });
-      });
-
-      // 行號顯示切換
-      showLineNumbersCb.addEventListener('change', () => {
-        displayLogs();
-        displayMergedLogs();
-      });
-
-      // 匯出按鈕事件
-      exportFilteredBtn.addEventListener('click', exportFilteredResults);
-      exportMergedBtn.addEventListener('click', exportMergedLogs);
-    }
-
-    // 更新原有的搜尋事件監聽器
-    searchInput.removeEventListener('input', () => {
+    // ── Debounced refresh ──────────────────────────────────────
+    const debouncedRefresh = debounce(() => {
       displayLogs();
       displayMergedLogs();
+    }, DEBOUNCE_MS);
+
+    // ── Event listeners ────────────────────────────────────────
+
+    // Drag & drop
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', e => { e.preventDefault(); dropZone.classList.remove('dragover'); });
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      const files = Array.from(e.dataTransfer.files).filter(f => f.name.endsWith('.log') || f.name.endsWith('.txt'));
+      if (files.length) processFiles(files);
+    });
+    dropZone.addEventListener('click', () => logFilesInput.click());
+
+    // File picker
+    logFilesInput.addEventListener('change', e => {
+      const files = Array.from(e.target.files);
+      if (files.length) processFiles(files);
     });
 
+    // Search — clears multi-keyword field when used
     searchInput.addEventListener('input', () => {
-      if (searchInput.value.trim()) {
-        multiKeywordsInput.value = ''; // 清除多關鍵字搜尋框
-      }
-      displayLogs();
-      displayMergedLogs();
+      if (searchInput.value.trim()) multiKeywordsInput.value = '';
+      debouncedRefresh();
     });
 
-    // 初始化事件監聽器
-    addFilterEventListeners();
+    // Multi-keyword — clears search field when used
+    multiKeywordsInput.addEventListener('input', () => {
+      if (multiKeywordsInput.value.trim()) searchInput.value = '';
+      debouncedRefresh();
+    });
 
-    // 摺疊/展開功能
-    function toggleCollapse(elementId) {
-      const element = elementId === 'mergedLogs' ? mergedLogsDiv : document.getElementById(elementId);
-      if (element) {
-        element.classList.toggle('collapsed');
+    // All other filter controls
+    [startDateInput, endDateInput].forEach(el => el.addEventListener('change', debouncedRefresh));
+    [errorLevelCb, warnLevelCb, infoLevelCb, debugLevelCb, traceLevelCb,
+     regexSearchCb, caseSensitiveCb, showLineNumbersCb
+    ].forEach(el => el.addEventListener('change', debouncedRefresh));
+    searchLogicRadios.forEach(r => r.addEventListener('change', debouncedRefresh));
 
-        // 更新按鈕圖示
-        const button = element.querySelector('.collapse-toggle');
-        if (button) {
-          button.textContent = element.classList.contains('collapsed') ? '▶' : '▼';
-          button.title = element.classList.contains('collapsed') ? '展開' : '摺疊';
-        }
-      }
-    }
+    clearDateBtn.addEventListener('click', () => {
+      startDateInput.value = '';
+      endDateInput.value = '';
+      debouncedRefresh();
+    });
 
-    // 全域函數，讓 onclick 可以存取
-    window.toggleCollapse = toggleCollapse;
+    // Export buttons
+    exportFilteredBtn.addEventListener('click', exportFilteredResults);
+    exportMergedBtn.addEventListener('click', exportMergedResult);
+
+    // Clear all
+    clearAllBtn.addEventListener('click', () => {
+      if (!confirm('確定要清除所有檔案嗎？')) return;
+
+      logContents = [];
+      fileColorMap.clear();
+      colorIndex = 0;
+      pendingChunks.clear();
+
+      updateFileList();
+      displayLogs();
+      displayMergedLogs();
+
+      logFilesInput.value = '';
+      searchInput.value = '';
+      multiKeywordsInput.value = '';
+      startDateInput.value = '';
+      endDateInput.value = '';
+      errorLevelCb.checked = true;
+      warnLevelCb.checked  = true;
+      infoLevelCb.checked  = true;
+      debugLevelCb.checked = true;
+      traceLevelCb.checked = true;
+      regexSearchCb.checked   = false;
+      caseSensitiveCb.checked = false;
+      showLineNumbersCb.checked = false;
+      document.querySelector('input[name="searchLogic"][value="and"]').checked = true;
+    });
   </script>
 </body>
 </html>
