@@ -3,943 +3,875 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <title>Log 檔案瀏覽器</title>
   <style>
-    * {
-      box-sizing: border-box;
+    :root {
+      --bg: #f1f5f9;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --surface-3: #f1f5f9;
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text-1: #0f172a;
+      --text-2: #475569;
+      --text-3: #94a3b8;
+      --accent: #4f46e5;
+      --accent-hover: #4338ca;
+      --accent-light: #eef2ff;
+      --radius-sm: 6px;
+      --radius: 10px;
+      --radius-lg: 14px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.08);
+      --shadow: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-lg: 0 10px 30px rgba(0,0,0,0.1), 0 4px 10px rgba(0,0,0,0.05);
+      --mono: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', 'Menlo', monospace;
     }
-    
-    body { 
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
       min-height: 100vh;
-      color: #333;
+      color: var(--text-1);
+      line-height: 1.5;
+      padding: 28px 20px 48px;
+      -webkit-font-smoothing: antialiased;
     }
-    
+
     .container {
-      max-width: 1200px;
+      max-width: 1320px;
       margin: 0 auto;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 15px;
-      padding: 30px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(10px);
     }
-    
-    h1 {
+
+    /* ── App Header ── */
+    .app-header {
       text-align: center;
-      color: #4a5568;
-      margin-bottom: 30px;
-      font-size: 2.5rem;
-      font-weight: 300;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 32px;
     }
-    
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-1);
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+
+    .app-subtitle {
+      font-size: 0.875rem;
+      color: var(--text-3);
+      font-weight: 400;
+    }
+
     h2 {
-      color: #2d3748;
-      margin: 30px 0 15px 0;
-      font-size: 1.5rem;
-      border-left: 4px solid #667eea;
-      padding-left: 15px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-2);
+      margin: 28px 0 12px;
+      padding-left: 12px;
+      border-left: 3px solid var(--accent);
+      letter-spacing: 0.01em;
     }
-    
+
+    /* ── Drop Zone ── */
+    .drop-zone {
+      border: 2px dashed var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 40px 20px;
+      text-align: center;
+      background: var(--surface);
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+      cursor: pointer;
+      margin-bottom: 16px;
+    }
+
+    .drop-zone:hover {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .drop-zone.dragover {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      transform: scale(1.01);
+    }
+
+    .drop-zone-icon {
+      font-size: 2.25rem;
+      margin-bottom: 10px;
+      opacity: 0.6;
+    }
+
+    .drop-zone-text {
+      color: var(--text-2);
+      font-size: 0.9375rem;
+      line-height: 1.7;
+    }
+
+    .drop-zone-text strong {
+      color: var(--text-1);
+      font-weight: 600;
+    }
+
+    /* ── Controls Row ── */
     .controls {
       display: flex;
       flex-wrap: wrap;
-      gap: 15px;
-      margin-bottom: 25px;
-      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      align-items: flex-start;
     }
-    
+
     input[type="file"] {
       flex: 1;
       min-width: 200px;
-      padding: 12px;
-      border: 2px solid #e2e8f0;
-      border-radius: 8px;
-      background: white;
-      font-size: 14px;
-      transition: border-color 0.3s ease;
+      padding: 9px 13px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text-2);
+      cursor: pointer;
+      transition: border-color 0.2s;
     }
-    
+
     input[type="file"]:focus {
       outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      border-color: var(--accent);
     }
-    
+
     #search {
-      flex: 1;
-      min-width: 200px;
-      padding: 12px 15px;
-      border: 2px solid #e2e8f0;
-      border-radius: 25px;
+      flex: 1.5;
+      min-width: 220px;
+      padding: 9px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
       font-size: 14px;
-      background: white;
-      transition: all 0.3s ease;
+      font-family: inherit;
+      background: var(--surface);
+      color: var(--text-1);
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-    
+
     #search:focus {
       outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
     }
-    
-    #logs, #mergedLogs {
-      max-height: 500px;
-      overflow: auto;
-      border: none;
-      padding: 20px;
-      background: #f8fafc;
-      margin-bottom: 25px;
-      border-radius: 12px;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
-      border-left: 4px solid #667eea;
-    }
-    
-    #logs::-webkit-scrollbar,
-    #mergedLogs::-webkit-scrollbar {
-      width: 8px;
-    }
-    
-    #logs::-webkit-scrollbar-track,
-    #mergedLogs::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 4px;
-    }
-    
-    #logs::-webkit-scrollbar-thumb,
-    #mergedLogs::-webkit-scrollbar-thumb {
-      background: #667eea;
-      border-radius: 4px;
-    }
-    
-    #logs::-webkit-scrollbar-thumb:hover,
-    #mergedLogs::-webkit-scrollbar-thumb:hover {
-      background: #5a67d8;
-    }
-    
-    pre {
-      white-space: pre-wrap;
-      word-break: break-all;
-      margin: 0;
-      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-      font-size: 13px;
-      line-height: 1.5;
-      color: #2d3748;
-    }
-    
-    .log-block {
-      margin-bottom: 20px;
-      background: white;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      border: 1px solid #e2e8f0;
-    }
-    
-    .highlight {
-      background: linear-gradient(120deg, #ffd700, #ffed4e);
-      padding: 2px 4px;
-      border-radius: 3px;
-      color: #2d3748;
-      font-weight: 500;
-    }
-    
-    .sticky-header {
-      position: sticky;
-      top: 0;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      padding: 15px 20px;
-      z-index: 10;
-      font-weight: 600;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-      border-radius: 8px 8px 0 0;
-      border-bottom: 3px solid rgba(255, 255, 255, 0.2);
-      margin-bottom: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 16px;
-    }
-    
-    .sticky-header .header-main {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .sticky-header .header-stats {
-      font-size: 14px;
-      background: rgba(255, 255, 255, 0.2);
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-weight: 500;
-    }
-    
-    .log-content-area {
-      /* background: white; */
-      border-radius: 0 0 8px 8px;
-      border: 1px solid #e2e8f0;
-      border-top: none;
-      padding: 20px;
-      max-height: 400px;
-      overflow-y: auto;
-      position: relative;
-    }
-    
-    .log-content-area::-webkit-scrollbar {
-      width: 8px;
-    }
-    
-    .log-content-area::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 4px;
-    }
-    
-    .log-content-area::-webkit-scrollbar-thumb {
-      background: #c1c1c1;
-      border-radius: 4px;
-    }
-    
-    .log-content-area::-webkit-scrollbar-thumb:hover {
-      background: #a8a8a8;
-    }
-    
-    /* 摺疊展開功能 */
-    .collapse-toggle {
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      font-size: 14px;
-      padding: 4px 8px;
-      border-radius: 4px;
-      transition: all 0.2s ease;
-    }
-    
-    .collapse-toggle:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-    
-    .collapsed .log-content-area {
-      display: none;
-    }
-    
-    .collapsed .sticky-header {
-      border-radius: 8px;
-      border-bottom: none;
-    }
-    
-    .divider {
-      border: none;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #667eea, transparent);
-      margin: 40px 0;
-    }
-    
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      color: #718096;
-    }
-    
-    .empty-state i {
-      font-size: 4rem;
-      margin-bottom: 20px;
-      color: #cbd5e0;
-    }
-    
-    /* 拖拉上傳區域 */
-    .drop-zone {
-      border: 2px dashed #cbd5e0;
-      border-radius: 12px;
-      padding: 40px 20px;
-      text-align: center;
-      margin-bottom: 20px;
-      background: #f8fafc;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-    
-    .drop-zone.dragover {
-      border-color: #667eea;
-      background: #e6fffa;
-      transform: scale(1.02);
-    }
-    
-    .drop-zone-text {
-      color: #718096;
-      font-size: 16px;
-      margin-top: 10px;
-    }
-    
-    .drop-zone-icon {
-      font-size: 3rem;
-      color: #cbd5e0;
-      margin-bottom: 15px;
-    }
-    
-    /* 檔案列表 */
-    .file-list {
-      background: white;
-      border-radius: 8px;
-      padding: 15px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      border: 1px solid #e2e8f0;
-    }
-    
-    .file-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid #f1f5f9;
-    }
-    
-    .file-item:last-child {
-      border-bottom: none;
-    }
-    
-    .file-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .file-name {
-      font-weight: 500;
-      color: #2d3748;
-    }
-    
-    .file-size {
-      font-size: 12px;
-      color: #718096;
-    }
-    
-    .delete-btn {
-      background: #fed7d7;
-      color: #c53030;
-      border: none;
-      border-radius: 6px;
-      padding: 6px 12px;
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    
-    .delete-btn:hover {
-      background: #fc8181;
-      color: white;
-    }
-    
+
+    #search::placeholder { color: var(--text-3); }
+
+    /* ── Buttons ── */
+    button { font-family: inherit; cursor: pointer; transition: all 0.18s; }
+
     .clear-all-btn {
-      background: #e53e3e;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 8px 16px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      margin-left: 10px;
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1.5px solid #fecaca;
+      border-radius: var(--radius);
+      padding: 9px 15px;
+      font-size: 13px;
+      font-weight: 500;
     }
-    
-    .clear-all-btn:hover {
-      background: #c53030;
+
+    .clear-all-btn:hover { background: #fee2e2; border-color: #fca5a5; }
+
+    .delete-btn {
+      background: transparent;
+      color: var(--text-3);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 5px 11px;
+      font-size: 12px;
+      font-weight: 500;
     }
-    
-    /* 匯出控制樣式 */
-    .export-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 10px;
-      padding: 15px;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      border: 1px solid #e2e8f0;
-    }
-    
+
+    .delete-btn:hover { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
+
     .export-btn {
-      padding: 10px 20px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      padding: 9px 16px;
+      background: var(--accent);
       color: white;
       border: none;
-      border-radius: 8px;
-      font-size: 14px;
+      border-radius: var(--radius);
+      font-size: 13px;
       font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
-    
+
     .export-btn:hover {
-      background: linear-gradient(135deg, #5a67d8, #6b46c1);
+      background: var(--accent-hover);
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
     }
-    
-    .export-btn:active {
-      transform: translateY(0);
-    }
-    
+
+    .export-btn:active { transform: translateY(0); box-shadow: none; }
+
     .export-btn:disabled {
-      background: #e2e8f0;
-      color: #a0aec0;
+      background: var(--border);
+      color: var(--text-3);
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
     }
-    
+
+    .clear-date-btn {
+      padding: 7px 13px;
+      background: var(--surface-3);
+      color: var(--text-2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .clear-date-btn:hover { background: var(--border); }
+
+    /* ── Export Controls ── */
+    .export-controls {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 12px 14px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border);
+      margin-top: 8px;
+    }
+
+    /* ── Line Number Toggle ── */
     .line-number-toggle {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      color: #4a5568;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-2);
       cursor: pointer;
       user-select: none;
-      margin-left: 10px;
-      padding: 8px 12px;
-      background: #f7fafc;
-      border-radius: 6px;
-      transition: background 0.2s ease;
+      padding: 7px 11px;
+      background: var(--surface-3);
+      border-radius: var(--radius-sm);
+      margin-left: 2px;
     }
-    
-    .line-number-toggle:hover {
-      background: #edf2f7;
-    }
-    
+
+    .line-number-toggle:hover { background: var(--border); }
+
     .line-number-toggle input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
-      accent-color: #667eea;
+      width: 14px;
+      height: 14px;
+      accent-color: var(--accent);
       cursor: pointer;
     }
-    
-    /* 進階篩選樣式 */
-    .advanced-filters {
-      margin-bottom: 25px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      border: 1px solid #e2e8f0;
-    }
-    
+
+    /* ── Advanced Filters ── */
+    .advanced-filters { margin-bottom: 20px; }
+
     .filter-section {
-      border: none;
-      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
       overflow: hidden;
+      background: var(--surface);
     }
-    
+
     .filter-header {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      padding: 15px 20px;
-      font-size: 16px;
+      background: var(--surface);
+      color: var(--text-1);
+      padding: 13px 18px;
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
       user-select: none;
       display: flex;
       align-items: center;
-      gap: 10px;
-      transition: background 0.3s ease;
+      gap: 8px;
+      list-style: none;
+      transition: background 0.15s;
     }
-    
-    .filter-header:hover {
-      background: linear-gradient(135deg, #5a67d8, #6b46c1);
+
+    .filter-header::-webkit-details-marker { display: none; }
+    .filter-header::marker { display: none; }
+    .filter-header:hover { background: var(--surface-2); }
+
+    details[open] .filter-header {
+      border-bottom: 1.5px solid var(--border);
     }
-    
+
+    .filter-header::after {
+      content: '▾';
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--text-3);
+      transition: transform 0.2s;
+    }
+
+    details[open] .filter-header::after {
+      transform: rotate(180deg);
+    }
+
     .filter-content {
-      padding: 20px;
+      padding: 18px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
     }
-    
-    .filter-group {
-      margin-bottom: 20px;
-    }
-    
-    .filter-group:last-child {
-      margin-bottom: 0;
-    }
-    
+
     .filter-label {
       display: block;
-      font-weight: 600;
-      color: #2d3748;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
       margin-bottom: 10px;
-      font-size: 14px;
     }
-    
-    /* 日期範圍樣式 */
+
+    /* ── Date Range ── */
     .date-range {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
     }
-    
+
     .date-input {
-      padding: 8px 12px;
-      border: 2px solid #e2e8f0;
-      border-radius: 6px;
-      font-size: 14px;
-      background: white;
-      transition: border-color 0.3s ease;
+      padding: 7px 11px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-family: inherit;
+      background: var(--surface);
+      color: var(--text-1);
+      transition: border-color 0.2s;
       flex: 1;
-      min-width: 140px;
+      min-width: 130px;
     }
-    
+
     .date-input:focus {
       outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
     }
-    
+
     .date-separator {
-      color: #718096;
+      color: var(--text-3);
+      font-size: 12px;
       font-weight: 500;
       white-space: nowrap;
     }
-    
-    .clear-date-btn {
-      padding: 8px 16px;
-      background: #f7fafc;
-      color: #4a5568;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-    }
-    
-    .clear-date-btn:hover {
-      background: #edf2f7;
-      border-color: #cbd5e0;
-    }
-    
-    /* Log 等級過濾樣式 */
+
+    /* ── Log Level Checkboxes ── */
     .level-filters {
       display: flex;
       flex-wrap: wrap;
-      gap: 15px;
+      gap: 7px;
     }
-    
+
     .level-checkbox {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 5px;
       cursor: pointer;
-      font-size: 14px;
-      color: #4a5568;
-      font-weight: 500;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
       user-select: none;
-      transition: color 0.2s ease;
+      padding: 5px 10px;
+      border-radius: 50px;
+      border: 1.5px solid var(--border);
+      background: var(--surface-3);
+      color: var(--text-2);
+      transition: all 0.18s;
     }
-    
-    .level-checkbox:hover {
-      color: #2d3748;
-    }
-    
+
+    label:has(#errorLevel:checked)  { background: #fef2f2; border-color: #fca5a5; color: #dc2626; }
+    label:has(#warnLevel:checked)   { background: #fffbeb; border-color: #fcd34d; color: #d97706; }
+    label:has(#infoLevel:checked)   { background: #eff6ff; border-color: #93c5fd; color: #2563eb; }
+    label:has(#debugLevel:checked)  { background: #f0fdf4; border-color: #86efac; color: #16a34a; }
+    label:has(#traceLevel:checked)  { background: #f5f3ff; border-color: #c4b5fd; color: #7c3aed; }
+
     .level-checkbox input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
-      accent-color: #667eea;
+      width: 13px;
+      height: 13px;
+      accent-color: var(--accent);
       cursor: pointer;
     }
-    
-    /* 搜尋選項樣式 */
-    .search-options {
+
+    /* ── Search Options ── */
+    .search-options, .logic-options {
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 12px;
     }
-    
-    .search-option {
+
+    .search-option, .logic-option {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       cursor: pointer;
-      font-size: 14px;
-      color: #4a5568;
+      font-size: 13px;
       font-weight: 500;
+      color: var(--text-2);
       user-select: none;
-      transition: color 0.2s ease;
     }
-    
-    .search-option:hover {
-      color: #2d3748;
-    }
-    
-    .search-option input[type="checkbox"] {
-      width: 16px;
-      height: 16px;
-      accent-color: #667eea;
+
+    .search-option:hover, .logic-option:hover { color: var(--text-1); }
+
+    .search-option input[type="checkbox"],
+    .logic-option input[type="radio"] {
+      width: 14px;
+      height: 14px;
+      accent-color: var(--accent);
       cursor: pointer;
     }
-    
-    /* 多關鍵字搜尋樣式 */
+
+    /* ── Multi-keyword ── */
     .multi-keyword {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
-    
+
     .multi-keyword-input {
-      padding: 10px 15px;
-      border: 2px solid #e2e8f0;
-      border-radius: 8px;
-      font-size: 14px;
-      background: white;
-      transition: border-color 0.3s ease;
+      padding: 8px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-family: inherit;
+      background: var(--surface);
+      color: var(--text-1);
+      transition: border-color 0.2s;
     }
-    
+
     .multi-keyword-input:focus {
       outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
     }
-    
-    .logic-options {
+
+    .multi-keyword-input::placeholder { color: var(--text-3); }
+
+    /* ── File List ── */
+    .file-list {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-bottom: 20px;
+      border: 1.5px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .file-list h3 {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin: 0 0 12px;
+    }
+
+    .file-item {
       display: flex;
-      gap: 20px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 9px 0;
+      border-bottom: 1px solid var(--border);
     }
-    
-    .logic-option {
+
+    .file-item:last-child { border-bottom: none; }
+
+    .file-info {
       display: flex;
       align-items: center;
-      gap: 8px;
-      cursor: pointer;
+      gap: 10px;
+    }
+
+    .file-color-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .file-name {
       font-size: 14px;
-      color: #4a5568;
       font-weight: 500;
-      user-select: none;
-      transition: color 0.2s ease;
+      color: var(--text-1);
     }
-    
-    .logic-option:hover {
-      color: #2d3748;
+
+    .file-size {
+      font-size: 11px;
+      color: var(--text-3);
+      background: var(--surface-3);
+      padding: 2px 8px;
+      border-radius: 50px;
+      font-weight: 500;
     }
-    
-      .logic-option input[type="radio"] {
-        width: 16px;
-        height: 16px;
-        accent-color: #667eea;
-        cursor: pointer;
-      }
-      
-      /* 合併日誌樣式 */
-      .merged-log-item .log-source {
-        background: #667eea;
-        color: white;
-        padding: 2px 8px;
-        border-radius: 4px;
-        font-size: 12px;
-        font-weight: 600;
-        margin-right: 8px;
-        display: inline-block;
-      }
-      
-      .merged-log-item:nth-child(odd) .log-source {
-        background: #764ba2;
-      }
-      
-      .merged-log-item:nth-child(even) .log-source {
-        background: #f093fb;
-        color: #333;
-      }
-      
-      /* 行號樣式 */
-      .line-numbers {
-        counter-reset: line-counter;
-      }
-      
-      .line-numbers .log-line {
-        counter-increment: line-counter;
-        position: relative;
-        padding-left: 4em;
-        line-height: 1.5;
-      }
-      
-      .line-numbers .log-line:before {
-        content: counter(line-counter);
-        position: absolute;
-        left: 0;
-        width: 3em;
-        text-align: right;
-        color: #a0aec0;
-        font-size: 12px;
-        border-right: 1px solid #e2e8f0;
-        padding-right: 10px;
-        margin-right: 10px;
-        user-select: none;
-      }
-      
-      .line-numbers .log-line:hover:before {
-        color: #667eea;
-        border-right-color: #667eea;
-      }
-      
-      /* 檔案固定顏色樣式 */
-      .file-color-0 .log-source { background: #3498db !important; color: white !important; }
-      .file-color-1 .log-source { background: #e74c3c !important; color: white !important; }
-      .file-color-2 .log-source { background: #2ecc71 !important; color: white !important; }
-      .file-color-3 .log-source { background: #f39c12 !important; color: white !important; }
-      .file-color-4 .log-source { background: #9b59b6 !important; color: white !important; }
-      .file-color-5 .log-source { background: #1abc9c !important; color: white !important; }
-      .file-color-6 .log-source { background: #e67e22 !important; color: white !important; }
-      .file-color-7 .log-source { background: #34495e !important; color: white !important; }
-      
-      /* 檔案顏色邊框和背景 */
-      .file-color-0 { border-left: 4px solid #3498db; background-color: rgba(52, 152, 219, 0.05); }
-      .file-color-1 { border-left: 4px solid #e74c3c; background-color: rgba(231, 76, 60, 0.05); }
-      .file-color-2 { border-left: 4px solid #2ecc71; background-color: rgba(46, 204, 113, 0.05); }
-      .file-color-3 { border-left: 4px solid #f39c12; background-color: rgba(243, 156, 18, 0.05); }
-      .file-color-4 { border-left: 4px solid #9b59b6; background-color: rgba(155, 89, 182, 0.05); }
-      .file-color-5 { border-left: 4px solid #1abc9c; background-color: rgba(26, 188, 156, 0.05); }
-      .file-color-6 { border-left: 4px solid #e67e22; background-color: rgba(230, 126, 34, 0.05); }
-      .file-color-7 { border-left: 4px solid #34495e; background-color: rgba(52, 73, 94, 0.05); }
-      
-      /* log block 檔案顏色適配 */
-      .log-block.file-color-0,
-      .log-block.file-color-1,
-      .log-block.file-color-2,
-      .log-block.file-color-3,
-      .log-block.file-color-4,
-      .log-block.file-color-5,
-      .log-block.file-color-6,
-      .log-block.file-color-7 {
-        margin-bottom: 2px;
-        padding: 10px;
-        border-radius: 6px;
-      }    /* 響應式設計 */
-    @media (max-width: 768px) {
-      body {
-        padding: 10px;
-      }
-      
-      .container {
-        padding: 20px;
-        border-radius: 10px;
-      }
-      
-      h1 {
-        font-size: 2rem;
-        margin-bottom: 20px;
-      }
-      
-      h2 {
-        font-size: 1.3rem;
-      }
-      
-      .controls {
-        flex-direction: column;
-      }
-      
-      input[type="file"],
-      #search {
-        width: 100%;
-        min-width: auto;
-      }
-      
-      #logs, #mergedLogs {
-        max-height: 300px;
-        padding: 15px;
-      }
-      
-      pre {
-        font-size: 12px;
-      }
-      
-      .sticky-header {
-        padding: 10px 15px;
-        font-size: 14px;
-      }
-      
-      /* 進階篩選響應式 */
-      .filter-content {
-        padding: 15px;
-      }
-      
-      .date-range {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      
-      .date-separator {
-        text-align: center;
-        margin: 5px 0;
-      }
-      
-      .level-filters {
-        flex-direction: column;
-        gap: 10px;
-      }
-      
-      .search-options {
-        flex-direction: column;
-        gap: 10px;
-      }
-      
-      .logic-options {
-        flex-direction: column;
-        gap: 10px;
-      }
-      
-      .filter-group {
-        margin-bottom: 15px;
-      }
-      
-      /* 匯出控制響應式 */
-      .export-controls {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
-      }
-      
-      .export-btn {
-        width: 100%;
-        justify-content: center;
-      }
-      
-      .line-number-toggle {
-        margin-left: 0;
-        justify-content: center;
-      }
+
+    /* ── Log Containers ── */
+    #logs, #mergedLogs {
+      margin-bottom: 8px;
     }
-    
-    @media (max-width: 480px) {
-      body {
-        padding: 5px;
-      }
-      
-      .container {
-        padding: 15px;
-        border-radius: 8px;
-      }
-      
-      h1 {
-        font-size: 1.5rem;
-      }
-      
-      h2 {
-        font-size: 1.2rem;
-        padding-left: 10px;
-      }
-      
-      #logs, #mergedLogs {
-        max-height: 250px;
-        padding: 10px;
-      }
-      
-      pre {
-        font-size: 11px;
-      }
-    }
-    
-    /* 動畫效果 */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
+
+    /* ── Log Block ── */
     .log-block {
-      animation: fadeIn 0.3s ease-out;
+      margin-bottom: 10px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      animation: fadeIn 0.2s ease-out;
     }
-    
-    /* 深色模式支援 */
+
+    /* File-specific left border on blocks */
+    .log-block.file-color-0 { border-left: 3px solid #3b82f6; }
+    .log-block.file-color-1 { border-left: 3px solid #ef4444; }
+    .log-block.file-color-2 { border-left: 3px solid #10b981; }
+    .log-block.file-color-3 { border-left: 3px solid #f59e0b; }
+    .log-block.file-color-4 { border-left: 3px solid #8b5cf6; }
+    .log-block.file-color-5 { border-left: 3px solid #06b6d4; }
+    .log-block.file-color-6 { border-left: 3px solid #f97316; }
+    .log-block.file-color-7 { border-left: 3px solid #64748b; }
+
+    /* ── Sticky Header ── */
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      padding: 11px 16px;
+      z-index: 10;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: white;
+      border-radius: calc(var(--radius-lg) - 1.5px) calc(var(--radius-lg) - 1.5px) 0 0;
+    }
+
+    .log-block.file-color-0 .sticky-header { background: linear-gradient(100deg, #2563eb, #3b82f6); }
+    .log-block.file-color-1 .sticky-header { background: linear-gradient(100deg, #dc2626, #ef4444); }
+    .log-block.file-color-2 .sticky-header { background: linear-gradient(100deg, #059669, #10b981); }
+    .log-block.file-color-3 .sticky-header { background: linear-gradient(100deg, #d97706, #f59e0b); }
+    .log-block.file-color-4 .sticky-header { background: linear-gradient(100deg, #7c3aed, #8b5cf6); }
+    .log-block.file-color-5 .sticky-header { background: linear-gradient(100deg, #0891b2, #06b6d4); }
+    .log-block.file-color-6 .sticky-header { background: linear-gradient(100deg, #ea580c, #f97316); }
+    .log-block.file-color-7 .sticky-header { background: linear-gradient(100deg, #475569, #64748b); }
+
+    /* Merged header uses accent */
+    #mergedLogs .sticky-header { background: linear-gradient(100deg, var(--accent-hover), var(--accent)); }
+
+    .sticky-header .header-main {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .sticky-header .header-stats {
+      font-size: 11px;
+      background: rgba(255,255,255,0.2);
+      padding: 3px 9px;
+      border-radius: 50px;
+      font-weight: 600;
+    }
+
+    .collapse-toggle {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: white;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: var(--radius-sm);
+      transition: background 0.15s;
+      font-family: inherit;
+      letter-spacing: 0.02em;
+    }
+
+    .collapse-toggle:hover { background: rgba(255,255,255,0.28); }
+
+    .collapsed .log-content-area { display: none; }
+    .collapsed .sticky-header { border-radius: var(--radius-lg); }
+
+    /* ── Log Source Badge ── */
+    .log-source {
+      display: inline-block;
+      padding: 1px 7px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-right: 5px;
+      vertical-align: middle;
+      letter-spacing: 0.02em;
+    }
+
+    /* Source badge colors in merged view */
+    .file-color-0 .log-source { background: #3b82f6; color: white; }
+    .file-color-1 .log-source { background: #ef4444; color: white; }
+    .file-color-2 .log-source { background: #10b981; color: white; }
+    .file-color-3 .log-source { background: #f59e0b; color: white; }
+    .file-color-4 .log-source { background: #8b5cf6; color: white; }
+    .file-color-5 .log-source { background: #06b6d4; color: white; }
+    .file-color-6 .log-source { background: #f97316; color: white; }
+    .file-color-7 .log-source { background: #64748b; color: white; }
+
+    /* ── Log Content Area ── */
+    .log-content-area {
+      padding: 10px 14px;
+      max-height: 440px;
+      overflow-y: auto;
+      background: var(--surface);
+      border-radius: 0 0 calc(var(--radius-lg) - 1.5px) calc(var(--radius-lg) - 1.5px);
+    }
+
+    .log-content-area::-webkit-scrollbar { width: 5px; }
+    .log-content-area::-webkit-scrollbar-track { background: transparent; }
+    .log-content-area::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+      border-radius: 3px;
+    }
+    .log-content-area::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
+
+    /* ── Log Lines ── */
+    .log-line {
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.65;
+      padding: 1px 6px;
+      border-radius: 3px;
+      border-left: 2px solid transparent;
+      transition: background 0.08s;
+    }
+
+    .log-line:hover { background: var(--surface-2); }
+
+    /* Log level colors — these take priority */
+    .log-line.level-error {
+      background: rgba(239,68,68,0.06);
+      border-left-color: #ef4444;
+      color: #991b1b;
+    }
+    .log-line.level-error:hover { background: rgba(239,68,68,0.1); }
+
+    .log-line.level-warn {
+      background: rgba(245,158,11,0.06);
+      border-left-color: #f59e0b;
+      color: #92400e;
+    }
+    .log-line.level-warn:hover { background: rgba(245,158,11,0.1); }
+
+    .log-line.level-info {
+      border-left-color: transparent;
+    }
+
+    .log-line.level-debug {
+      color: var(--text-3);
+    }
+
+    .log-line.level-trace {
+      color: var(--text-3);
+      opacity: 0.65;
+    }
+
+    /* Subtle file-color tint on merged view lines */
+    .log-line.file-color-0 { background: rgba(59,130,246,0.03); }
+    .log-line.file-color-1 { background: rgba(239,68,68,0.03); }
+    .log-line.file-color-2 { background: rgba(16,185,129,0.03); }
+    .log-line.file-color-3 { background: rgba(245,158,11,0.03); }
+    .log-line.file-color-4 { background: rgba(139,92,246,0.03); }
+    .log-line.file-color-5 { background: rgba(6,182,212,0.03); }
+    .log-line.file-color-6 { background: rgba(249,115,22,0.03); }
+    .log-line.file-color-7 { background: rgba(100,116,139,0.03); }
+
+    /* Level overrides file-color tint */
+    .log-line.level-error.file-color-0,
+    .log-line.level-error.file-color-1,
+    .log-line.level-error.file-color-2,
+    .log-line.level-error.file-color-3,
+    .log-line.level-error.file-color-4,
+    .log-line.level-error.file-color-5,
+    .log-line.level-error.file-color-6,
+    .log-line.level-error.file-color-7 {
+      background: rgba(239,68,68,0.06);
+    }
+
+    .log-line.level-warn.file-color-0,
+    .log-line.level-warn.file-color-1,
+    .log-line.level-warn.file-color-2,
+    .log-line.level-warn.file-color-3,
+    .log-line.level-warn.file-color-4,
+    .log-line.level-warn.file-color-5,
+    .log-line.level-warn.file-color-6,
+    .log-line.level-warn.file-color-7 {
+      background: rgba(245,158,11,0.06);
+    }
+
+    /* ── Keyword Highlight ── */
+    .highlight {
+      background: #fef08a;
+      padding: 0 3px;
+      border-radius: 2px;
+      color: #713f12;
+      font-weight: 600;
+    }
+
+    /* ── Line Numbers ── */
+    .line-numbers { counter-reset: line-counter; }
+
+    .line-numbers .log-line {
+      counter-increment: line-counter;
+      position: relative;
+      padding-left: 3.8em;
+    }
+
+    .line-numbers .log-line::before {
+      content: counter(line-counter);
+      position: absolute;
+      left: 0;
+      width: 2.9em;
+      text-align: right;
+      color: var(--text-3);
+      font-size: 11px;
+      border-right: 1px solid var(--border);
+      padding-right: 8px;
+      user-select: none;
+      font-family: var(--mono);
+    }
+
+    .line-numbers .log-line:hover::before {
+      color: var(--accent);
+      border-right-color: var(--accent);
+    }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      height: 1px;
+      background: var(--border);
+      margin: 32px 0;
+    }
+
+    /* ── Empty State ── */
+    .empty-state {
+      text-align: center;
+      padding: 64px 20px;
+      color: var(--text-3);
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      border: 1.5px dashed var(--border);
+    }
+
+    .empty-state-icon {
+      font-size: 2.5rem;
+      margin-bottom: 14px;
+      opacity: 0.5;
+    }
+
+    .empty-state p {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-3);
+    }
+
+    .empty-state p + p {
+      margin-top: 4px;
+      font-size: 12px;
+    }
+
+    /* ── Animation ── */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Dark Mode ── */
     @media (prefers-color-scheme: dark) {
-      body {
-        background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+      :root {
+        --bg: #0f172a;
+        --surface: #1e293b;
+        --surface-2: #263346;
+        --surface-3: #1e293b;
+        --border: #334155;
+        --border-strong: #475569;
+        --text-1: #f1f5f9;
+        --text-2: #94a3b8;
+        --text-3: #64748b;
+        --accent-light: rgba(79,70,229,0.15);
       }
-      
-      .container {
-        background: rgba(45, 55, 72, 0.95);
-        color: #e2e8f0;
-      }
-      
-      h1, h2 {
-        color: #e2e8f0;
-      }
-      
-      input[type="file"],
-      #search {
-        background: #2d3748;
-        border-color: #4a5568;
-        color: #e2e8f0;
-      }
-      
-      .drop-zone {
-        background: #2d3748;
-        border-color: #4a5568;
-      }
-      
-      .drop-zone.dragover {
-        border-color: #667eea;
-        background: #1a202c;
-      }
-      
-      .file-list {
-        background: #2d3748;
-        border-color: #4a5568;
-      }
-      
-      .file-name {
-        color: #e2e8f0;
-      }
-      
-      #logs, #mergedLogs {
-        background: #2d3748;
-        color: #e2e8f0;
-      }
-      
-      .log-block {
-        background: #2d3748;
-        border-color: #4a5568;
-      }
-      
-      pre {
-        color: #e2e8f0;
-      }
+
+      .log-line.level-error { background: rgba(239,68,68,0.1); color: #fca5a5; }
+      .log-line.level-error:hover { background: rgba(239,68,68,0.16); }
+      .log-line.level-warn  { background: rgba(245,158,11,0.1); color: #fcd34d; }
+      .log-line.level-warn:hover  { background: rgba(245,158,11,0.16); }
+      .log-line.level-debug, .log-line.level-trace { color: var(--text-3); }
+
+      .highlight { background: #854d0e; color: #fef08a; }
+
+      label:has(#errorLevel:checked)  { background: rgba(239,68,68,0.15); border-color: #f87171; color: #fca5a5; }
+      label:has(#warnLevel:checked)   { background: rgba(245,158,11,0.15); border-color: #fbbf24; color: #fcd34d; }
+      label:has(#infoLevel:checked)   { background: rgba(37,99,235,0.15); border-color: #60a5fa; color: #93c5fd; }
+      label:has(#debugLevel:checked)  { background: rgba(22,163,74,0.15); border-color: #4ade80; color: #86efac; }
+      label:has(#traceLevel:checked)  { background: rgba(124,58,237,0.15); border-color: #a78bfa; color: #c4b5fd; }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      body { padding: 14px 12px 40px; }
+      h1 { font-size: 1.5rem; }
+      .controls { flex-direction: column; }
+      input[type="file"], #search { width: 100%; min-width: auto; }
+      .filter-content { grid-template-columns: 1fr; }
+      .export-controls { flex-direction: column; align-items: stretch; }
+      .export-btn { justify-content: center; }
+      .line-number-toggle { margin-left: 0; justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 10px 8px 32px; }
+      h1 { font-size: 1.25rem; }
+      .log-content-area { max-height: 300px; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>📊 Log 檔案瀏覽器</h1>
-    
+    <div class="app-header">
+      <h1>📊 Log 檔案瀏覽器</h1>
+      <p class="app-subtitle">多檔案 Log 分析、搜尋與合併工具</p>
+    </div>
+
     <!-- 拖拉上傳區域 -->
     <div class="drop-zone" id="dropZone">
       <div class="drop-zone-icon">📁</div>
       <div class="drop-zone-text">
         <strong>拖拉檔案到此處</strong><br>
-        或點擊下方按鈕選擇檔案
+        或點擊選擇 .log / .txt 檔案
       </div>
     </div>
-    
+
     <div class="controls">
       <input type="file" id="logFiles" multiple accept=".log,.txt" placeholder="選擇 Log 檔案">
-      <input type="text" id="search" placeholder="🔍 搜尋關鍵字...">
-      <button class="clear-all-btn" id="clearAllBtn" style="display: none;">🗑️ 清除全部</button>
-      
+      <input type="text" id="search" placeholder="🔍 搜尋關鍵字…">
+      <button class="clear-all-btn" id="clearAllBtn" style="display: none;">✕ 清除全部</button>
+
       <!-- 匯出功能按鈕 -->
       <div class="export-controls" id="exportControls" style="display: none;">
-        <button class="export-btn" id="exportFilteredBtn" title="匯出過濾後的搜尋結果">💾 匯出搜尋結果</button>
-        <button class="export-btn" id="exportMergedBtn" title="匯出合併的時間排序結果">🔄 匯出合併檔案</button>
+        <button class="export-btn" id="exportFilteredBtn" title="匯出過濾後的搜尋結果">↓ 匯出搜尋結果</button>
+        <button class="export-btn" id="exportMergedBtn" title="匯出合併的時間排序結果">⇄ 匯出合併檔案</button>
         <label class="line-number-toggle">
           <input type="checkbox" id="showLineNumbers"> 顯示行號
         </label>
       </div>
     </div>
-    
+
     <!-- 進階篩選控制區 -->
     <div class="advanced-filters">
       <details class="filter-section">
@@ -950,12 +882,12 @@
             <label class="filter-label">📅 日期範圍</label>
             <div class="date-range">
               <input type="date" id="startDate" class="date-input" placeholder="開始日期">
-              <span class="date-separator">至</span>
+              <span class="date-separator">→</span>
               <input type="date" id="endDate" class="date-input" placeholder="結束日期">
               <button class="clear-date-btn" id="clearDateBtn">清除</button>
             </div>
           </div>
-          
+
           <!-- Log 等級過濾 -->
           <div class="filter-group">
             <label class="filter-label">📊 Log 等級</label>
@@ -967,7 +899,7 @@
               <label class="level-checkbox"><input type="checkbox" id="traceLevel" checked> TRACE</label>
             </div>
           </div>
-          
+
           <!-- 搜尋選項 -->
           <div class="filter-group">
             <label class="filter-label">🔍 搜尋選項</label>
@@ -980,7 +912,7 @@
               </label>
             </div>
           </div>
-          
+
           <!-- 多關鍵字搜尋 -->
           <div class="filter-group">
             <label class="filter-label">🔗 多關鍵字搜尋</label>
@@ -999,26 +931,26 @@
         </div>
       </details>
     </div>
-    
+
     <!-- 檔案列表 -->
     <div class="file-list" id="fileList" style="display: none;">
-      <h3 style="margin-top: 0; color: #4a5568;">📋 已載入的檔案</h3>
+      <h3>已載入的檔案</h3>
       <div id="fileItems"></div>
     </div>
-    
+
     <div id="logs">
       <div class="empty-state">
-        <div style="font-size: 4rem; margin-bottom: 20px;">📁</div>
+        <div class="empty-state-icon">📁</div>
         <p>請選擇一個或多個 Log 檔案開始瀏覽</p>
       </div>
     </div>
-    
+
     <hr class="divider">
-    
+
     <h2>⏰ 合併依時間排序顯示</h2>
     <div id="mergedLogs">
       <div class="empty-state">
-        <div style="font-size: 4rem; margin-bottom: 20px;">⏱️</div>
+        <div class="empty-state-icon">⏱️</div>
         <p>載入檔案後，這裡會顯示按時間排序的合併結果</p>
       </div>
     </div>
@@ -1033,7 +965,7 @@
     const fileList = document.getElementById('fileList');
     const fileItems = document.getElementById('fileItems');
     const clearAllBtn = document.getElementById('clearAllBtn');
-    
+
     // 新增篩選控制元素
     const startDateInput = document.getElementById('startDate');
     const endDateInput = document.getElementById('endDate');
@@ -1047,17 +979,18 @@
     const caseSensitiveCb = document.getElementById('caseSensitive');
     const multiKeywordsInput = document.getElementById('multiKeywords');
     const searchLogicRadios = document.querySelectorAll('input[name="searchLogic"]');
-    
+
     // 新增匯出和行號控制元素
     const exportControls = document.getElementById('exportControls');
     const exportFilteredBtn = document.getElementById('exportFilteredBtn');
     const exportMergedBtn = document.getElementById('exportMergedBtn');
     const showLineNumbersCb = document.getElementById('showLineNumbers');
-    
+
     // 檔案顏色映射系統
+    const FILE_COLORS = ['#3b82f6','#ef4444','#10b981','#f59e0b','#8b5cf6','#06b6d4','#f97316','#64748b'];
     let fileColorMap = new Map();
     let colorIndex = 0;
-    
+
     let logContents = [];
 
     // 拖拉上傳功能
@@ -1074,7 +1007,7 @@
     dropZone.addEventListener('drop', (e) => {
       e.preventDefault();
       dropZone.classList.remove('dragover');
-      const files = Array.from(e.dataTransfer.files).filter(file => 
+      const files = Array.from(e.dataTransfer.files).filter(file =>
         file.name.endsWith('.log') || file.name.endsWith('.txt')
       );
       if (files.length > 0) {
@@ -1111,7 +1044,7 @@
         displayLogs();
         displayMergedLogs();
         logFilesInput.value = '';
-        
+
         // 清除所有篩選條件
         searchInput.value = '';
         multiKeywordsInput.value = '';
@@ -1134,7 +1067,7 @@
       files.forEach(file => {
         // 檢查是否已存在相同檔案名
         const existingIndex = logContents.findIndex(log => log.name === file.name);
-        
+
         const reader = new FileReader();
         reader.onload = function(e) {
           const logData = {
@@ -1143,7 +1076,7 @@
             size: file.size,
             id: Date.now() + Math.random() // 唯一ID
           };
-          
+
           if (existingIndex >= 0) {
             // 替換現有檔案
             logContents[existingIndex] = logData;
@@ -1151,7 +1084,7 @@
             // 新增檔案
             logContents.push(logData);
           }
-          
+
           updateFileList();
           displayLogs();
           displayMergedLogs();
@@ -1172,29 +1105,34 @@
       fileList.style.display = 'block';
       clearAllBtn.style.display = 'inline-block';
       exportControls.style.display = 'flex';
-      
-      fileItems.innerHTML = logContents.map(log => `
-        <div class="file-item">
-          <div class="file-info">
-            <span class="file-name">📄 ${log.name}</span>
-            <span class="file-size">(${formatFileSize(log.size)})</span>
+
+      fileItems.innerHTML = logContents.map(log => {
+        const idx = getFileColorIndex(log.name);
+        const dotColor = FILE_COLORS[idx % FILE_COLORS.length];
+        return `
+          <div class="file-item">
+            <div class="file-info">
+              <span class="file-color-dot" style="background:${dotColor}"></span>
+              <span class="file-name">${log.name}</span>
+              <span class="file-size">${formatFileSize(log.size)}</span>
+            </div>
+            <button class="delete-btn" onclick="removeFile('${log.id}')">✕ 刪除</button>
           </div>
-          <button class="delete-btn" onclick="removeFile('${log.id}')">🗑️ 刪除</button>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     // 刪除單一檔案
     function removeFile(fileId) {
       logContents = logContents.filter(log => log.id != fileId);
-      
+
       // 重新計算顏色映射
       fileColorMap.clear();
       colorIndex = 0;
       logContents.forEach(log => {
         getFileColorIndex(log.name); // 重新分配顏色
       });
-      
+
       updateFileList();
       displayLogs();
       displayMergedLogs();
@@ -1226,7 +1164,7 @@
         /(\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2})/,       // 2024/01/15 10:30:45
         /(\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2})/,       // 15/01/2024 10:30:45
       ];
-      
+
       for (const pattern of datePatterns) {
         const match = line.match(pattern);
         if (match) {
@@ -1239,12 +1177,12 @@
     // 檢查日期是否在指定範圍內
     function isDateInRange(logDate, startDate, endDate) {
       if (!logDate) return !startDate && !endDate;
-      
+
       const logTime = logDate.getTime();
-      
+
       if (startDate && logTime < startDate.getTime()) return false;
       if (endDate && logTime > endDate.getTime() + 86400000) return false; // 加一天，包含結束日期整天
-      
+
       return true;
     }
 
@@ -1257,7 +1195,7 @@
         'DEBUG': /DEBUG/i,
         'TRACE': /TRACE|VERBOSE/i
       };
-      
+
       for (const [level, pattern] of Object.entries(levelPatterns)) {
         if (pattern.test(line)) return level;
       }
@@ -1279,7 +1217,7 @@
     // 執行搜尋匹配
     function matchesSearch(line, searchText, useRegex, caseSensitive) {
       if (!searchText) return true;
-      
+
       try {
         if (useRegex) {
           const flags = caseSensitive ? 'g' : 'gi';
@@ -1301,19 +1239,19 @@
     // 多關鍵字搜尋
     function matchesMultiKeywords(line, keywords, logic, useRegex, caseSensitive) {
       if (!keywords) return true;
-      
-      const keywordList = logic === 'and' ? 
+
+      const keywordList = logic === 'and' ?
         keywords.split(',').map(k => k.trim()).filter(k => k) :
         keywords.split('|').map(k => k.trim()).filter(k => k);
-      
+
       if (keywordList.length === 0) return true;
-      
+
       if (logic === 'and') {
-        return keywordList.every(keyword => 
+        return keywordList.every(keyword =>
           matchesSearch(line, keyword, useRegex, caseSensitive)
         );
       } else {
-        return keywordList.some(keyword => 
+        return keywordList.some(keyword =>
           matchesSearch(line, keyword, useRegex, caseSensitive)
         );
       }
@@ -1330,19 +1268,19 @@
         startDate,
         endDate
       } = options;
-      
+
       // 日期過濾
       const logDate = parseLogDate(line);
       if (!isDateInRange(logDate, startDate, endDate)) {
         return false;
       }
-      
+
       // Log 等級過濾
       const level = getLogLevel(line);
       if (!isLevelSelected(level)) {
         return false;
       }
-      
+
       // 搜尋過濾
       if (multiKeywords) {
         if (!matchesMultiKeywords(line, multiKeywords, searchLogic, useRegex, caseSensitive)) {
@@ -1353,7 +1291,7 @@
           return false;
         }
       }
-      
+
       return true;
     }
 
@@ -1362,7 +1300,7 @@
       const startDate = startDateInput.value ? new Date(startDateInput.value) : null;
       const endDate = endDateInput.value ? new Date(endDateInput.value) : null;
       const searchLogic = document.querySelector('input[name="searchLogic"]:checked').value;
-      
+
       return {
         searchText: searchInput.value.trim(),
         multiKeywords: multiKeywordsInput.value.trim(),
@@ -1411,13 +1349,13 @@
       const options = getFilterOptions();
       let exportContent = '';
       let totalLines = 0;
-      
+
       // 生成檔案標頭
       const timestamp = new Date().toLocaleString('zh-TW');
       exportContent += `# 過濾搜尋結果匯出\n`;
       exportContent += `# 匯出時間: ${timestamp}\n`;
       exportContent += `# 原始檔案數量: ${logContents.length}\n`;
-      
+
       // 添加篩選條件資訊
       if (options.searchText || options.multiKeywords) {
         exportContent += `# 搜尋條件: ${options.multiKeywords || options.searchText}\n`;
@@ -1426,11 +1364,11 @@
         exportContent += `# 日期範圍: ${options.startDate ? options.startDate.toLocaleDateString('zh-TW') : '不限'} 至 ${options.endDate ? options.endDate.toLocaleDateString('zh-TW') : '不限'}\n`;
       }
       exportContent += `\n`;
-      
+
       logContents.forEach((log, logIndex) => {
         let lines = log.content.split('\n').filter(line => line.trim() !== '');
         let filteredLines = lines.filter(line => filterLogLine(line, options));
-        
+
         if (filteredLines.length > 0) {
           exportContent += `========== 檔案: ${log.name} (${filteredLines.length}/${lines.length} 行) ==========\n`;
           filteredLines.forEach((line, lineIndex) => {
@@ -1441,17 +1379,17 @@
           exportContent += `\n`;
         }
       });
-      
+
       exportContent += `\n# 總匯出行數: ${totalLines}\n`;
-      
+
       if (totalLines === 0) {
         alert('沒有符合篩選條件的記錄可匯出！');
         return;
       }
-      
+
       const filename = `filtered_logs_${formatDateForFilename()}.log`;
       downloadFile(exportContent, filename);
-      
+
       alert(`已成功匯出 ${totalLines} 行記錄至 ${filename}`);
     }
 
@@ -1459,22 +1397,22 @@
     function exportMergedLogs() {
       const options = getFilterOptions();
       let allLines = [];
-      
+
       logContents.forEach(log => {
         log.content.split('\n').forEach(line => {
           if (line.trim() === '') return;
           if (!filterLogLine(line, options)) return;
-          
+
           const logDate = parseLogDate(line);
-          allLines.push({ 
-            time: logDate ? logDate.getTime() : 0, 
-            line: stripHtmlTags(line), 
+          allLines.push({
+            time: logDate ? logDate.getTime() : 0,
+            line: stripHtmlTags(line),
             file: log.name,
             dateString: logDate ? logDate.toISOString() : null
           });
         });
       });
-      
+
       // 依時間排序
       allLines.sort((a, b) => {
         if (a.time === 0 && b.time === 0) return 0;
@@ -1482,19 +1420,19 @@
         if (b.time === 0) return -1;
         return a.time - b.time;
       });
-      
+
       if (allLines.length === 0) {
         alert('沒有符合篩選條件的記錄可匯出！');
         return;
       }
-      
+
       // 生成匯出內容
       const timestamp = new Date().toLocaleString('zh-TW');
       let exportContent = `# 合併時間排序結果匯出\n`;
       exportContent += `# 匯出時間: ${timestamp}\n`;
       exportContent += `# 合併檔案數量: ${logContents.length}\n`;
       exportContent += `# 檔案列表: ${logContents.map(log => log.name).join(', ')}\n`;
-      
+
       // 添加篩選條件資訊
       if (options.searchText || options.multiKeywords) {
         exportContent += `# 搜尋條件: ${options.multiKeywords || options.searchText}\n`;
@@ -1503,14 +1441,14 @@
         exportContent += `# 日期範圍: ${options.startDate ? options.startDate.toLocaleDateString('zh-TW') : '不限'} 至 ${options.endDate ? options.endDate.toLocaleDateString('zh-TW') : '不限'}\n`;
       }
       exportContent += `# 總行數: ${allLines.length}\n\n`;
-      
+
       allLines.forEach((item, index) => {
         exportContent += `[${item.file}] ${item.line}\n`;
       });
-      
+
       const filename = `merged_logs_${formatDateForFilename()}.log`;
       downloadFile(exportContent, filename);
-      
+
       alert(`已成功匯出 ${allLines.length} 行合併記錄至 ${filename}`);
     }
 
@@ -1518,74 +1456,69 @@
       const options = getFilterOptions();
       const displayKeyword = options.multiKeywords || options.searchText;
       const showLineNumbers = showLineNumbersCb.checked;
-      
+
       if (logContents.length === 0) {
         logsDiv.innerHTML = `
           <div class="empty-state">
-            <div style="font-size: 4rem; margin-bottom: 20px;">📁</div>
+            <div class="empty-state-icon">📁</div>
             <p>請選擇一個或多個 Log 檔案開始瀏覽</p>
           </div>
         `;
         return;
       }
-      
+
       logsDiv.innerHTML = '';
       let totalFilteredLines = 0;
-      
+
       logContents.forEach(log => {
         let lines = log.content.split('\n').filter(line => line.trim() !== '');
         let filteredLines = lines.filter(line => filterLogLine(line, options));
-        
+
         totalFilteredLines += filteredLines.length;
-        
+
         const logBlock = document.createElement('div');
-        logBlock.className = 'log-block';
-        
-        const colorIndex = getFileColorIndex(log.name);
-        
+        const ci = getFileColorIndex(log.name);
+        logBlock.className = `log-block file-color-${ci}`;
+
         let contentHTML = '';
         if (filteredLines.length > 0) {
-          if (showLineNumbers) {
-            contentHTML = filteredLines
-              .map(line => `<div class="log-line file-color-${colorIndex}">${highlightKeyword(line, displayKeyword)}</div>`)
-              .join('');
-            contentHTML = `<div class="line-numbers">${contentHTML}</div>`;
-          } else {
-            contentHTML = filteredLines
-              .map(line => `<div class="file-color-${colorIndex}" style="margin-bottom: 1px; padding: 2px 0;">${highlightKeyword(line, displayKeyword)}</div>`)
-              .join('');
-          }
+          const lineHTML = filteredLines.map(line => {
+            const level = getLogLevel(line).toLowerCase();
+            return `<div class="log-line level-${level}">${highlightKeyword(line, displayKeyword)}</div>`;
+          }).join('');
+          contentHTML = showLineNumbers
+            ? `<div class="line-numbers">${lineHTML}</div>`
+            : lineHTML;
         } else {
-          contentHTML = '<div style="color: #999; font-style: italic;">沒有符合篩選條件的記錄</div>';
+          contentHTML = '<div style="color:var(--text-3);font-size:13px;font-style:italic;padding:4px 0;">沒有符合篩選條件的記錄</div>';
         }
-        
+
+        const blockId = `log-block-${ci}-${Date.now()}`;
+        logBlock.id = blockId;
         logBlock.innerHTML = `
           <div class="sticky-header">
             <div class="header-main">
               <span>📄</span>
-              <span class="log-source file-color-${colorIndex}">${log.name}</span>
+              <span>${log.name}</span>
             </div>
-            <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="display:flex;align-items:center;gap:8px;">
               <div class="header-stats">${filteredLines.length}${filteredLines.length !== lines.length ? `/${lines.length}` : ''} 行</div>
-              <button class="collapse-toggle" onclick="toggleCollapse('log-${colorIndex}-${Date.now()}')" title="摺疊/展開">
-                📋
-              </button>
+              <button class="collapse-toggle" onclick="toggleCollapse('${blockId}')" title="摺疊/展開">▼</button>
             </div>
           </div>
-          <div class="log-content-area" id="log-${colorIndex}-${Date.now()}-content">${contentHTML}</div>
+          <div class="log-content-area" id="${blockId}-content">${contentHTML}</div>
         `;
-        
-        logBlock.id = `log-${colorIndex}-${Date.now()}`;
+
         logsDiv.appendChild(logBlock);
       });
-      
+
       // 如果沒有任何符合條件的記錄
       if (totalFilteredLines === 0) {
         logsDiv.innerHTML = `
           <div class="empty-state">
-            <div style="font-size: 3rem; margin-bottom: 15px;">🔍</div>
+            <div class="empty-state-icon">🔍</div>
             <p>沒有找到符合篩選條件的記錄</p>
-            <p style="font-size: 0.9em; color: #666;">請嘗試調整篩選條件</p>
+            <p>請嘗試調整篩選條件</p>
           </div>
         `;
       }
@@ -1595,33 +1528,33 @@
       const options = getFilterOptions();
       const displayKeyword = options.multiKeywords || options.searchText;
       const showLineNumbers = showLineNumbersCb.checked;
-      
+
       if (logContents.length === 0) {
         mergedLogsDiv.innerHTML = `
           <div class="empty-state">
-            <div style="font-size: 4rem; margin-bottom: 20px;">⏱️</div>
+            <div class="empty-state-icon">⏱️</div>
             <p>載入檔案後，這裡會顯示按時間排序的合併結果</p>
           </div>
         `;
         return;
       }
-      
+
       let allLines = [];
       logContents.forEach(log => {
         log.content.split('\n').forEach(line => {
           if (line.trim() === '') return;
           if (!filterLogLine(line, options)) return;
-          
+
           const logDate = parseLogDate(line);
-          allLines.push({ 
-            time: logDate ? logDate.getTime() : 0, 
-            line, 
+          allLines.push({
+            time: logDate ? logDate.getTime() : 0,
+            line,
             file: log.name,
             dateString: logDate ? logDate.toISOString() : null
           });
         });
       });
-      
+
       // 依時間排序
       allLines.sort((a, b) => {
         if (a.time === 0 && b.time === 0) return 0;
@@ -1629,44 +1562,37 @@
         if (b.time === 0) return -1;
         return a.time - b.time;
       });
-      
+
       if (allLines.length === 0) {
         mergedLogsDiv.innerHTML = `
           <div class="empty-state">
-            <div style="font-size: 3rem; margin-bottom: 15px;">🔍</div>
+            <div class="empty-state-icon">🔍</div>
             <p>沒有找到符合篩選條件的記錄</p>
-            <p style="font-size: 0.9em; color: #666;">請嘗試調整篩選條件</p>
+            <p>請嘗試調整篩選條件</p>
           </div>
         `;
         return;
       }
-      
-      let mergedContent = '';
-      if (showLineNumbers) {
-        mergedContent = allLines.map((l, index) => {
-          const colorIndex = getFileColorIndex(l.file);
-          const sourceTag = `<span class="merged-log-item file-color-${colorIndex}"><span class="log-source">${l.file}</span></span>`;
-          return `<div class="log-line file-color-${colorIndex}">${sourceTag} ${highlightKeyword(l.line, displayKeyword)}</div>`;
-        }).join('');
-        mergedContent = `<div class="line-numbers">${mergedContent}</div>`;
-      } else {
-        mergedContent = allLines.map(l => {
-          const colorIndex = getFileColorIndex(l.file);
-          const sourceTag = `<span class="merged-log-item file-color-${colorIndex}"><span class="log-source">${l.file}</span></span>`;
-          return `<div class="file-color-${colorIndex}" style="margin-bottom: 1px; padding: 2px 0;">${sourceTag} ${highlightKeyword(l.line, displayKeyword)}</div>`;
-        }).join('');
-      }
-      
+
+      const lineHTML = allLines.map(l => {
+        const ci = getFileColorIndex(l.file);
+        const level = getLogLevel(l.line).toLowerCase();
+        const sourceTag = `<span class="merged-log-item file-color-${ci}"><span class="log-source">${l.file}</span></span>`;
+        return `<div class="log-line file-color-${ci} level-${level}">${sourceTag}${highlightKeyword(l.line, displayKeyword)}</div>`;
+      }).join('');
+
+      const mergedContent = showLineNumbers
+        ? `<div class="line-numbers">${lineHTML}</div>`
+        : lineHTML;
+
       mergedLogsDiv.innerHTML = `
         <div class="sticky-header">
           <div class="header-main">
             <span>📊 合併結果</span>
           </div>
-          <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="display:flex;align-items:center;gap:8px;">
             <div class="header-stats">${allLines.length} 行</div>
-            <button class="collapse-toggle" onclick="toggleCollapse('mergedLogs')" title="摺疊/展開">
-              📋
-            </button>
+            <button class="collapse-toggle" onclick="toggleCollapse('mergedLogs')" title="摺疊/展開">▼</button>
           </div>
         </div>
         <div class="log-content-area">${mergedContent}</div>
@@ -1680,12 +1606,12 @@
         displayLogs();
         displayMergedLogs();
       });
-      
+
       endDateInput.addEventListener('change', () => {
         displayLogs();
         displayMergedLogs();
       });
-      
+
       // 清除日期按鈕
       clearDateBtn.addEventListener('click', () => {
         startDateInput.value = '';
@@ -1693,7 +1619,7 @@
         displayLogs();
         displayMergedLogs();
       });
-      
+
       // Log 等級篩選
       [errorLevelCb, warnLevelCb, infoLevelCb, debugLevelCb, traceLevelCb].forEach(cb => {
         cb.addEventListener('change', () => {
@@ -1701,18 +1627,18 @@
           displayMergedLogs();
         });
       });
-      
+
       // 搜尋選項
       regexSearchCb.addEventListener('change', () => {
         displayLogs();
         displayMergedLogs();
       });
-      
+
       caseSensitiveCb.addEventListener('change', () => {
         displayLogs();
         displayMergedLogs();
       });
-      
+
       // 多關鍵字搜尋
       multiKeywordsInput.addEventListener('input', () => {
         if (multiKeywordsInput.value.trim()) {
@@ -1721,7 +1647,7 @@
         displayLogs();
         displayMergedLogs();
       });
-      
+
       // 搜尋邏輯選項
       searchLogicRadios.forEach(radio => {
         radio.addEventListener('change', () => {
@@ -1729,13 +1655,13 @@
           displayMergedLogs();
         });
       });
-      
+
       // 行號顯示切換
       showLineNumbersCb.addEventListener('change', () => {
         displayLogs();
         displayMergedLogs();
       });
-      
+
       // 匯出按鈕事件
       exportFilteredBtn.addEventListener('click', exportFilteredResults);
       exportMergedBtn.addEventListener('click', exportMergedLogs);
@@ -1746,7 +1672,7 @@
       displayLogs();
       displayMergedLogs();
     });
-    
+
     searchInput.addEventListener('input', () => {
       if (searchInput.value.trim()) {
         multiKeywordsInput.value = ''; // 清除多關鍵字搜尋框
@@ -1763,11 +1689,11 @@
       const element = elementId === 'mergedLogs' ? mergedLogsDiv : document.getElementById(elementId);
       if (element) {
         element.classList.toggle('collapsed');
-        
+
         // 更新按鈕圖示
         const button = element.querySelector('.collapse-toggle');
         if (button) {
-          button.textContent = element.classList.contains('collapsed') ? '📄' : '📋';
+          button.textContent = element.classList.contains('collapsed') ? '▶' : '▼';
           button.title = element.classList.contains('collapsed') ? '展開' : '摺疊';
         }
       }
