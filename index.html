@@ -22,9 +22,8 @@
       --radius: 10px;
       --radius-lg: 14px;
       --shadow-sm: 0 1px 2px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.08);
-      --shadow: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
-      --shadow-lg: 0 10px 30px rgba(0,0,0,0.1), 0 4px 10px rgba(0,0,0,0.05);
       --mono: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', 'Menlo', monospace;
+      --log-font-size: 12.5px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -35,14 +34,14 @@
       min-height: 100vh;
       color: var(--text-1);
       line-height: 1.5;
-      padding: 28px 20px 48px;
+      padding: 20px 20px 48px;
       -webkit-font-smoothing: antialiased;
     }
 
     .container { max-width: 1320px; margin: 0 auto; }
 
     /* ── App Header ── */
-    .app-header { text-align: center; margin-bottom: 20px; }
+    .app-header { text-align: center; margin-bottom: 16px; }
 
     h1 {
       font-size: 1.625rem;
@@ -52,16 +51,15 @@
       margin-bottom: 4px;
     }
 
-    .app-subtitle { font-size: 0.8125rem; color: var(--text-3); font-weight: 400; }
+    .app-subtitle { font-size: 0.8125rem; color: var(--text-3); }
 
     h2 {
       font-size: 0.9375rem;
       font-weight: 600;
       color: var(--text-2);
-      margin: 28px 0 12px;
+      margin: 24px 0 10px;
       padding-left: 12px;
       border-left: 3px solid var(--accent);
-      letter-spacing: 0.01em;
     }
 
     /* ── Drop Zone ── */
@@ -75,34 +73,27 @@
       background: var(--surface);
       transition: border-color 0.2s, background 0.2s;
       cursor: pointer;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
-    .drop-zone:hover { border-color: var(--accent); background: var(--accent-light); }
-
-    .drop-zone.dragover {
-      border-color: var(--accent);
-      background: var(--accent-light);
-    }
-
-    .drop-zone-icon { font-size: 1.5rem; opacity: 0.55; flex-shrink: 0; line-height: 1; }
-
-    .drop-zone-text { color: var(--text-2); font-size: 0.875rem; line-height: 1.5; }
+    .drop-zone:hover, .drop-zone.dragover { border-color: var(--accent); background: var(--accent-light); }
+    .drop-zone-icon { font-size: 1.4rem; opacity: 0.55; flex-shrink: 0; line-height: 1; }
+    .drop-zone-text { color: var(--text-2); font-size: 0.875rem; }
     .drop-zone-text strong { color: var(--text-1); font-weight: 600; }
 
     /* ── Controls Row ── */
     .controls {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 16px;
-      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 8px;
+      align-items: center;
     }
 
     input[type="file"] {
       flex: 1;
-      min-width: 200px;
-      padding: 9px 13px;
+      min-width: 180px;
+      padding: 8px 12px;
       border: 1.5px solid var(--border);
       border-radius: var(--radius);
       background: var(--surface);
@@ -110,15 +101,12 @@
       font-family: inherit;
       color: var(--text-2);
       cursor: pointer;
-      transition: border-color 0.2s;
     }
-
-    input[type="file"]:focus { outline: none; border-color: var(--accent); }
 
     #search {
       flex: 1.5;
-      min-width: 220px;
-      padding: 9px 16px;
+      min-width: 200px;
+      padding: 8px 15px;
       border: 1.5px solid var(--border);
       border-radius: 50px;
       font-size: 14px;
@@ -131,10 +119,43 @@
     #search:focus {
       outline: none;
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
     }
 
     #search::placeholder { color: var(--text-3); }
+
+    /* ── Search Navigation ── */
+    .search-nav {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 12px;
+      color: var(--text-2);
+      white-space: nowrap;
+    }
+
+    .search-nav.visible { display: flex; }
+
+    .search-nav-count { font-weight: 600; color: var(--text-1); min-width: 60px; }
+
+    .search-nav-btn {
+      background: var(--surface-3);
+      border: 1.5px solid var(--border);
+      color: var(--text-2);
+      border-radius: var(--radius-sm);
+      padding: 2px 8px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+
+    .search-nav-btn:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+    .search-nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
     /* ── Buttons ── */
     button { font-family: inherit; cursor: pointer; transition: all 0.18s; }
@@ -144,19 +165,19 @@
       color: #dc2626;
       border: 1.5px solid #fecaca;
       border-radius: var(--radius);
-      padding: 9px 15px;
+      padding: 8px 14px;
       font-size: 13px;
       font-weight: 500;
     }
 
-    .clear-all-btn:hover { background: #fee2e2; border-color: #fca5a5; }
+    .clear-all-btn:hover { background: #fee2e2; }
 
     .delete-btn {
       background: transparent;
       color: var(--text-3);
       border: 1.5px solid var(--border);
       border-radius: var(--radius-sm);
-      padding: 5px 11px;
+      padding: 4px 10px;
       font-size: 12px;
       font-weight: 500;
     }
@@ -164,7 +185,7 @@
     .delete-btn:hover { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
 
     .export-btn {
-      padding: 9px 16px;
+      padding: 8px 14px;
       background: var(--accent);
       color: white;
       border: none;
@@ -173,27 +194,14 @@
       font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
 
-    .export-btn:hover {
-      background: var(--accent-hover);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-    }
-
-    .export-btn:active { transform: translateY(0); box-shadow: none; }
-
-    .export-btn:disabled {
-      background: var(--border);
-      color: var(--text-3);
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
+    .export-btn:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(79,70,229,0.25); }
+    .export-btn:active { transform: translateY(0); }
 
     .clear-date-btn {
-      padding: 7px 13px;
+      padding: 6px 12px;
       background: var(--surface-3);
       color: var(--text-2);
       border: 1.5px solid var(--border);
@@ -204,65 +212,90 @@
 
     .clear-date-btn:hover { background: var(--border); }
 
-    /* ── Load More Button ── */
+    /* ── Load More ── */
     .load-more-btn {
       display: block;
       width: 100%;
-      padding: 10px;
-      margin-top: 8px;
+      padding: 9px;
+      margin-top: 6px;
       background: var(--surface-2);
       color: var(--text-2);
       border: 1.5px dashed var(--border-strong);
       border-radius: var(--radius-sm);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 500;
       text-align: center;
       cursor: pointer;
-      transition: background 0.15s, color 0.15s;
     }
 
     .load-more-btn:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+
+    /* ── Font Size Controls ── */
+    .font-size-controls {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      padding: 4px 8px;
+      background: var(--surface-3);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      color: var(--text-2);
+      border: 1.5px solid var(--border);
+    }
+
+    .font-size-btn {
+      background: none;
+      border: none;
+      color: var(--text-2);
+      cursor: pointer;
+      font-size: 15px;
+      padding: 0 3px;
+      border-radius: 3px;
+      line-height: 1;
+      font-weight: 500;
+    }
+
+    .font-size-btn:hover { background: var(--border); }
+    .font-size-val { min-width: 32px; text-align: center; font-size: 11px; font-weight: 600; }
 
     /* ── Export Controls ── */
     .export-controls {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 10px;
-      padding: 12px 14px;
+      gap: 8px;
+      padding: 10px 12px;
       background: var(--surface);
       border-radius: var(--radius);
       border: 1.5px solid var(--border);
-      margin-top: 8px;
+      margin-top: 6px;
     }
 
     /* ── Line Number Toggle ── */
     .line-number-toggle {
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 6px;
       font-size: 13px;
       font-weight: 500;
       color: var(--text-2);
       cursor: pointer;
       user-select: none;
-      padding: 7px 11px;
+      padding: 6px 10px;
       background: var(--surface-3);
       border-radius: var(--radius-sm);
-      margin-left: 2px;
     }
 
     .line-number-toggle:hover { background: var(--border); }
 
     .line-number-toggle input[type="checkbox"] {
-      width: 14px;
-      height: 14px;
+      width: 14px; height: 14px;
       accent-color: var(--accent);
       cursor: pointer;
     }
 
     /* ── Advanced Filters ── */
-    .advanced-filters { margin-bottom: 20px; }
+    .advanced-filters { margin-bottom: 16px; }
 
     .filter-section {
       border: 1.5px solid var(--border);
@@ -274,8 +307,8 @@
     .filter-header {
       background: var(--surface);
       color: var(--text-1);
-      padding: 13px 18px;
-      font-size: 14px;
+      padding: 11px 16px;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       user-select: none;
@@ -286,15 +319,14 @@
       transition: background 0.15s;
     }
 
-    .filter-header::-webkit-details-marker { display: none; }
-    .filter-header::marker { display: none; }
+    .filter-header::-webkit-details-marker, .filter-header::marker { display: none; }
     .filter-header:hover { background: var(--surface-2); }
     details[open] .filter-header { border-bottom: 1.5px solid var(--border); }
 
     .filter-header::after {
       content: '▾';
       margin-left: auto;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--text-3);
       transition: transform 0.2s;
     }
@@ -302,10 +334,10 @@
     details[open] .filter-header::after { transform: rotate(180deg); }
 
     .filter-content {
-      padding: 18px 20px;
+      padding: 16px 18px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
     }
 
     .filter-label {
@@ -315,35 +347,28 @@
       color: var(--text-3);
       text-transform: uppercase;
       letter-spacing: 0.07em;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
-    /* ── Date Range ── */
-    .date-range { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .date-range { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
 
     .date-input {
-      padding: 7px 11px;
+      padding: 6px 10px;
       border: 1.5px solid var(--border);
       border-radius: var(--radius-sm);
       font-size: 13px;
       font-family: inherit;
       background: var(--surface);
       color: var(--text-1);
-      transition: border-color 0.2s;
       flex: 1;
-      min-width: 130px;
+      min-width: 120px;
     }
 
-    .date-input:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-    }
+    .date-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+    .date-separator { color: var(--text-3); font-size: 12px; white-space: nowrap; }
 
-    .date-separator { color: var(--text-3); font-size: 12px; font-weight: 500; white-space: nowrap; }
-
-    /* ── Log Level Checkboxes ── */
-    .level-filters { display: flex; flex-wrap: wrap; gap: 7px; }
+    /* ── Level Checkboxes ── */
+    .level-filters { display: flex; flex-wrap: wrap; gap: 6px; }
 
     .level-checkbox {
       display: inline-flex;
@@ -354,12 +379,12 @@
       font-weight: 700;
       letter-spacing: 0.04em;
       user-select: none;
-      padding: 5px 10px;
+      padding: 4px 9px;
       border-radius: 50px;
       border: 1.5px solid var(--border);
       background: var(--surface-3);
       color: var(--text-2);
-      transition: all 0.18s;
+      transition: all 0.15s;
     }
 
     label:has(#errorLevel:checked)  { background: #fef2f2; border-color: #fca5a5; color: #dc2626; }
@@ -368,101 +393,64 @@
     label:has(#debugLevel:checked)  { background: #f0fdf4; border-color: #86efac; color: #16a34a; }
     label:has(#traceLevel:checked)  { background: #f5f3ff; border-color: #c4b5fd; color: #7c3aed; }
 
-    .level-checkbox input[type="checkbox"] {
-      width: 13px;
-      height: 13px;
-      accent-color: var(--accent);
-      cursor: pointer;
-    }
+    .level-checkbox input[type="checkbox"] { width: 13px; height: 13px; accent-color: var(--accent); cursor: pointer; }
 
-    /* ── Search Options ── */
-    .search-options, .logic-options { display: flex; flex-wrap: wrap; gap: 12px; }
+    .search-options, .logic-options { display: flex; flex-wrap: wrap; gap: 10px; }
 
     .search-option, .logic-option {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-2);
-      user-select: none;
+      display: flex; align-items: center; gap: 6px;
+      cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-2); user-select: none;
     }
 
     .search-option:hover, .logic-option:hover { color: var(--text-1); }
 
     .search-option input[type="checkbox"],
-    .logic-option input[type="radio"] {
-      width: 14px;
-      height: 14px;
-      accent-color: var(--accent);
-      cursor: pointer;
-    }
+    .logic-option input[type="radio"] { width: 14px; height: 14px; accent-color: var(--accent); cursor: pointer; }
 
-    /* ── Multi-keyword ── */
-    .multi-keyword { display: flex; flex-direction: column; gap: 10px; }
+    .multi-keyword { display: flex; flex-direction: column; gap: 8px; }
 
     .multi-keyword-input {
-      padding: 8px 12px;
+      padding: 7px 11px;
       border: 1.5px solid var(--border);
       border-radius: var(--radius-sm);
       font-size: 13px;
       font-family: inherit;
       background: var(--surface);
       color: var(--text-1);
-      transition: border-color 0.2s;
     }
 
-    .multi-keyword-input:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-    }
-
+    .multi-keyword-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
     .multi-keyword-input::placeholder { color: var(--text-3); }
 
     /* ── File List ── */
     .file-list {
       background: var(--surface);
       border-radius: var(--radius-lg);
-      padding: 16px;
-      margin-bottom: 20px;
+      padding: 14px;
+      margin-bottom: 16px;
       border: 1.5px solid var(--border);
       box-shadow: var(--shadow-sm);
     }
 
     .file-list h3 {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text-3);
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      margin: 0 0 12px;
+      font-size: 10px; font-weight: 700; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: 0.07em; margin: 0 0 10px;
     }
 
     .file-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 9px 0;
-      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 0; border-bottom: 1px solid var(--border);
     }
 
     .file-item:last-child { border-bottom: none; }
-
-    .file-info { display: flex; align-items: center; gap: 10px; }
-
-    .file-color-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-
-    .file-name { font-size: 14px; font-weight: 500; color: var(--text-1); }
+    .file-info { display: flex; align-items: center; gap: 9px; }
+    .file-color-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .file-name { font-size: 13px; font-weight: 500; color: var(--text-1); }
 
     .file-size {
-      font-size: 11px;
-      color: var(--text-3);
-      background: var(--surface-3);
-      padding: 2px 8px;
-      border-radius: 50px;
-      font-weight: 500;
+      font-size: 11px; color: var(--text-3);
+      background: var(--surface-3); padding: 1px 7px;
+      border-radius: 50px; font-weight: 500;
     }
 
     /* ── Log Block ── */
@@ -475,7 +463,6 @@
       animation: fadeIn 0.2s ease-out;
     }
 
-    /* File-specific left border on blocks */
     .log-block.file-color-0 { border-left: 3px solid #3b82f6; }
     .log-block.file-color-1 { border-left: 3px solid #ef4444; }
     .log-block.file-color-2 { border-left: 3px solid #10b981; }
@@ -484,21 +471,21 @@
     .log-block.file-color-5 { border-left: 3px solid #06b6d4; }
     .log-block.file-color-6 { border-left: 3px solid #f97316; }
     .log-block.file-color-7 { border-left: 3px solid #64748b; }
-
-    /* Merged log block */
     .log-block.merged-block { border-left: 3px solid var(--accent); margin-bottom: 0; }
 
     /* ── Sticky Header ── */
     .sticky-header {
       position: sticky;
       top: 0;
-      padding: 11px 16px;
+      padding: 9px 14px;
       z-index: 10;
       font-size: 13px;
       font-weight: 600;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
       color: white;
       border-radius: calc(var(--radius-lg) - 1.5px) calc(var(--radius-lg) - 1.5px) 0 0;
     }
@@ -513,14 +500,37 @@
     .log-block.file-color-7 .sticky-header { background: linear-gradient(100deg, #475569, #64748b); }
     .log-block.merged-block .sticky-header { background: linear-gradient(100deg, var(--accent-hover), var(--accent)); }
 
-    .sticky-header .header-main { display: flex; align-items: center; gap: 9px; }
+    .sticky-header .header-main { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    .sticky-header .header-filename { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-    .sticky-header .header-stats {
+    .sticky-header .header-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+
+    /* ── Stats Badges ── */
+    .stat-badges { display: flex; gap: 4px; align-items: center; }
+
+    .stat-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 5px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+      letter-spacing: 0.02em;
+    }
+
+    .stat-badge:hover { opacity: 0.8; transform: scale(1.05); }
+    .stat-badge.s-error { background: rgba(239,68,68,0.3);  color: #fecaca; }
+    .stat-badge.s-warn  { background: rgba(245,158,11,0.3); color: #fde68a; }
+    .stat-badge.s-info  { background: rgba(255,255,255,0.2); color: rgba(255,255,255,0.9); }
+    .stat-badge.s-debug { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); }
+
+    .header-line-count {
       font-size: 11px;
       background: rgba(255,255,255,0.2);
-      padding: 3px 9px;
+      padding: 2px 8px;
       border-radius: 50px;
       font-weight: 600;
+      white-space: nowrap;
     }
 
     .collapse-toggle {
@@ -530,28 +540,21 @@
       cursor: pointer;
       font-size: 11px;
       font-weight: 600;
-      padding: 3px 10px;
+      padding: 2px 9px;
       border-radius: var(--radius-sm);
       transition: background 0.15s;
       font-family: inherit;
-      letter-spacing: 0.02em;
     }
 
     .collapse-toggle:hover { background: rgba(255,255,255,0.28); }
-
     .collapsed .log-content-area { display: none; }
     .collapsed .sticky-header { border-radius: calc(var(--radius-lg) - 1.5px); }
 
     /* ── Log Source Badge ── */
     .log-source {
-      display: inline-block;
-      padding: 1px 7px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 700;
-      margin-right: 5px;
-      vertical-align: middle;
-      letter-spacing: 0.02em;
+      display: inline-block; padding: 1px 6px;
+      border-radius: 4px; font-size: 10px; font-weight: 700;
+      margin-right: 4px; vertical-align: middle; letter-spacing: 0.02em;
     }
 
     .file-color-0 .log-source { background: #3b82f6; color: white; }
@@ -565,7 +568,7 @@
 
     /* ── Log Content Area ── */
     .log-content-area {
-      padding: 10px 14px;
+      padding: 8px 12px;
       max-height: 440px;
       overflow-y: auto;
       background: var(--surface);
@@ -580,33 +583,23 @@
     /* ── Log Lines ── */
     .log-line {
       font-family: var(--mono);
-      font-size: 12.5px;
+      font-size: var(--log-font-size);
       line-height: 1.65;
-      padding: 1px 6px;
+      padding: 1px 5px;
       border-radius: 3px;
       border-left: 2px solid transparent;
     }
 
     .log-line:hover { background: var(--surface-2); }
 
-    .log-line.level-error {
-      background: rgba(239,68,68,0.06);
-      border-left-color: #ef4444;
-      color: #991b1b;
-    }
+    .log-line.level-error { background: rgba(239,68,68,0.06); border-left-color: #ef4444; color: #991b1b; }
     .log-line.level-error:hover { background: rgba(239,68,68,0.1); }
-
-    .log-line.level-warn {
-      background: rgba(245,158,11,0.06);
-      border-left-color: #f59e0b;
-      color: #92400e;
-    }
-    .log-line.level-warn:hover { background: rgba(245,158,11,0.1); }
-
+    .log-line.level-warn  { background: rgba(245,158,11,0.06); border-left-color: #f59e0b; color: #92400e; }
+    .log-line.level-warn:hover  { background: rgba(245,158,11,0.1); }
     .log-line.level-debug { color: var(--text-3); }
     .log-line.level-trace { color: var(--text-3); opacity: 0.65; }
 
-    /* Merged view: subtle file-color tint (level colors override below) */
+    /* File tint in merged view */
     .log-line.file-color-0 { background: rgba(59,130,246,0.03); }
     .log-line.file-color-1 { background: rgba(239,68,68,0.03); }
     .log-line.file-color-2 { background: rgba(16,185,129,0.03); }
@@ -616,20 +609,68 @@
     .log-line.file-color-6 { background: rgba(249,115,22,0.03); }
     .log-line.file-color-7 { background: rgba(100,116,139,0.03); }
 
-    /* Level overrides file tint */
     .log-line.level-error[class*="file-color-"] { background: rgba(239,68,68,0.06); }
-    .log-line.level-error[class*="file-color-"]:hover { background: rgba(239,68,68,0.1); }
     .log-line.level-warn[class*="file-color-"]  { background: rgba(245,158,11,0.06); }
-    .log-line.level-warn[class*="file-color-"]:hover  { background: rgba(245,158,11,0.1); }
 
-    /* ── Keyword Highlight ── */
-    .highlight {
-      background: #fef08a;
-      padding: 0 3px;
-      border-radius: 2px;
-      color: #713f12;
-      font-weight: 600;
+    /* ── Multi-color Highlights ── */
+    .hl-0 { background: #fef08a; color: #713f12; padding: 0 2px; border-radius: 2px; font-weight: 600; }
+    .hl-1 { background: #a5f3fc; color: #164e63; padding: 0 2px; border-radius: 2px; font-weight: 600; }
+    .hl-2 { background: #bbf7d0; color: #14532d; padding: 0 2px; border-radius: 2px; font-weight: 600; }
+    .hl-3 { background: #fecaca; color: #7f1d1d; padding: 0 2px; border-radius: 2px; font-weight: 600; }
+    .hl-4 { background: #e9d5ff; color: #3b0764; padding: 0 2px; border-radius: 2px; font-weight: 600; }
+    .hl-5 { background: #fed7aa; color: #7c2d12; padding: 0 2px; border-radius: 2px; font-weight: 600; }
+    .hl-current { outline: 2px solid var(--accent); outline-offset: 1px; border-radius: 2px; }
+
+    /* ── Stacktrace Collapse ── */
+    .entry-group { margin-bottom: 1px; }
+
+    .stacktrace-block { margin-top: 1px; }
+
+    .stacktrace-toggle {
+      background: none;
+      border: none;
+      color: var(--text-3);
+      font-size: 11px;
+      cursor: pointer;
+      padding: 1px 8px 1px 10px;
+      border-radius: var(--radius-sm);
+      font-family: var(--mono);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.15s, background 0.15s;
     }
+
+    .stacktrace-toggle:hover { background: var(--surface-2); color: var(--text-2); }
+    .stacktrace-toggle .st-arrow { transition: transform 0.15s; }
+    .stacktrace-toggle.open .st-arrow { transform: rotate(90deg); }
+
+    .stacktrace-lines { padding-left: 10px; }
+
+    .log-line.stacktrace-frame {
+      font-size: calc(var(--log-font-size) - 0.5px);
+      color: var(--text-3);
+      border-left-color: transparent !important;
+      background: transparent !important;
+    }
+
+    /* ── JSON log display ── */
+    .json-ts     { color: var(--text-3); font-size: 11px; margin-right: 4px; }
+    .json-level  { font-weight: 700; font-size: 10px; padding: 1px 5px; border-radius: 3px; margin-right: 5px; }
+    .json-level.lvl-error { background: rgba(239,68,68,0.15); color: #dc2626; }
+    .json-level.lvl-warn  { background: rgba(245,158,11,0.15); color: #d97706; }
+    .json-level.lvl-info  { background: rgba(37,99,235,0.12);  color: #2563eb; }
+    .json-level.lvl-debug { background: rgba(100,116,139,0.1); color: #64748b; }
+    .json-level.lvl-trace { background: rgba(100,116,139,0.1); color: #94a3b8; }
+    .json-logger { color: var(--text-3); font-size: 11px; margin-right: 5px; }
+    .json-msg    { color: var(--text-1); }
+
+    /* ── Nginx log display ── */
+    .nginx-status { font-weight: 700; padding: 0 4px; border-radius: 3px; font-size: 11px; }
+    .nginx-2xx { background: rgba(16,185,129,0.15); color: #059669; }
+    .nginx-3xx { background: rgba(6,182,212,0.15);  color: #0891b2; }
+    .nginx-4xx { background: rgba(245,158,11,0.15); color: #d97706; }
+    .nginx-5xx { background: rgba(239,68,68,0.15);  color: #dc2626; }
 
     /* ── Line Numbers ── */
     .line-numbers { counter-reset: line-counter; }
@@ -642,88 +683,63 @@
 
     .line-numbers .log-line::before {
       content: counter(line-counter);
-      position: absolute;
-      left: 0;
-      width: 2.9em;
-      text-align: right;
-      color: var(--text-3);
-      font-size: 11px;
-      border-right: 1px solid var(--border);
-      padding-right: 8px;
-      user-select: none;
-      font-family: var(--mono);
+      position: absolute; left: 0; width: 2.9em;
+      text-align: right; color: var(--text-3); font-size: 11px;
+      border-right: 1px solid var(--border); padding-right: 8px;
+      user-select: none; font-family: var(--mono);
     }
 
     .line-numbers .log-line:hover::before { color: var(--accent); border-right-color: var(--accent); }
 
     /* ── Divider ── */
-    .divider { border: none; height: 1px; background: var(--border); margin: 32px 0; }
+    .divider { border: none; height: 1px; background: var(--border); margin: 28px 0; }
 
     /* ── Empty State ── */
     .empty-state {
-      text-align: center;
-      padding: 64px 20px;
-      color: var(--text-3);
-      background: var(--surface);
-      border-radius: var(--radius-lg);
+      text-align: center; padding: 56px 20px; color: var(--text-3);
+      background: var(--surface); border-radius: var(--radius-lg);
       border: 1.5px dashed var(--border);
     }
 
-    .empty-state-icon { font-size: 2.5rem; margin-bottom: 14px; opacity: 0.5; }
-    .empty-state p { font-size: 14px; font-weight: 500; color: var(--text-3); }
+    .empty-state-icon { font-size: 2.25rem; margin-bottom: 12px; opacity: 0.5; }
+    .empty-state p { font-size: 13px; font-weight: 500; color: var(--text-3); }
     .empty-state p + p { margin-top: 4px; font-size: 12px; }
 
-    /* ── Animation ── */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(5px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
     /* ── Dark Mode ── */
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #0f172a;
-        --surface: #1e293b;
-        --surface-2: #263346;
-        --surface-3: #1e293b;
-        --border: #334155;
-        --border-strong: #475569;
-        --text-1: #f1f5f9;
-        --text-2: #94a3b8;
-        --text-3: #64748b;
+        --bg: #0f172a; --surface: #1e293b; --surface-2: #263346; --surface-3: #1e293b;
+        --border: #334155; --border-strong: #475569;
+        --text-1: #f1f5f9; --text-2: #94a3b8; --text-3: #64748b;
         --accent-light: rgba(79,70,229,0.15);
       }
 
       .log-line.level-error { background: rgba(239,68,68,0.1); color: #fca5a5; }
-      .log-line.level-error:hover { background: rgba(239,68,68,0.16); }
       .log-line.level-warn  { background: rgba(245,158,11,0.1); color: #fcd34d; }
-      .log-line.level-warn:hover  { background: rgba(245,158,11,0.16); }
       .log-line.level-debug, .log-line.level-trace { color: var(--text-3); }
+      .hl-0 { background: #854d0e; color: #fef08a; }
+      .json-msg { color: var(--text-1); }
 
-      .highlight { background: #854d0e; color: #fef08a; }
-
-      label:has(#errorLevel:checked)  { background: rgba(239,68,68,0.15); border-color: #f87171; color: #fca5a5; }
-      label:has(#warnLevel:checked)   { background: rgba(245,158,11,0.15); border-color: #fbbf24; color: #fcd34d; }
-      label:has(#infoLevel:checked)   { background: rgba(37,99,235,0.15); border-color: #60a5fa; color: #93c5fd; }
-      label:has(#debugLevel:checked)  { background: rgba(22,163,74,0.15); border-color: #4ade80; color: #86efac; }
-      label:has(#traceLevel:checked)  { background: rgba(124,58,237,0.15); border-color: #a78bfa; color: #c4b5fd; }
+      label:has(#errorLevel:checked) { background: rgba(239,68,68,0.15); border-color: #f87171; color: #fca5a5; }
+      label:has(#warnLevel:checked)  { background: rgba(245,158,11,0.15); border-color: #fbbf24; color: #fcd34d; }
+      label:has(#infoLevel:checked)  { background: rgba(37,99,235,0.15); border-color: #60a5fa; color: #93c5fd; }
+      label:has(#debugLevel:checked) { background: rgba(22,163,74,0.15); border-color: #4ade80; color: #86efac; }
+      label:has(#traceLevel:checked) { background: rgba(124,58,237,0.15); border-color: #a78bfa; color: #c4b5fd; }
     }
 
     /* ── Responsive ── */
     @media (max-width: 768px) {
-      body { padding: 14px 12px 40px; }
-      h1 { font-size: 1.5rem; }
+      body { padding: 12px 10px 36px; }
+      h1 { font-size: 1.375rem; }
       .controls { flex-direction: column; }
       input[type="file"], #search { width: 100%; min-width: auto; }
       .filter-content { grid-template-columns: 1fr; }
       .export-controls { flex-direction: column; align-items: stretch; }
-      .export-btn { justify-content: center; }
-      .line-number-toggle { margin-left: 0; justify-content: center; }
     }
 
     @media (max-width: 480px) {
-      body { padding: 10px 8px 32px; }
-      h1 { font-size: 1.25rem; }
       .log-content-area { max-height: 300px; }
     }
   </style>
@@ -735,7 +751,6 @@
       <p class="app-subtitle">多檔案 Log 分析、搜尋與合併工具</p>
     </div>
 
-    <!-- 拖拉上傳區域 -->
     <div class="drop-zone" id="dropZone">
       <div class="drop-zone-icon">📁</div>
       <div class="drop-zone-text">
@@ -744,37 +759,47 @@
     </div>
 
     <div class="controls">
-      <input type="file" id="logFiles" multiple accept=".log,.txt" placeholder="選擇 Log 檔案">
+      <input type="file" id="logFiles" multiple accept=".log,.txt">
       <input type="text" id="search" placeholder="🔍 搜尋關鍵字…">
-      <button class="clear-all-btn" id="clearAllBtn" style="display: none;">✕ 清除全部</button>
+      <!-- Search navigation (shown when keyword active) -->
+      <div class="search-nav" id="searchNav">
+        <span class="search-nav-count" id="searchNavCount">0 筆</span>
+        <button class="search-nav-btn" id="searchNavPrev" title="上一個 (Shift+Enter)">↑</button>
+        <button class="search-nav-btn" id="searchNavNext" title="下一個 (Enter)">↓</button>
+      </div>
+      <button class="clear-all-btn" id="clearAllBtn" style="display:none;">✕ 清除全部</button>
+    </div>
 
-      <!-- 匯出功能按鈕 -->
-      <div class="export-controls" id="exportControls" style="display: none;">
-        <button class="export-btn" id="exportFilteredBtn" title="匯出過濾後的搜尋結果">↓ 匯出搜尋結果</button>
-        <button class="export-btn" id="exportMergedBtn" title="匯出合併的時間排序結果">⇄ 匯出合併檔案</button>
-        <label class="line-number-toggle">
-          <input type="checkbox" id="showLineNumbers"> 顯示行號
-        </label>
+    <!-- Export / font size controls -->
+    <div class="export-controls" id="exportControls" style="display:none;">
+      <button class="export-btn" id="exportFilteredBtn">↓ 匯出搜尋結果</button>
+      <button class="export-btn" id="exportMergedBtn">⇄ 匯出合併檔案</button>
+      <label class="line-number-toggle">
+        <input type="checkbox" id="showLineNumbers"> 顯示行號
+      </label>
+      <div class="font-size-controls" title="調整字型大小">
+        字型
+        <button class="font-size-btn" id="fontDecBtn" title="縮小">−</button>
+        <span class="font-size-val" id="fontSizeVal">12.5</span>
+        <button class="font-size-btn" id="fontIncBtn" title="放大">＋</button>
       </div>
     </div>
 
-    <!-- 進階篩選控制區 -->
+    <!-- Advanced filters -->
     <div class="advanced-filters">
       <details class="filter-section">
         <summary class="filter-header">🔍 進階篩選選項</summary>
         <div class="filter-content">
-          <!-- 日期範圍過濾 -->
           <div class="filter-group">
             <label class="filter-label">📅 日期範圍</label>
             <div class="date-range">
-              <input type="date" id="startDate" class="date-input" placeholder="開始日期">
+              <input type="date" id="startDate" class="date-input">
               <span class="date-separator">→</span>
-              <input type="date" id="endDate" class="date-input" placeholder="結束日期">
+              <input type="date" id="endDate" class="date-input">
               <button class="clear-date-btn" id="clearDateBtn">清除</button>
             </div>
           </div>
 
-          <!-- Log 等級過濾 -->
           <div class="filter-group">
             <label class="filter-label">📊 Log 等級</label>
             <div class="level-filters">
@@ -786,31 +811,21 @@
             </div>
           </div>
 
-          <!-- 搜尋選項 -->
           <div class="filter-group">
             <label class="filter-label">🔍 搜尋選項</label>
             <div class="search-options">
-              <label class="search-option">
-                <input type="checkbox" id="regexSearch"> 正則表達式
-              </label>
-              <label class="search-option">
-                <input type="checkbox" id="caseSensitive"> 大小寫敏感
-              </label>
+              <label class="search-option"><input type="checkbox" id="regexSearch"> 正則表達式</label>
+              <label class="search-option"><input type="checkbox" id="caseSensitive"> 大小寫敏感</label>
             </div>
           </div>
 
-          <!-- 多關鍵字搜尋 -->
           <div class="filter-group">
             <label class="filter-label">🔗 多關鍵字搜尋</label>
             <div class="multi-keyword">
               <input type="text" id="multiKeywords" placeholder="關鍵字1,關鍵字2 或 關鍵字1|關鍵字2" class="multi-keyword-input">
               <div class="logic-options">
-                <label class="logic-option">
-                  <input type="radio" name="searchLogic" value="and" checked> AND (,)
-                </label>
-                <label class="logic-option">
-                  <input type="radio" name="searchLogic" value="or"> OR (|)
-                </label>
+                <label class="logic-option"><input type="radio" name="searchLogic" value="and" checked> AND (,)</label>
+                <label class="logic-option"><input type="radio" name="searchLogic" value="or"> OR (|)</label>
               </div>
             </div>
           </div>
@@ -818,8 +833,8 @@
       </details>
     </div>
 
-    <!-- 檔案列表 -->
-    <div class="file-list" id="fileList" style="display: none;">
+    <!-- File list -->
+    <div class="file-list" id="fileList" style="display:none;">
       <h3>已載入的檔案</h3>
       <div id="fileItems"></div>
     </div>
@@ -843,22 +858,32 @@
   </div>
 
   <script>
-    // ── Constants ──────────────────────────────────────────────
-    const CHUNK_SIZE = 500;   // lines rendered per batch
-    const DEBOUNCE_MS = 200;  // ms to wait before re-rendering after input
+    // ── Constants ────────────────────────────────────────────────
+    const CHUNK_SIZE   = 500;
+    const DEBOUNCE_MS  = 200;
+    const FONT_MIN     = 10;
+    const FONT_MAX     = 20;
+    const FONT_STEP    = 0.5;
 
     const FILE_COLORS = ['#3b82f6','#ef4444','#10b981','#f59e0b','#8b5cf6','#06b6d4','#f97316','#64748b'];
 
-    // ── DOM refs ───────────────────────────────────────────────
-    const logFilesInput  = document.getElementById('logFiles');
-    const logsDiv        = document.getElementById('logs');
-    const mergedLogsDiv  = document.getElementById('mergedLogs');
-    const searchInput    = document.getElementById('search');
-    const dropZone       = document.getElementById('dropZone');
-    const fileList       = document.getElementById('fileList');
-    const fileItems      = document.getElementById('fileItems');
-    const clearAllBtn    = document.getElementById('clearAllBtn');
+    const LEVEL_PATTERNS = [
+      ['ERROR', /\b(?:ERROR|FATAL|SEVERE)\b/i],
+      ['WARN',  /\b(?:WARN(?:ING)?)\b/i],
+      ['INFO',  /\bINFO\b/i],
+      ['DEBUG', /\bDEBUG\b/i],
+      ['TRACE', /\b(?:TRACE|VERBOSE)\b/i],
+    ];
 
+    // ── DOM Refs ─────────────────────────────────────────────────
+    const logFilesInput     = document.getElementById('logFiles');
+    const logsDiv           = document.getElementById('logs');
+    const mergedLogsDiv     = document.getElementById('mergedLogs');
+    const searchInput       = document.getElementById('search');
+    const dropZone          = document.getElementById('dropZone');
+    const fileList          = document.getElementById('fileList');
+    const fileItemsEl       = document.getElementById('fileItems');
+    const clearAllBtn       = document.getElementById('clearAllBtn');
     const startDateInput    = document.getElementById('startDate');
     const endDateInput      = document.getElementById('endDate');
     const clearDateBtn      = document.getElementById('clearDateBtn');
@@ -871,92 +896,128 @@
     const caseSensitiveCb   = document.getElementById('caseSensitive');
     const multiKeywordsInput = document.getElementById('multiKeywords');
     const searchLogicRadios = document.querySelectorAll('input[name="searchLogic"]');
-
     const exportControls    = document.getElementById('exportControls');
     const exportFilteredBtn = document.getElementById('exportFilteredBtn');
     const exportMergedBtn   = document.getElementById('exportMergedBtn');
     const showLineNumbersCb = document.getElementById('showLineNumbers');
+    const searchNavEl       = document.getElementById('searchNav');
+    const searchNavCount    = document.getElementById('searchNavCount');
+    const searchNavPrev     = document.getElementById('searchNavPrev');
+    const searchNavNext     = document.getElementById('searchNavNext');
+    const fontSizeVal       = document.getElementById('fontSizeVal');
+    const fontDecBtn        = document.getElementById('fontDecBtn');
+    const fontIncBtn        = document.getElementById('fontIncBtn');
 
-    // ── State ──────────────────────────────────────────────────
+    // ── State ────────────────────────────────────────────────────
     let logContents  = [];
     let fileColorMap = new Map();
     let colorIndex   = 0;
-
-    // Pending lines for "load more" per block-id
-    // Map<blockId, { lines: string[], keyword: string, showLineNumbers: bool, offset: number }>
+    let fontSize     = 12.5;
     const pendingChunks = new Map();
 
-    // ── Utility ────────────────────────────────────────────────
+    // Search navigation state
+    const nav = { matches: [], current: -1 };
+
+    // ── Utilities ────────────────────────────────────────────────
     function debounce(fn, ms) {
-      let timer;
-      return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), ms); };
+      let t;
+      return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };
     }
 
-    function escapeRegex(str) {
-      return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    function escapeRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+    function escapeHtml(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
 
-    function escapeHtml(str) {
-      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    function formatFileSize(b) {
+      if (!b) return '0 B';
+      const k = 1024, u = ['B','KB','MB','GB'];
+      const i = Math.floor(Math.log(b) / Math.log(k));
+      return parseFloat((b / Math.pow(k, i)).toFixed(2)) + ' ' + u[i];
     }
 
-    function highlightKeyword(text, keyword, useRegex) {
-      if (!keyword) return escapeHtml(text);
-      const safeText = escapeHtml(text);
+    function formatDateForFilename(d = new Date()) {
+      return d.toISOString().replace(/[:.]/g, '-').slice(0, 19);
+    }
+
+    function stripHtml(s) { return s.replace(/<[^>]*>/g, ''); }
+
+    // ── Log Format Detection ──────────────────────────────────────
+    function detectLineFormat(line) {
+      const t = line.trim();
+      if (t.startsWith('{') && t.endsWith('}')) return 'json';
+      // Nginx/Apache: starts with IPv4 or IPv6
+      if (/^(?:\d{1,3}\.){3}\d{1,3}\s|^[\da-f:]+\s/i.test(t) &&
+          /\[[\d/\w: +-]+\]\s+"[A-Z]+\s+/.test(t)) return 'nginx';
+      return 'standard';
+    }
+
+    function parseJsonLog(line) {
       try {
-        const pattern = useRegex ? keyword : escapeRegex(keyword);
-        return safeText.replace(new RegExp(pattern, 'gi'), m => `<span class="highlight">${m}</span>`);
-      } catch (e) {
-        return safeText; // invalid regex — show plain text
-      }
+        const obj = JSON.parse(line.trim());
+        return (obj && typeof obj === 'object') ? obj : null;
+      } catch { return null; }
     }
 
-    // ── File color ─────────────────────────────────────────────
-    function getFileColorIndex(fileName) {
-      if (!fileColorMap.has(fileName)) {
-        fileColorMap.set(fileName, colorIndex % 8);
-        colorIndex++;
-      }
-      return fileColorMap.get(fileName);
+    function getJsonLevel(obj) {
+      const raw = String(obj.level || obj.severity || obj.lvl || obj.log_level || '').toUpperCase();
+      if (/ERROR|FATAL|SEVERE/.test(raw)) return 'ERROR';
+      if (/WARN/.test(raw)) return 'WARN';
+      if (/DEBUG/.test(raw)) return 'DEBUG';
+      if (/TRACE|VERBOSE/.test(raw)) return 'TRACE';
+      return 'INFO';
     }
 
-    // ── Date parsing ───────────────────────────────────────────
+    function getNginxStatus(line) {
+      const m = line.match(/"[^"]*"\s+(\d{3})/);
+      return m ? parseInt(m[1]) : 200;
+    }
+
+    // ── Date / Level Parsing ──────────────────────────────────────
+    const DATE_PATTERNS = [
+      /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}[,.]\d{3})/,
+      /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})/,
+      /(\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2})/,
+      /(\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2})/,
+    ];
+
     function parseLogDate(line) {
-      const datePatterns = [
-        /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3})/,
-        /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})/,
-        /(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})/,
-        /(\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2})/,
-        /(\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2})/,
-      ];
-      for (const p of datePatterns) {
+      // JSON: check timestamp field
+      if (line.trim().startsWith('{')) {
+        const obj = parseJsonLog(line);
+        if (obj) {
+          const ts = obj.timestamp || obj.time || obj['@timestamp'];
+          if (ts) { const d = new Date(ts); if (!isNaN(d)) return d; }
+        }
+      }
+      // Standard patterns
+      for (const p of DATE_PATTERNS) {
         const m = line.match(p);
         if (m) return new Date(m[1].replace(',', '.'));
       }
+      // Nginx: [10/Oct/2000:13:55:36 -0700]
+      const nm = line.match(/\[(\d{2}\/\w+\/\d{4}:\d{2}:\d{2}:\d{2}\s[+-]\d{4})\]/);
+      if (nm) { const d = new Date(nm[1].replace(/(\d+)\/(\w+)\/(\d+):/, '$1 $2 $3 ')); if (!isNaN(d)) return d; }
       return null;
     }
 
-    function isDateInRange(logDate, startDate, endDate) {
-      if (!logDate) return !startDate && !endDate;
-      const t = logDate.getTime();
-      if (startDate && t < startDate.getTime()) return false;
-      if (endDate   && t > endDate.getTime() + 86400000) return false;
+    function isDateInRange(d, start, end) {
+      if (!d) return !start && !end;
+      const t = d.getTime();
+      if (start && t < start.getTime()) return false;
+      if (end   && t > end.getTime() + 86400000) return false;
       return true;
     }
 
-    // ── Log level ──────────────────────────────────────────────
-    const LEVEL_PATTERNS = [
-      ['ERROR', /\b(?:ERROR|FATAL|SEVERE)\b/i],
-      ['WARN',  /\b(?:WARN(?:ING)?)\b/i],
-      ['INFO',  /\bINFO\b/i],
-      ['DEBUG', /\bDEBUG\b/i],
-      ['TRACE', /\b(?:TRACE|VERBOSE)\b/i],
-    ];
-
     function getLogLevel(line) {
-      for (const [level, re] of LEVEL_PATTERNS) {
-        if (re.test(line)) return level;
+      const fmt = detectLineFormat(line);
+      if (fmt === 'json') { const obj = parseJsonLog(line); if (obj) return getJsonLevel(obj); }
+      if (fmt === 'nginx') {
+        const s = getNginxStatus(line);
+        return s >= 500 ? 'ERROR' : s >= 400 ? 'WARN' : 'INFO';
       }
+      for (const [level, re] of LEVEL_PATTERNS) { if (re.test(line)) return level; }
       return 'INFO';
     }
 
@@ -971,33 +1032,40 @@
       }
     }
 
-    // ── Search matching ────────────────────────────────────────
-    function matchesSearch(line, searchText, useRegex, caseSensitive) {
-      if (!searchText) return true;
-      try {
-        if (useRegex) {
-          return new RegExp(searchText, caseSensitive ? '' : 'i').test(line);
-        }
-        const a = caseSensitive ? line : line.toLowerCase();
-        const b = caseSensitive ? searchText : searchText.toLowerCase();
-        return a.includes(b);
-      } catch (e) {
-        const a = caseSensitive ? line : line.toLowerCase();
-        const b = caseSensitive ? searchText : searchText.toLowerCase();
-        return a.includes(b);
-      }
+    // ── Stats Computation ──────────────────────────────────────────
+    function computeStats(lines) {
+      const s = { ERROR: 0, WARN: 0, INFO: 0, DEBUG: 0, TRACE: 0 };
+      for (const line of lines) { const lvl = getLogLevel(line); if (s[lvl] !== undefined) s[lvl]++; }
+      return s;
     }
 
-    function matchesMultiKeywords(line, keywords, logic, useRegex, caseSensitive) {
-      if (!keywords) return true;
+    function renderStatBadges(stats, totalLines) {
+      const badges = [];
+      if (stats.ERROR) badges.push(`<span class="stat-badge s-error" onclick="quickLevelFilter('ERROR')" title="僅顯示 ERROR（點擊篩選）">E:${stats.ERROR}</span>`);
+      if (stats.WARN)  badges.push(`<span class="stat-badge s-warn"  onclick="quickLevelFilter('WARN')"  title="僅顯示 WARN（點擊篩選）">W:${stats.WARN}</span>`);
+      if (stats.INFO)  badges.push(`<span class="stat-badge s-info"  title="INFO 筆數">I:${stats.INFO}</span>`);
+      if (stats.DEBUG) badges.push(`<span class="stat-badge s-debug" title="DEBUG 筆數">D:${stats.DEBUG}</span>`);
+      return `<div class="stat-badges">${badges.join('')}</div>`;
+    }
+
+    // ── Search / Filter ────────────────────────────────────────────
+    function matchesSearch(line, text, useRegex, cs) {
+      if (!text) return true;
+      try {
+        if (useRegex) return new RegExp(text, cs ? '' : 'i').test(line);
+        return (cs ? line : line.toLowerCase()).includes(cs ? text : text.toLowerCase());
+      } catch { return (cs ? line : line.toLowerCase()).includes(cs ? text : text.toLowerCase()); }
+    }
+
+    function matchesMultiKeywords(line, kw, logic, useRegex, cs) {
+      if (!kw) return true;
       const sep = logic === 'and' ? ',' : '|';
-      const list = keywords.split(sep).map(k => k.trim()).filter(Boolean);
+      const list = kw.split(sep).map(k => k.trim()).filter(Boolean);
       if (!list.length) return true;
-      const fn = k => matchesSearch(line, k, useRegex, caseSensitive);
+      const fn = k => matchesSearch(line, k, useRegex, cs);
       return logic === 'and' ? list.every(fn) : list.some(fn);
     }
 
-    // ── Filter options ─────────────────────────────────────────
     function getFilterOptions() {
       return {
         searchText:    searchInput.value.trim(),
@@ -1013,27 +1081,156 @@
     function filterLogLine(line, opts) {
       if (!isDateInRange(parseLogDate(line), opts.startDate, opts.endDate)) return false;
       if (!isLevelSelected(getLogLevel(line))) return false;
-      const kw = opts.multiKeywords;
-      if (kw) return matchesMultiKeywords(line, kw, opts.searchLogic, opts.useRegex, opts.caseSensitive);
+      if (opts.multiKeywords) return matchesMultiKeywords(line, opts.multiKeywords, opts.searchLogic, opts.useRegex, opts.caseSensitive);
       if (opts.searchText) return matchesSearch(line, opts.searchText, opts.useRegex, opts.caseSensitive);
       return true;
     }
 
-    // ── Chunked line renderer ──────────────────────────────────
-    // Renders `lines[offset .. offset+CHUNK_SIZE]` into `container`.
-    // If more remain, appends a "load more" button that continues from the same blockId.
-    function renderLineChunk(container, blockId, lines, offset, keyword, useRegex, showLineNumbers) {
-      const end    = Math.min(offset + CHUNK_SIZE, lines.length);
-      const batch  = lines.slice(offset, end);
+    function getKeywordList(opts) {
+      if (opts.multiKeywords) {
+        const sep = opts.searchLogic === 'and' ? ',' : '|';
+        return opts.multiKeywords.split(sep).map(k => k.trim()).filter(Boolean);
+      }
+      if (opts.searchText) return [opts.searchText];
+      return [];
+    }
 
-      const html = batch.map(line => {
-        const level = getLogLevel(line).toLowerCase();
-        return `<div class="log-line level-${level}">${highlightKeyword(line, keyword, useRegex)}</div>`;
-      }).join('');
+    // ── Multi-color Highlight ──────────────────────────────────────
+    function highlightMultiColor(text, keywords, useRegex) {
+      if (!keywords || !keywords.length) return escapeHtml(text);
+      const safe = escapeHtml(text);
+      const ranges = [];
+      keywords.forEach((kw, i) => {
+        if (!kw) return;
+        try {
+          const pat = useRegex ? kw : escapeRegex(kw);
+          const re  = new RegExp(pat, 'gi');
+          let m;
+          while ((m = re.exec(safe)) !== null) {
+            ranges.push({ start: m.index, end: m.index + m[0].length, ci: i % 6, txt: m[0] });
+            if (!m[0].length) re.lastIndex++;
+          }
+        } catch { /* invalid regex */ }
+      });
+      if (!ranges.length) return safe;
+      ranges.sort((a, b) => a.start - b.start);
+      let out = '', pos = 0;
+      for (const r of ranges) {
+        if (r.start < pos) continue;
+        out += safe.slice(pos, r.start);
+        out += `<span class="hl-${r.ci}">${r.txt}</span>`;
+        pos = r.end;
+      }
+      return out + safe.slice(pos);
+    }
 
-      // Target: the .line-numbers wrapper if active, else the container directly
+    // ── Entry Grouping (Stacktrace) ────────────────────────────────
+    // Lines without a timestamp are treated as continuation of the previous entry
+    function groupLogEntries(lines) {
+      const entries = [];
+      for (const line of lines) {
+        if (parseLogDate(line) !== null || !entries.length) {
+          entries.push({ main: line, cont: [] });
+        } else {
+          entries[entries.length - 1].cont.push(line);
+        }
+      }
+      return entries;
+    }
+
+    // ── Line Format Rendering ──────────────────────────────────────
+    function renderLineDisplay(line, keywords, useRegex) {
+      const fmt = detectLineFormat(line);
+
+      if (fmt === 'json') {
+        const obj = parseJsonLog(line);
+        if (obj) {
+          const lvl  = getJsonLevel(obj);
+          const ts   = obj.timestamp || obj.time || obj['@timestamp'] || '';
+          const msg  = obj.message || obj.msg || obj.text || '';
+          const lgr  = obj.logger || obj.name || obj.service || '';
+          const tsStr  = ts  ? `<span class="json-ts">${escapeHtml(String(ts).slice(0,23))}</span>` : '';
+          const lvlStr = `<span class="json-level lvl-${lvl.toLowerCase()}">${lvl}</span>`;
+          const lgrStr = lgr ? `<span class="json-logger">[${escapeHtml(String(lgr))}]</span> ` : '';
+          const msgStr = msg ? `<span class="json-msg">${highlightMultiColor(String(msg), keywords, useRegex)}</span>` : '';
+          return `${tsStr}${lvlStr}${lgrStr}${msgStr}`;
+        }
+      }
+
+      if (fmt === 'nginx') {
+        const safe = highlightMultiColor(line, keywords, useRegex);
+        // Color the HTTP status code in-place
+        return safe.replace(/(\b\d{3}\b)(?=[\s<])/, (_, code) => {
+          const n = parseInt(code);
+          const cls = n >= 500 ? 'nginx-5xx' : n >= 400 ? 'nginx-4xx' : n >= 300 ? 'nginx-3xx' : 'nginx-2xx';
+          return `<span class="nginx-status ${cls}">${code}</span>`;
+        });
+      }
+
+      return highlightMultiColor(line, keywords, useRegex);
+    }
+
+    function renderEntryHtml(entry, keywords, useRegex, showLN) {
+      const level = getLogLevel(entry.main).toLowerCase();
+      const mainHtml = `<div class="log-line level-${level}">${renderLineDisplay(entry.main, keywords, useRegex)}</div>`;
+
+      if (!entry.cont.length) return mainHtml;
+
+      // Stacktrace lines — don't collapse when line numbers are shown
+      if (showLN) {
+        const contHtml = entry.cont.map(l =>
+          `<div class="log-line stacktrace-frame">${escapeHtml(l)}</div>`
+        ).join('');
+        return mainHtml + contHtml;
+      }
+
+      const uid = 'st-' + Math.random().toString(36).slice(2);
+      const contHtml = entry.cont.map(l =>
+        `<div class="log-line stacktrace-frame">${escapeHtml(l)}</div>`
+      ).join('');
+
+      return `<div class="entry-group">${mainHtml}<div class="stacktrace-block">` +
+        `<button class="stacktrace-toggle" onclick="toggleStacktrace('${uid}')" id="btn-${uid}">` +
+        `<span class="st-arrow">▶</span> ${entry.cont.length} 行（點擊展開）</button>` +
+        `<div class="stacktrace-lines" id="${uid}" style="display:none;">${contHtml}</div>` +
+        `</div></div>`;
+    }
+
+    // ── Stacktrace Toggle ──────────────────────────────────────────
+    function toggleStacktrace(uid) {
+      const el  = document.getElementById(uid);
+      const btn = document.getElementById('btn-' + uid);
+      if (!el || !btn) return;
+      const open = el.style.display === 'none';
+      el.style.display  = open ? '' : 'none';
+      btn.classList.toggle('open', open);
+      btn.querySelector('.st-arrow').style.transform = open ? 'rotate(90deg)' : '';
+      btn.childNodes[1].textContent = open
+        ? ` ${el.children.length} 行（點擊收合）`
+        : ` ${el.children.length} 行（點擊展開）`;
+    }
+
+    window.toggleStacktrace = toggleStacktrace;
+
+    // ── Quick Level Filter (from stat badge click) ─────────────────
+    function quickLevelFilter(level) {
+      errorLevelCb.checked = level === 'ERROR';
+      warnLevelCb.checked  = level === 'WARN';
+      infoLevelCb.checked  = level === 'INFO';
+      debugLevelCb.checked = level === 'DEBUG';
+      traceLevelCb.checked = level === 'TRACE';
+      debouncedRefresh();
+    }
+
+    window.quickLevelFilter = quickLevelFilter;
+
+    // ── Chunked Rendering ──────────────────────────────────────────
+    function renderChunk(container, blockId, lines, offset, keywords, useRegex, showLN) {
+      const end   = Math.min(offset + CHUNK_SIZE, lines.length);
+      const batch = lines.slice(offset, end);
+
       let target = container;
-      if (showLineNumbers) {
+      if (showLN) {
         let wrapper = container.querySelector('.line-numbers');
         if (!wrapper) {
           wrapper = document.createElement('div');
@@ -1043,12 +1240,23 @@
         target = wrapper;
       }
 
+      // Flat rendering for line-numbers mode; grouped otherwise
+      let html;
+      if (showLN) {
+        html = batch.map(line => {
+          const level = getLogLevel(line).toLowerCase();
+          return `<div class="log-line level-${level}">${renderLineDisplay(line, keywords, useRegex)}</div>`;
+        }).join('');
+      } else {
+        const entries = groupLogEntries(batch);
+        html = entries.map(e => renderEntryHtml(e, keywords, useRegex, false)).join('');
+      }
+
       target.insertAdjacentHTML('beforeend', html);
 
       if (end < lines.length) {
         const remaining = lines.length - end;
-        pendingChunks.set(blockId, { lines, offset: end, keyword, useRegex, showLineNumbers });
-
+        pendingChunks.set(blockId, { lines, offset: end, keywords, useRegex, showLN });
         const btn = document.createElement('button');
         btn.className = 'load-more-btn';
         btn.textContent = `▼ 顯示更多（已顯示 ${end} / 共 ${lines.length} 行，剩餘 ${remaining} 行）`;
@@ -1060,27 +1268,74 @@
     }
 
     function loadMoreLines(blockId, container) {
-      const state = pendingChunks.get(blockId);
-      if (!state) return;
-      renderLineChunk(container, blockId, state.lines, state.offset, state.keyword, state.useRegex, state.showLineNumbers);
+      const s = pendingChunks.get(blockId);
+      if (s) renderChunk(container, blockId, s.lines, s.offset, s.keywords, s.useRegex, s.showLN);
     }
 
-    // Expose for inline onclick (dynamically created buttons find this via window)
     window.loadMoreLines = loadMoreLines;
 
-    // ── Display logs ───────────────────────────────────────────
+    // ── Search Navigation ──────────────────────────────────────────
+    function updateSearchNav() {
+      const kws = getKeywordList(getFilterOptions());
+      if (!kws.length) {
+        searchNavEl.classList.remove('visible');
+        nav.matches = [];
+        nav.current = -1;
+        return;
+      }
+
+      // Collect all rendered highlight spans
+      nav.matches = Array.from(document.querySelectorAll('.log-content-area .hl-0,.log-content-area .hl-1,.log-content-area .hl-2,.log-content-area .hl-3,.log-content-area .hl-4,.log-content-area .hl-5'));
+
+      searchNavEl.classList.toggle('visible', nav.matches.length > 0);
+
+      if (!nav.matches.length) {
+        searchNavCount.textContent = '0 筆';
+        return;
+      }
+
+      if (nav.current < 0 || nav.current >= nav.matches.length) nav.current = 0;
+      focusCurrentMatch();
+    }
+
+    function navigateMatch(dir) {
+      if (!nav.matches.length) return;
+      nav.current = (nav.current + dir + nav.matches.length) % nav.matches.length;
+      focusCurrentMatch();
+    }
+
+    function focusCurrentMatch() {
+      document.querySelectorAll('.hl-current').forEach(e => e.classList.remove('hl-current'));
+      const el = nav.matches[nav.current];
+      if (!el) return;
+      el.classList.add('hl-current');
+      el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      searchNavCount.textContent = `${nav.current + 1} / ${nav.matches.length}`;
+    }
+
+    window.navigateMatch = navigateMatch;
+
+    // ── Font Size Control ──────────────────────────────────────────
+    function applyFontSize(size) {
+      fontSize = Math.min(FONT_MAX, Math.max(FONT_MIN, size));
+      document.documentElement.style.setProperty('--log-font-size', fontSize + 'px');
+      fontSizeVal.textContent = fontSize % 1 === 0 ? fontSize : fontSize.toFixed(1);
+      fontDecBtn.disabled = fontSize <= FONT_MIN;
+      fontIncBtn.disabled = fontSize >= FONT_MAX;
+    }
+
+    fontDecBtn.addEventListener('click', () => applyFontSize(fontSize - FONT_STEP));
+    fontIncBtn.addEventListener('click', () => applyFontSize(fontSize + FONT_STEP));
+
+    // ── Display: Individual Logs ───────────────────────────────────
     function displayLogs() {
       pendingChunks.clear();
       const opts    = getFilterOptions();
-      const keyword = opts.multiKeywords || opts.searchText;
+      const kws     = getKeywordList(opts);
       const showLN  = showLineNumbersCb.checked;
 
-      if (logContents.length === 0) {
-        logsDiv.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-state-icon">📁</div>
-            <p>請選擇一個或多個 Log 檔案開始瀏覽</p>
-          </div>`;
+      if (!logContents.length) {
+        logsDiv.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📁</div><p>請選擇一個或多個 Log 檔案開始瀏覽</p></div>`;
         return;
       }
 
@@ -1088,113 +1343,92 @@
       let totalFiltered = 0;
 
       logContents.forEach(log => {
-        const allLines      = log.lines; // pre-computed at load time
-        const filteredLines = allLines.filter(line => filterLogLine(line, opts));
-        totalFiltered += filteredLines.length;
+        const filtered = log.lines.filter(line => filterLogLine(line, opts));
+        totalFiltered += filtered.length;
 
-        const ci      = getFileColorIndex(log.name);
+        const ci      = getFileColorIndex(log.id);
         const blockId = `lb-${ci}-${log.id}`;
+        const stats   = computeStats(filtered);
+        const statHtml = renderStatBadges(stats, filtered.length);
+        const countStr = filtered.length !== log.lines.length
+          ? `${filtered.length}/${log.lines.length} 行`
+          : `${log.lines.length} 行`;
 
-        const logBlock = document.createElement('div');
-        logBlock.className = `log-block file-color-${ci}`;
-        logBlock.id = blockId;
-
-        const stats = filteredLines.length !== allLines.length
-          ? `${filteredLines.length}/${allLines.length} 行`
-          : `${allLines.length} 行`;
-
-        logBlock.innerHTML = `
+        const block = document.createElement('div');
+        block.className = `log-block file-color-${ci}`;
+        block.id = blockId;
+        block.innerHTML = `
           <div class="sticky-header">
             <div class="header-main">
               <span>📄</span>
-              <span>${escapeHtml(log.name)}</span>
+              <span class="header-filename">${escapeHtml(log.displayName || log.name)}</span>
             </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div class="header-stats">${stats}</div>
+            <div class="header-right">
+              ${statHtml}
+              <span class="header-line-count">${countStr}</span>
               <button class="collapse-toggle" onclick="toggleCollapse('${blockId}')" title="摺疊/展開">▼</button>
             </div>
           </div>
           <div class="log-content-area" id="${blockId}-content"></div>`;
 
-        logsDiv.appendChild(logBlock);
+        logsDiv.appendChild(block);
 
         const contentEl = document.getElementById(`${blockId}-content`);
-        if (filteredLines.length > 0) {
-          renderLineChunk(contentEl, blockId, filteredLines, 0, keyword, opts.useRegex, showLN);
+        if (filtered.length) {
+          renderChunk(contentEl, blockId, filtered, 0, kws, opts.useRegex, showLN);
         } else {
-          contentEl.innerHTML = '<div style="color:var(--text-3);font-size:13px;font-style:italic;padding:4px 0;">沒有符合篩選條件的記錄</div>';
+          contentEl.innerHTML = '<div style="color:var(--text-3);font-size:12px;font-style:italic;padding:4px 0;">沒有符合篩選條件的記錄</div>';
         }
       });
 
-      if (totalFiltered === 0) {
-        logsDiv.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-state-icon">🔍</div>
-            <p>沒有找到符合篩選條件的記錄</p>
-            <p>請嘗試調整篩選條件</p>
-          </div>`;
+      if (!totalFiltered) {
+        logsDiv.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🔍</div><p>沒有找到符合篩選條件的記錄</p><p>請嘗試調整篩選條件</p></div>`;
       }
+
+      // Defer nav update to let DOM settle
+      requestAnimationFrame(updateSearchNav);
     }
 
-    // ── Display merged logs ────────────────────────────────────
+    // ── Display: Merged ────────────────────────────────────────────
     function displayMergedLogs() {
-      const opts    = getFilterOptions();
-      const keyword = opts.multiKeywords || opts.searchText;
-      const showLN  = showLineNumbersCb.checked;
+      const opts   = getFilterOptions();
+      const kws    = getKeywordList(opts);
+      const showLN = showLineNumbersCb.checked;
 
-      if (logContents.length === 0) {
-        mergedLogsDiv.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-state-icon">⏱️</div>
-            <p>載入檔案後，這裡會顯示按時間排序的合併結果</p>
-          </div>`;
+      if (!logContents.length) {
+        mergedLogsDiv.innerHTML = `<div class="empty-state"><div class="empty-state-icon">⏱️</div><p>載入檔案後，這裡會顯示按時間排序的合併結果</p></div>`;
         return;
       }
 
-      // Collect & sort
       const allLines = [];
       logContents.forEach(log => {
         log.lines.forEach(line => {
           if (!filterLogLine(line, opts)) return;
           const d = parseLogDate(line);
-          allLines.push({ time: d ? d.getTime() : 0, line, file: log.name });
+          allLines.push({ time: d ? d.getTime() : 0, line, file: log.displayName || log.name, fileId: log.id });
         });
       });
 
       allLines.sort((a, b) => {
-        if (a.time === 0 && b.time === 0) return 0;
-        if (a.time === 0) return 1;
-        if (b.time === 0) return -1;
+        if (!a.time && !b.time) return 0;
+        if (!a.time) return 1;
+        if (!b.time) return -1;
         return a.time - b.time;
       });
 
-      if (allLines.length === 0) {
-        mergedLogsDiv.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-state-icon">🔍</div>
-            <p>沒有找到符合篩選條件的記錄</p>
-            <p>請嘗試調整篩選條件</p>
-          </div>`;
+      if (!allLines.length) {
+        mergedLogsDiv.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🔍</div><p>沒有找到符合篩選條件的記錄</p><p>請嘗試調整篩選條件</p></div>`;
         return;
       }
 
-      // Build enriched lines for merged rendering (pre-compute source tags)
-      // We keep a parallel array of ready-to-render line strings
-      const renderLines = allLines.map(item => {
-        const ci  = getFileColorIndex(item.file);
-        const src = `<span class="merged-log-item file-color-${ci}"><span class="log-source">${escapeHtml(item.file)}</span></span>`;
-        return { raw: item.line, ci, src };
-      });
-
       const blockId = 'merged-block';
-      pendingChunks.delete(blockId);
 
       mergedLogsDiv.innerHTML = `
         <div class="log-block merged-block" id="${blockId}">
           <div class="sticky-header">
             <div class="header-main"><span>📊 合併結果</span></div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <div class="header-stats">${allLines.length} 行</div>
+            <div class="header-right">
+              <span class="header-line-count">${allLines.length} 行</span>
               <button class="collapse-toggle" onclick="toggleCollapse('${blockId}')" title="摺疊/展開">▼</button>
             </div>
           </div>
@@ -1203,15 +1437,9 @@
 
       const contentEl = document.getElementById(`${blockId}-content`);
 
-      // Custom chunked renderer for merged (lines include source tag)
       function renderMergedChunk(offset) {
-        const end   = Math.min(offset + CHUNK_SIZE, renderLines.length);
-        const batch = renderLines.slice(offset, end);
-
-        const html = batch.map(item => {
-          const level = getLogLevel(item.raw).toLowerCase();
-          return `<div class="log-line file-color-${item.ci} level-${level}">${item.src}${highlightKeyword(item.raw, keyword, opts.useRegex)}</div>`;
-        }).join('');
+        const end   = Math.min(offset + CHUNK_SIZE, allLines.length);
+        const batch = allLines.slice(offset, end);
 
         let target = contentEl;
         if (showLN) {
@@ -1223,13 +1451,21 @@
           }
           target = wrapper;
         }
+
+        const html = batch.map(item => {
+          const ci    = getFileColorIndex(item.fileId);
+          const level = getLogLevel(item.line).toLowerCase();
+          const src   = `<span class="merged-log-item file-color-${ci}"><span class="log-source">${escapeHtml(item.file)}</span></span>`;
+          return `<div class="log-line file-color-${ci} level-${level}">${src}${renderLineDisplay(item.line, kws, opts.useRegex)}</div>`;
+        }).join('');
+
         target.insertAdjacentHTML('beforeend', html);
 
-        if (end < renderLines.length) {
-          const remaining = renderLines.length - end;
+        if (end < allLines.length) {
+          const remaining = allLines.length - end;
           const btn = document.createElement('button');
           btn.className = 'load-more-btn';
-          btn.textContent = `▼ 顯示更多（已顯示 ${end} / 共 ${renderLines.length} 行，剩餘 ${remaining} 行）`;
+          btn.textContent = `▼ 顯示更多（已顯示 ${end} / 共 ${allLines.length} 行，剩餘 ${remaining} 行）`;
           btn.onclick = () => { btn.remove(); renderMergedChunk(end); };
           contentEl.appendChild(btn);
         }
@@ -1238,45 +1474,50 @@
       renderMergedChunk(0);
     }
 
-    // ── Collapse / Expand ──────────────────────────────────────
-    function toggleCollapse(elementId) {
-      const el = document.getElementById(elementId);
+    // ── Collapse / Expand ──────────────────────────────────────────
+    function toggleCollapse(id) {
+      const el = document.getElementById(id);
       if (!el) return;
       el.classList.toggle('collapsed');
       const btn = el.querySelector('.collapse-toggle');
       if (btn) {
-        const collapsed = el.classList.contains('collapsed');
-        btn.textContent = collapsed ? '▶' : '▼';
-        btn.title = collapsed ? '展開' : '摺疊';
+        const c = el.classList.contains('collapsed');
+        btn.textContent = c ? '▶' : '▼';
+        btn.title = c ? '展開' : '摺疊';
       }
     }
 
     window.toggleCollapse = toggleCollapse;
 
-    // ── File processing ────────────────────────────────────────
+    // ── File Processing ────────────────────────────────────────────
+    function getFileColorIndex(id) {
+      if (!fileColorMap.has(id)) { fileColorMap.set(id, colorIndex++ % 8); }
+      return fileColorMap.get(id);
+    }
+
+    // Compute display names: add "(N)" suffix for files sharing the same name
+    function computeDisplayNames() {
+      const counts = {};
+      logContents.forEach(l => { counts[l.name] = (counts[l.name] || 0) + 1; });
+      const seen = {};
+      logContents.forEach(l => {
+        if (counts[l.name] === 1) {
+          l.displayName = l.name;
+        } else {
+          seen[l.name] = (seen[l.name] || 0) + 1;
+          l.displayName = `${l.name} (${seen[l.name]})`;
+        }
+      });
+    }
+
     function processFiles(files) {
       files.forEach(file => {
-        const existingIndex = logContents.findIndex(log => log.name === file.name);
         const reader = new FileReader();
-        reader.onload = function(e) {
-          const rawLines = e.target.result
-            .split('\n')
-            .filter(line => line.trim() !== '');
-
-          const logData = {
-            name:    file.name,
-            content: e.target.result, // kept for export
-            lines:   rawLines,         // pre-computed for rendering
-            size:    file.size,
-            id:      Date.now() + Math.random(),
-          };
-
-          if (existingIndex >= 0) {
-            logContents[existingIndex] = logData;
-          } else {
-            logContents.push(logData);
-          }
-
+        reader.onload = e => {
+          const lines = e.target.result.split('\n').filter(l => l.trim());
+          const data  = { name: file.name, content: e.target.result, lines, size: file.size, id: Date.now() + Math.random() };
+          logContents.push(data);
+          computeDisplayNames();
           updateFileList();
           displayLogs();
           displayMergedLogs();
@@ -1285,96 +1526,61 @@
       });
     }
 
-    // ── File list ──────────────────────────────────────────────
     function updateFileList() {
-      if (logContents.length === 0) {
-        fileList.style.display   = 'none';
-        clearAllBtn.style.display  = 'none';
-        exportControls.style.display = 'none';
-        return;
-      }
+      const hasFiles = logContents.length > 0;
+      fileList.style.display      = hasFiles ? 'block' : 'none';
+      clearAllBtn.style.display   = hasFiles ? 'inline-block' : 'none';
+      exportControls.style.display = hasFiles ? 'flex' : 'none';
 
-      fileList.style.display   = 'block';
-      clearAllBtn.style.display  = 'inline-block';
-      exportControls.style.display = 'flex';
-
-      fileItems.innerHTML = logContents.map(log => {
-        const idx   = getFileColorIndex(log.name);
-        const color = FILE_COLORS[idx % FILE_COLORS.length];
-        return `
-          <div class="file-item">
-            <div class="file-info">
-              <span class="file-color-dot" style="background:${color}"></span>
-              <span class="file-name">${escapeHtml(log.name)}</span>
-              <span class="file-size">${formatFileSize(log.size)}</span>
-            </div>
-            <button class="delete-btn" onclick="removeFile('${log.id}')">✕ 刪除</button>
-          </div>`;
+      fileItemsEl.innerHTML = logContents.map(log => {
+        const color = FILE_COLORS[getFileColorIndex(log.id) % FILE_COLORS.length];
+        return `<div class="file-item">
+          <div class="file-info">
+            <span class="file-color-dot" style="background:${color}"></span>
+            <span class="file-name">${escapeHtml(log.displayName || log.name)}</span>
+            <span class="file-size">${formatFileSize(log.size)}</span>
+          </div>
+          <button class="delete-btn" onclick="removeFile('${log.id}')">✕ 刪除</button>
+        </div>`;
       }).join('');
     }
 
     function removeFile(fileId) {
-      logContents = logContents.filter(log => log.id != fileId);
-      fileColorMap.clear();
-      colorIndex = 0;
-      logContents.forEach(log => getFileColorIndex(log.name));
-      updateFileList();
-      displayLogs();
-      displayMergedLogs();
+      logContents = logContents.filter(l => l.id != fileId);
+      fileColorMap.clear(); colorIndex = 0;
+      logContents.forEach(l => getFileColorIndex(l.id));
+      computeDisplayNames();
+      updateFileList(); displayLogs(); displayMergedLogs();
     }
 
     window.removeFile = removeFile;
 
-    // ── Utility ────────────────────────────────────────────────
-    function formatFileSize(bytes) {
-      if (bytes === 0) return '0 B';
-      const k = 1024, sizes = ['B','KB','MB','GB'];
-      const i = Math.floor(Math.log(bytes) / Math.log(k));
-      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-    }
-
-    function formatDateForFilename(date = new Date()) {
-      return date.toISOString().replace(/[:.]/g, '-').slice(0, 19);
-    }
-
-    function stripHtmlTags(str) {
-      return str.replace(/<[^>]*>/g, '');
-    }
-
-    // ── Export ─────────────────────────────────────────────────
+    // ── Export ─────────────────────────────────────────────────────
     function downloadFile(content, filename) {
-      const blob = new Blob([content], { type: 'text/plain' });
-      const url  = URL.createObjectURL(blob);
-      const a    = Object.assign(document.createElement('a'), { href: url, download: filename });
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      const a = Object.assign(document.createElement('a'), {
+        href: URL.createObjectURL(new Blob([content], { type: 'text/plain' })),
+        download: filename
+      });
+      document.body.appendChild(a); a.click();
+      document.body.removeChild(a); URL.revokeObjectURL(a.href);
     }
 
     function exportFilteredResults() {
       const opts = getFilterOptions();
       let out = '', total = 0;
       const ts = new Date().toLocaleString('zh-TW');
-
       out += `# 過濾搜尋結果匯出\n# 匯出時間: ${ts}\n# 原始檔案數量: ${logContents.length}\n`;
-      if (opts.searchText || opts.multiKeywords)
-        out += `# 搜尋條件: ${opts.multiKeywords || opts.searchText}\n`;
-      if (opts.startDate || opts.endDate)
-        out += `# 日期範圍: ${opts.startDate ? opts.startDate.toLocaleDateString('zh-TW') : '不限'} 至 ${opts.endDate ? opts.endDate.toLocaleDateString('zh-TW') : '不限'}\n`;
+      if (opts.searchText || opts.multiKeywords) out += `# 搜尋條件: ${opts.multiKeywords || opts.searchText}\n`;
       out += '\n';
-
       logContents.forEach(log => {
-        const filtered = log.lines.filter(line => filterLogLine(line, opts));
+        const filtered = log.lines.filter(l => filterLogLine(l, opts));
         if (!filtered.length) return;
-        out += `========== 檔案: ${log.name} (${filtered.length}/${log.lines.length} 行) ==========\n`;
-        filtered.forEach(line => { total++; out += line + '\n'; });
+        out += `========== ${log.name} (${filtered.length}/${log.lines.length} 行) ==========\n`;
+        filtered.forEach(l => { total++; out += l + '\n'; });
         out += '\n';
       });
-
       out += `\n# 總匯出行數: ${total}\n`;
-      if (total === 0) { alert('沒有符合篩選條件的記錄可匯出！'); return; }
-
+      if (!total) { alert('沒有符合篩選條件的記錄可匯出！'); return; }
       downloadFile(out, `filtered_logs_${formatDateForFilename()}.log`);
       alert(`已成功匯出 ${total} 行記錄`);
     }
@@ -1382,7 +1588,6 @@
     function exportMergedResult() {
       const opts = getFilterOptions();
       const all  = [];
-
       logContents.forEach(log => {
         log.lines.forEach(line => {
           if (!filterLogLine(line, opts)) return;
@@ -1390,70 +1595,53 @@
           all.push({ time: d ? d.getTime() : 0, line, file: log.name });
         });
       });
-
-      all.sort((a, b) => {
-        if (a.time === 0 && b.time === 0) return 0;
-        if (a.time === 0) return 1;
-        if (b.time === 0) return -1;
-        return a.time - b.time;
-      });
-
+      all.sort((a, b) => (!a.time ? 1 : !b.time ? -1 : a.time - b.time));
       if (!all.length) { alert('沒有符合篩選條件的記錄可匯出！'); return; }
-
       const ts = new Date().toLocaleString('zh-TW');
-      let out = `# 合併時間排序結果匯出\n# 匯出時間: ${ts}\n`;
-      out += `# 合併檔案數量: ${logContents.length}\n`;
-      out += `# 檔案列表: ${logContents.map(l => l.name).join(', ')}\n`;
-      if (opts.searchText || opts.multiKeywords)
-        out += `# 搜尋條件: ${opts.multiKeywords || opts.searchText}\n`;
-      if (opts.startDate || opts.endDate)
-        out += `# 日期範圍: ${opts.startDate ? opts.startDate.toLocaleDateString('zh-TW') : '不限'} 至 ${opts.endDate ? opts.endDate.toLocaleDateString('zh-TW') : '不限'}\n`;
-      out += `# 總行數: ${all.length}\n\n`;
-
+      let out = `# 合併時間排序結果匯出\n# 匯出時間: ${ts}\n# 合併檔案: ${logContents.map(l => l.name).join(', ')}\n# 總行數: ${all.length}\n\n`;
       all.forEach(item => { out += `[${item.file}] ${item.line}\n`; });
-
       downloadFile(out, `merged_logs_${formatDateForFilename()}.log`);
       alert(`已成功匯出 ${all.length} 行合併記錄`);
     }
 
-    // ── Debounced refresh ──────────────────────────────────────
-    const debouncedRefresh = debounce(() => {
-      displayLogs();
-      displayMergedLogs();
-    }, DEBOUNCE_MS);
+    // ── Debounced Refresh ──────────────────────────────────────────
+    const debouncedRefresh = debounce(() => { displayLogs(); displayMergedLogs(); }, DEBOUNCE_MS);
 
-    // ── Event listeners ────────────────────────────────────────
-
-    // Drag & drop
+    // ── Event Listeners ────────────────────────────────────────────
     dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
     dropZone.addEventListener('dragleave', e => { e.preventDefault(); dropZone.classList.remove('dragover'); });
     dropZone.addEventListener('drop', e => {
-      e.preventDefault();
-      dropZone.classList.remove('dragover');
-      const files = Array.from(e.dataTransfer.files).filter(f => f.name.endsWith('.log') || f.name.endsWith('.txt'));
+      e.preventDefault(); dropZone.classList.remove('dragover');
+      const files = Array.from(e.dataTransfer.files).filter(f => /\.(log|txt)$/i.test(f.name));
       if (files.length) processFiles(files);
     });
     dropZone.addEventListener('click', () => logFilesInput.click());
 
-    // File picker
     logFilesInput.addEventListener('change', e => {
-      const files = Array.from(e.target.files);
-      if (files.length) processFiles(files);
+      if (e.target.files.length) processFiles(Array.from(e.target.files));
     });
 
-    // Search — clears multi-keyword field when used
     searchInput.addEventListener('input', () => {
       if (searchInput.value.trim()) multiKeywordsInput.value = '';
       debouncedRefresh();
     });
 
-    // Multi-keyword — clears search field when used
+    // Search navigation via keyboard
+    searchInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        navigateMatch(e.shiftKey ? -1 : 1);
+      }
+    });
+
+    searchNavPrev.addEventListener('click', () => navigateMatch(-1));
+    searchNavNext.addEventListener('click', () => navigateMatch(1));
+
     multiKeywordsInput.addEventListener('input', () => {
       if (multiKeywordsInput.value.trim()) searchInput.value = '';
       debouncedRefresh();
     });
 
-    // All other filter controls
     [startDateInput, endDateInput].forEach(el => el.addEventListener('change', debouncedRefresh));
     [errorLevelCb, warnLevelCb, infoLevelCb, debugLevelCb, traceLevelCb,
      regexSearchCb, caseSensitiveCb, showLineNumbersCb
@@ -1461,42 +1649,25 @@
     searchLogicRadios.forEach(r => r.addEventListener('change', debouncedRefresh));
 
     clearDateBtn.addEventListener('click', () => {
-      startDateInput.value = '';
-      endDateInput.value = '';
+      startDateInput.value = ''; endDateInput.value = '';
       debouncedRefresh();
     });
 
-    // Export buttons
     exportFilteredBtn.addEventListener('click', exportFilteredResults);
     exportMergedBtn.addEventListener('click', exportMergedResult);
 
-    // Clear all
     clearAllBtn.addEventListener('click', () => {
       if (!confirm('確定要清除所有檔案嗎？')) return;
-
-      logContents = [];
-      fileColorMap.clear();
-      colorIndex = 0;
-      pendingChunks.clear();
-
-      updateFileList();
-      displayLogs();
-      displayMergedLogs();
-
+      logContents = []; fileColorMap.clear(); colorIndex = 0; pendingChunks.clear();
+      updateFileList(); displayLogs(); displayMergedLogs();
       logFilesInput.value = '';
-      searchInput.value = '';
-      multiKeywordsInput.value = '';
-      startDateInput.value = '';
-      endDateInput.value = '';
-      errorLevelCb.checked = true;
-      warnLevelCb.checked  = true;
-      infoLevelCb.checked  = true;
-      debugLevelCb.checked = true;
-      traceLevelCb.checked = true;
-      regexSearchCb.checked   = false;
-      caseSensitiveCb.checked = false;
-      showLineNumbersCb.checked = false;
+      searchInput.value = ''; multiKeywordsInput.value = '';
+      startDateInput.value = ''; endDateInput.value = '';
+      errorLevelCb.checked = warnLevelCb.checked = infoLevelCb.checked =
+        debugLevelCb.checked = traceLevelCb.checked = true;
+      regexSearchCb.checked = caseSensitiveCb.checked = showLineNumbersCb.checked = false;
       document.querySelector('input[name="searchLogic"][value="and"]').checked = true;
+      searchNavEl.classList.remove('visible');
     });
   </script>
 </body>
