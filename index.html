@@ -62,6 +62,13 @@
       border-left: 3px solid var(--accent);
     }
 
+    /* ── Input Row (drop zone + paste btn) ── */
+    .input-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
     /* ── Drop Zone ── */
     .drop-zone {
       border: 2px dashed var(--border-strong);
@@ -73,7 +80,8 @@
       background: var(--surface);
       transition: border-color 0.2s, background 0.2s;
       cursor: pointer;
-      margin-bottom: 10px;
+      flex: 1;
+      min-width: 0;
     }
 
     .drop-zone:hover, .drop-zone.dragover { border-color: var(--accent); background: var(--accent-light); }
@@ -209,6 +217,131 @@
       font-size: 13px;
       white-space: nowrap;
     }
+
+    /* ── Paste Button ── */
+    .paste-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
+      padding: 10px 16px;
+      background: var(--surface);
+      color: var(--text-2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, color 0.2s;
+    }
+    .paste-btn:hover { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+    .paste-btn-icon { font-size: 1.1rem; opacity: 0.7; }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.45);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      width: min(600px, calc(100vw - 32px));
+      max-height: calc(100vh - 64px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-title { font-size: 1rem; font-weight: 600; color: var(--text-1); }
+    .modal-close-btn {
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      color: var(--text-3);
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      line-height: 1;
+    }
+    .modal-close-btn:hover { background: var(--surface-3); color: var(--text-1); }
+    .modal-body {
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .modal-label { font-size: 13px; font-weight: 500; color: var(--text-2); margin-bottom: 4px; display: block; }
+    .modal-name-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 13px;
+      background: var(--surface);
+      color: var(--text-1);
+      outline: none;
+    }
+    .modal-name-input:focus { border-color: var(--accent); }
+    .modal-textarea {
+      width: 100%;
+      min-height: 240px;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-family: var(--mono);
+      font-size: var(--log-font-size);
+      background: var(--surface-2);
+      color: var(--text-1);
+      resize: vertical;
+      outline: none;
+      line-height: 1.5;
+    }
+    .modal-textarea:focus { border-color: var(--accent); }
+    .modal-footer {
+      padding: 12px 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    .modal-cancel-btn {
+      padding: 8px 16px;
+      background: var(--surface-3);
+      color: var(--text-2);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .modal-cancel-btn:hover { background: var(--border); }
+    .modal-confirm-btn {
+      padding: 8px 18px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .modal-confirm-btn:hover { background: var(--accent-hover); }
 
     .clear-date-btn:hover { background: var(--border); }
 
@@ -751,15 +884,45 @@
       <p class="app-subtitle">多檔案 Log 分析、搜尋與合併工具</p>
     </div>
 
-    <div class="drop-zone" id="dropZone">
-      <div class="drop-zone-icon">📁</div>
-      <div class="drop-zone-text">
-        <strong>拖拉檔案到此處</strong>，或點擊選擇 .log / .txt 檔案
+    <div class="input-row">
+      <div class="drop-zone" id="dropZone">
+        <div class="drop-zone-icon">📁</div>
+        <div class="drop-zone-text">
+          <strong>拖拉或點擊</strong>，選擇任意文字檔案
+        </div>
+      </div>
+      <button class="paste-btn" id="pasteBtn">
+        <span class="paste-btn-icon">📋</span>
+        <span><strong>貼上文字</strong>，直接輸入或貼上 log 內容</span>
+      </button>
+    </div>
+
+    <!-- Paste Text Modal -->
+    <div class="modal-overlay" id="pasteModal">
+      <div class="modal">
+        <div class="modal-header">
+          <span class="modal-title">📋 貼上 Log 文字</span>
+          <button class="modal-close-btn" id="pasteModalClose">✕</button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <label class="modal-label" for="pasteFileName">檔案名稱</label>
+            <input class="modal-name-input" type="text" id="pasteFileName" placeholder="例如：app.log" value="貼上內容.log">
+          </div>
+          <div>
+            <label class="modal-label" for="pasteContent">Log 內容</label>
+            <textarea class="modal-textarea" id="pasteContent" placeholder="在此貼上 log 內容…"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-cancel-btn" id="pasteModalCancel">取消</button>
+          <button class="modal-confirm-btn" id="pasteModalConfirm">載入</button>
+        </div>
       </div>
     </div>
 
     <div class="controls">
-      <input type="file" id="logFiles" multiple accept=".log,.txt">
+      <input type="file" id="logFiles" multiple style="display:none;">
       <input type="text" id="search" placeholder="🔍 搜尋關鍵字…">
       <!-- Search navigation (shown when keyword active) -->
       <div class="search-nav" id="searchNav">
@@ -1612,7 +1775,7 @@
     dropZone.addEventListener('dragleave', e => { e.preventDefault(); dropZone.classList.remove('dragover'); });
     dropZone.addEventListener('drop', e => {
       e.preventDefault(); dropZone.classList.remove('dragover');
-      const files = Array.from(e.dataTransfer.files).filter(f => /\.(log|txt)$/i.test(f.name));
+      const files = Array.from(e.dataTransfer.files);
       if (files.length) processFiles(files);
     });
     dropZone.addEventListener('click', () => logFilesInput.click());
@@ -1655,6 +1818,43 @@
 
     exportFilteredBtn.addEventListener('click', exportFilteredResults);
     exportMergedBtn.addEventListener('click', exportMergedResult);
+
+    // ── Paste Modal ───────────────────────────────────────────────
+    const pasteModal   = document.getElementById('pasteModal');
+    const pasteContent = document.getElementById('pasteContent');
+    const pasteFileName = document.getElementById('pasteFileName');
+
+    function openPasteModal() {
+      pasteContent.value = '';
+      pasteFileName.value = '貼上內容.log';
+      pasteModal.classList.add('open');
+      setTimeout(() => pasteContent.focus(), 50);
+    }
+
+    function closePasteModal() {
+      pasteModal.classList.remove('open');
+    }
+
+    function confirmPaste() {
+      const text = pasteContent.value.trim();
+      if (!text) { pasteContent.focus(); return; }
+      const name = pasteFileName.value.trim() || '貼上內容.log';
+      const lines = text.split('\n').filter(l => l.trim());
+      const data = { name, content: text, lines, size: new TextEncoder().encode(text).length, id: Date.now() + Math.random() };
+      logContents.push(data);
+      computeDisplayNames();
+      updateFileList();
+      displayLogs();
+      displayMergedLogs();
+      closePasteModal();
+    }
+
+    document.getElementById('pasteBtn').addEventListener('click', openPasteModal);
+    document.getElementById('pasteModalClose').addEventListener('click', closePasteModal);
+    document.getElementById('pasteModalCancel').addEventListener('click', closePasteModal);
+    document.getElementById('pasteModalConfirm').addEventListener('click', confirmPaste);
+    pasteModal.addEventListener('click', e => { if (e.target === pasteModal) closePasteModal(); });
+    pasteModal.addEventListener('keydown', e => { if (e.key === 'Escape') closePasteModal(); });
 
     clearAllBtn.addEventListener('click', () => {
       if (!confirm('確定要清除所有檔案嗎？')) return;
